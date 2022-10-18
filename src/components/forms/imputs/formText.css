@@ -1,0 +1,22 @@
+.formText{
+    border-radius: 10px;
+    border-color: aliceblue;
+    font-weight: 700;
+    content: none;
+    color:"#fff";
+   
+}
+
+/* .css-1rbz63g-MuiInputBase-root-MuiOutlinedInput-root{
+    color: rgb(245, 235, 235) !important;
+    font-weight: 700;
+}
+
+.labelClass{
+    padding-bottom: 10px;
+}
+.formText>label{
+
+    color:antiquewhite
+} */
+

@@ -1,0 +1,17 @@
+[
+    {
+        "name": "El Comunitario",
+        "path": "el-comunitario",
+        "icon": "icon-folder"
+    },
+    {
+        "name": "Apuestas",
+        "path": "apuestas",
+        "icon": "icon-folder"
+    },
+    {
+        "name": "Ligas del Mundo",
+        "path": "ligas-del-mundo",
+        "icon": "icon-folder"
+    }
+]

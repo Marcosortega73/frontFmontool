@@ -1,0 +1,45 @@
+.containerMenu {
+    max-height: 73px;
+}
+
+
+.boxImage {
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+.box img {
+    width: 33%;
+    height: 123px;
+
+}
+
+#root>header>header>div>div>div.MuiGrid-root.MuiGrid-container.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-sm-true.css-114x5zz-MuiGrid-root>div.MuiGrid-root.MuiGrid-container.MuiGrid-item.MuiGrid-spacing-xs-2.MuiGrid-direction-xs-column.MuiGrid-grid-xs-true.css-hfwr93-MuiGrid-root>div>div.MuiToolbar-root.MuiToolbar-regular.css-ngq8b-MuiToolbar-root>div.MuiBox-root.css-1t6c9ts {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.paralelogramo {
+    -webkit-transform: skew(-33deg);
+    -moz-transform: skew(-33deg);
+    -ms-transform: skew(-33deg);
+    -o-transform: skew(-33deg);
+    transform: skew(-33deg);
+}
+
+box a {
+    text-decoration: 'none' !important;
+}
+
+.paralelogramo button {
+    font-size: 16px;
+    transform: skew(33deg);
+}
+
+.paralelogramo button:hover {
+    background-color: #cca500;
+    box-shadow: -2px -2px 14px 1px rgba(245, 245, 245, 0.75);
+    -webkit-box-shadow: -2px -2px 14px 1px rgba(245, 245, 245, 0.75);
+    -moz-box-shadow: -2px -2px 14px 1px rgba(245, 245, 245, 0.75);
+    }

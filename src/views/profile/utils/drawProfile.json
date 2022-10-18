@@ -1,0 +1,22 @@
+
+[
+
+    {
+        "name": "Mis datos",
+        "path": "mis-datos",
+        "icon": "badge"
+    },
+    {
+        "name": "Logros",
+        "path": "logros",
+        "icon": "hotel_class"
+       
+    },
+    {
+        "name": "Cerrar Sesión",
+        "path": "/logout",
+        "icon": "logout"
+    }
+ 
+
+]

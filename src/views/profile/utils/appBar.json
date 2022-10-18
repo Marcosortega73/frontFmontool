@@ -1,0 +1,58 @@
+
+[
+
+    {
+        "name": "Home",
+        "path": "/",
+        "icon": "icon-folder"
+    },
+    {
+        "name": "Torneos",
+        "path": "/torneos",
+        "icon": "icon-folder",
+        "menu": [
+            {
+                "name": "Base de Datos",
+                "path": "/base-de-datos",
+                "icon": "icon-folder"
+            },
+            {
+                "name": "Ligas",
+                "path": "/ligas",
+                "icon": "icon-folder"
+            },
+            {
+                "name": "Copas",
+                "path": "/copas",
+                "icon": "icon-folder"
+            },
+            {
+                "name": "Managers",
+                "path": "/managers",
+                "icon": "icon-folder"
+            }
+         
+        ]
+    },
+    {
+        "name": "El Comunitario",
+        "path": "/el-comunitario",
+        "icon": "icon-folder"
+    },
+    {
+        "name": "Apuestas",
+        "path": "/apuestas",
+        "icon": "icon-folder"
+    },
+    {
+        "name": "Convierte en Manager",
+        "path": "/conviertete-en-manager",
+        "icon": "icon-folder"
+    },
+    {
+        "name": "Ligas del Mundo",
+        "path": "/ligas-del-mundo",
+        "icon": "icon-folder"
+    }
+
+]
