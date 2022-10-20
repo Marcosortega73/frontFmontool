@@ -35,32 +35,49 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function Torneos() {
 
   const columns = [
-    { field: "nombre", headerName: "Nombre", minWidth: 200 },
-    { field: "tipo_id", headerName: "Tipo de torneo", width: 100  },
-    { field: "region_id", headerName: "Region", minWidth: 200, },
+    { field: "nombre", headerName: "Nombre", minWidth: 200,
+  description:"Nombre del torneo",flex:1 },
+    { field: "TipoTorneo", headerName: "Tipo", width: 100,
+      valueGetter: (params) => {
+        return params?.value?.nombre;
+      },
+      description: "Tipo de Torneo",
+       },
+    { field: "Continente", headerName: "Region", minWidth: 200,
+      valueGetter: (params) => {
+        return params?.value?.nombre;
+      },
+      description: "Region del Torneo",
+       },
     {
       field: "total_de_equipos",
-      headerName: "Total de equipos",
-      width: 100 
+      headerName: "Equipos",
+      width: 100,
+      description: "Cantidad de Equipos",
     },
-/*     {
+    {
       field: "total_grupos",
-      headerName: "Total de grupos",
-      type: "date",
-      minWidth: 200,
-    }, */
+      headerName: "Grupos",
+      description: "Cantidad de Grupos",
+      minWidth: 100,
+    }, 
  
     {
       field: "rondas",
       headerName: "Rondas",
       type: "date",
-      minWidth: 200,
+      width: 73,
+      description: "Cantidad de Rondas",
     }, 
     {
-      field: "season_id",
-      headerName: "Temporada",
-      type: "date",
+      field: "Season",
+      headerName: "Season",
       minWidth: 200,
+      valueGetter: (params) => {
+        return params?.value?.nombre;
+      },
+      description: "Temporada del Torneo",
+
     },
 
     {
@@ -76,6 +93,7 @@ export default function Torneos() {
         />,
   
       ],
+      flex: 1,
     },
   ];
 
