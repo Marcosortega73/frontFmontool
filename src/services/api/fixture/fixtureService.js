@@ -78,12 +78,12 @@ const confirmFixtureService = async (data) => {
 };
 
 const updateFixtureService = async (formData) => {
-  console.log("LLEGE AL UPDATE torneo REQ");
+  console.log("LLEGE AL UPDATE actualizarPartido REQ",formData);
   try {
     const response = http
-      .put(API_URL + "actualizarTorneo", formData)
+      .post(API_URL + "actualizarPartido", formData)
       .then((res) => {
-        console.log("LLEGE AL LA DATA UPDATE torneo", res.data);
+        console.log("LLEGE AL LA DATA UPDATE actualizarPartido", res.data);
         return res.data;
       });
     return response;
