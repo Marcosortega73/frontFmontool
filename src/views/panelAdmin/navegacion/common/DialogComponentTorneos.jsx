@@ -70,7 +70,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function DialogComponentTorneos(props) {
-  const { open, setOpen, action } = props;
+  const { open, setOpen, action} = props;
   const [equipos, setEquipos] = React.useState([]);
   const [selectEquipos, setSelectEquipos] = React.useState([]);
   const [defaultValues, setDefaultValues] = React.useState({
@@ -129,13 +129,13 @@ export default function DialogComponentTorneos(props) {
     setLoading(true);
     console.log("REGION nacion", selected);
 
-    const { nations, clubes } =
+      const { nations, clubes } =
       await regionesServices.getNacionalidadesxContinente(selected);
 
     setNationsByRegion(nations);
     setEquipos(clubes);
 
-    console.log("nacionalidad y clubes");
+    console.log("nacionalidad y clubes", nations, clubes,nationsByRegion);
     setLoading(false);
   };
 
@@ -143,15 +143,15 @@ export default function DialogComponentTorneos(props) {
     setLoading(true);
     console.log("NACION", selectNation);
     const clubes = await equiposServices.getEquiposXnacion(selectNation);
-    console.log("clubes", clubes);
+    console.log("clubes clubes ", clubes);
     setEquipos(clubes?.clubes);
-    console.log("equipos", equipos);
+    console.log("equipos torneos", equipos);
     setProgress(false);
     setLoading(false);
   };
 
   const getEquiposSelect = async () => {
-    console.log("Hola equipos", selectEquipos.length);
+    console.log("Hola equipos dialog torneo", selectEquipos.length);
   };
 
   React.useEffect(() => {
@@ -161,7 +161,7 @@ export default function DialogComponentTorneos(props) {
 
   React.useEffect(() => {
     getNacionalidadxRegion();
-  }, [selected]);
+  }, [selected ]);
 
   React.useEffect(() => {
     getEquiposXnation();
@@ -187,19 +187,20 @@ export default function DialogComponentTorneos(props) {
 
 
   const onSubmit = async (formValue) => {
-    console.log(formValue);
+    console.log("formvlaueeee",formValue);
     console.log(action);
 
     if (action === "create") {
 
       if (sorteo) {
         const data ={
-          fixtureCreado:fixtureCompleto,
-          torneo_id:formValue.torneo_id,
+          fixtureCreado: fixtureCompleto,
+          torneo_id: torneoCreated.id,
        }
 
         console.log("sorteo", sorteo);
         console.log("fixture", fixture);
+        console.log("fixture", data);
 
         Swal.fire({
           title: "¿Confirmas el fixture?",
@@ -225,7 +226,19 @@ export default function DialogComponentTorneos(props) {
                   container: "swal-overlay",
                 },
               })
+
               setOpen(false);
+
+
+            } else {
+              Swal.fire({
+                title: "Error!",
+                text: "El fixture no ha sido creado.",
+                icon: "error",
+                customClass: {
+                  container: "swal-overlay",
+                },
+              });
 
             }
           }

@@ -122,7 +122,7 @@ const FixtureComponent = ({ liga }) => {
                                 alignItems: "center",
                               }}
                             >
-                              {fixture?.estado !== "Jugado"?(
+                              {fixture?.estado !== "Terminado"?(
                               <>
                               <Chip
                                 size="small"

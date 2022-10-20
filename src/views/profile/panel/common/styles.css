@@ -1,5 +1,5 @@
 .bgImage{
-    background: rgba(7, 0, 0, 0.274) url('C:\Users\marco\Documents\Programacion\Proyecto Final\FmOnlineTools\frontend\public\images\mangerFondo.jpg');
+    background: rgba(7, 0, 0, 0.274); /* url('C:\Users\marco\Documents\Programacion\Proyecto Final\FmOnlineTools\frontend\public\images\mangerFondo.jpg'); */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;

@@ -11,70 +11,49 @@ import TableRow from "@mui/material/TableRow";
 import { styled } from "@mui/material/styles";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { visuallyHidden } from "@mui/utils";
-import { Box } from "@mui/material";
+import { Box, Container, Toolbar, Typography } from "@mui/material";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#f5f5f5",
+  ...theme.typography.body2,
+  padding: theme.spacing(1), 
+  margin: theme.spacing(1),
+  borderRadius: "5px",
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+}));
 const columns = [
-  {
-    id: "nombre",
-    label: "Club",
-    minWidth: 170,
-    align: "left",
+ /*  { field: "Equipo", headerName: "Nombre", minWidth: 200, flex: 1,
+valueGetter: (params) => {
+    return params?.row?.Equipo?.nombre;
+  }
+}, */
+  { field: "puntos", headerName: "Puntos", minWidth: 100, 
+  
+    },
+   { field: "partidos_jugados", headerName: "PJ", minWidth: 100, 
+
   },
-  {
-    id: "Clasificacion",
-    relation: "partidos_jugados",
-    label: "PJ",
-    width: 3,
-    align: "left",
+ 
+  { field: "partidos_ganados", headerName: "PG", minWidth: 100,
+
   },
-  {
-    id: "Clasificacion",
-    relation: "partidos_ganados",
-    label: "G",
-    width: 3,
-    align: "left",
+  { field: "partidos_empatados", headerName: "PE", minWidth: 100,
+ 
   },
-  {
-    id: "Clasificacion",
-    relation: "partidos_empatados",
-    label: "E",
-    width: 3,
-    align: "left",
+  { field: "partidos_perdidos", headerName: "PP", minWidth: 100,
+ 
   },
-  {
-    id: "Clasificacion",
-    relation: "partidos_perdidos",
-    label: "P",
-    width: 3,
-    align: "left",
+  { field: "goles_favor", headerName: "GF", minWidth: 100,
+ 
   },
-  {
-    id: "Clasificacion",
-    relation: "goles_favor",
-    label: "GF",
-    width: 3,
-    align: "left",
+  { field: "goles_contra", headerName: "GC", minWidth: 100,
+ 
   },
-  {
-    id: "Clasificacion",
-    relation: "goles_contra",
-    label: "GC",
-    width: 3,
-    align: "left",
-  },
-  {
-    id: "Clasificacion",
-    relation: "diferencia_goles",
-    label: "DG",
-    width: 3,
-    align: "left",
-  },
-  {
-    id: "Clasificacion",
-    relation: "puntos",
-    label: "PTS",
-    width: 3,
-    align: "left",
-  },
+  { field: "diferencia_goles", headerName: "DIF", minWidth: 100,
+  }, 
 ];
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -197,7 +176,7 @@ export default function TableLigasClasificacionComponent({ equipos }) {
   console.log("EQUIPOS TABLE CLASIFICACION", equipos);
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
+   /*  <Paper sx={{ width: "100%", overflow: "hidden" }}>
       <TableContainer sx={{}}>
         <Table stickyHeader aria-label="sticky table" size="small" dense="true" table="true">
           <EnhancedTableHead
@@ -239,16 +218,65 @@ export default function TableLigasClasificacionComponent({ equipos }) {
               })}
           </TableBody>
         </Table>
-      </TableContainer>
-      {/*  <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      /> */}
-    </Paper>
+      </TableContainer> */
+
+      <Container
+        sx={{
+          height: "100%",
+          width: "100%",
+          pt: 7,
+          backgroundColor: "primary.main",
+        }}
+      >
+        <Item sx={{height:"100%"}}>
+          <Toolbar
+            variant="dense"
+            sx={{
+              backgroundColor: "secondary.main",
+              px: 0,
+              borderTopLeftRadius: 5,
+              borderTopRightRadius: 5,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+                height: "100%",
+                px: 32,
+              }}
+            >
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ flexGrow: 1, pr: 3, textAlign: "start", fontWeight: 700 }}
+              >
+                Liga
+              </Typography>
+      
+            </div>
+          </Toolbar>
+
+          <DataGrid
+            rows={equipos?.Clasificacion}
+            columns={columns}
+            disableColumnFilter
+            disableColumnSelector
+            disableDensitySelector
+            disableExtendRowFullWidth
+            hideFooter
+            autoHeight
+            disableSelectionOnClick
+            disableColumnMenu 
+            components={{ Toolbar: GridToolbar }}
+          />
+        </Item>
+
+      </Container>
+     
+
+
+ /*    </Paper> */
   );
 }

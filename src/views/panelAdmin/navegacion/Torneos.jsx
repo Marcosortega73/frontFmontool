@@ -21,7 +21,6 @@ import { getTorneos } from "../../../redux/torneoSlice";
 import { EditNotifications } from "@mui/icons-material";
 
 
-
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#f5f5f5",
   ...theme.typography.body2,
@@ -121,8 +120,10 @@ export default function Torneos() {
   };
 
   React.useEffect(() => {
+    setLoading(true);
     dispatch(getTorneos());    
-  }, [dispatch]);
+    setLoading(false);
+  }, [dispatch,openDialog]);
 
   React.useEffect(() => {
     setLoading(true);

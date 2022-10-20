@@ -1,39 +1,40 @@
-
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import Tooltip from '@mui/material/Tooltip';
-import { visuallyHidden } from '@mui/utils';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import StorageIcon from '@mui/icons-material/Storage';
-import DialogComponentEquipos from './common/DialogComponentEquipos';
+import * as React from "react";
+import PropTypes from "prop-types";
+import { alpha } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Checkbox from "@mui/material/Checkbox";
+import Tooltip from "@mui/material/Tooltip";
+import { visuallyHidden } from "@mui/utils";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import StorageIcon from "@mui/icons-material/Storage";
+import DialogComponentEquipos from "./common/DialogComponentEquipos";
 import Button from "@mui/material/Button";
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
-import {getRegiones}  from  '../../../redux/regionesSlice';
-import {useDispatch} from 'react-redux';
-import equiposServices from '../../../services/api/equipos/equiposServices';
-import { Container, IconButton, styled } from '@mui/material';
+import { getRegiones } from "../../../redux/regionesSlice";
+import { useDispatch } from "react-redux";
+import equiposServices from "../../../services/api/equipos/equiposServices";
+import { Chip, Container, IconButton, styled } from "@mui/material";
 
-import Swal from 'sweetalert2'
-import DialogExcelEquipos from './common/DialogExcelEquipos';
+import Swal from "sweetalert2";
+import DialogExcelEquipos from "./common/DialogExcelEquipos";
 
+import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
+import { EditNotifications } from "@mui/icons-material";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -45,358 +46,173 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
 
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
 
-// This method is created for cross-browser compatibility, if you don't
-// need to support IE11, you can use Array.prototype.sort() directly
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-
-const headCells = [
+const columns = [
   {
-    id: 'id',
-    numeric: true,
-    label: 'Id de equipo',
+    field: "idFmrte",
+    headerName: "Id",
+    flex: 1,
+    description: "Id del equipo dentro del Juego",
   },
   {
-    id: 'nombre',
-    numeric: true,
-    label: 'Nombre',
+    field: "nombre",
+    headerName: "Nombre",
+    minWidth: 200,
+    description: "Nombre del equipo",
   },
   {
-    id: 'nacionalidad_id',
-    numeric: true,
-    label: 'Nacionalidad',
-  },
-  {
-    id: 'manager_id',
-    numeric: true,
-    label: 'Manager',
-  },
-  {
-    id: 'torneo_id',
-    numeric: true,
-    label: 'Torneo',
-  },
-  {
-    id: 'actions',
-    numeric: true,
-    label: 'Acciones',
+    field: "Nacionalidad",
+    headerName: "Nacionalidad",
+    minWidth: 200,
+    renderCell: (params) => {
+      return (
+        <Tooltip title={params.value.nombre}>
+          <span>{params.value.nombre}</span>
+        </Tooltip>
+      );
+    },
+    description: "Nacionalidad del equipo",
+    //solo tipo numero
   },
 
+/*   {
+    field: "Torneo",
+    headerName: "Torneos",
+    minWidth: 113,
+    editable: true,
+    renderCell: (params) => {
+      return (
+        <Tooltip title={params.value.nombre}>
+          <span>{params.value.nombre}</span>
+        </Tooltip>
+      );
+    },
+    description: "Torneo en el que participa el equipo",
+  }, */
+  {
+    field: "actions",
+    type: "actions",
+    headerName: "Acciones",
+    disableReorder: true,
+    getActions: (params) => [
+      <GridActionsCellItem icon={<EditNotifications />} label="Edit" />,
+    ],
+    flex: 1,
+  },
 ];
 
-function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
-    props;
 
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
-
-
-
-  return (
-    <TableHead
-    sx={{
-      backgroundColor:"#292c31",
-      color: '#fff',
-      
-      '& th': {
-        color: '#fff',
-        fontSize: '1.2rem',
-        fontWeight: 'bold',
-        textAlign: 'center',
-        padding: '0.5rem',
-        borderBottom: '1px solid #fff',
-        '&:hover': {
-          backgroundColor: '#fff',
-          color: '#292c31',
-        },
-        '&:active': {
-          backgroudColor: '#fff',
-          color: '#292c31',
-        },
-        '&:focus': {
-          backgroundColor: '#fff',
-          color: '#292c31',
-        }
-
-      },
-      '.css-1f12udi-MuiButtonBase-root-MuiTableSortLabel-root.Mui-active': {
-        backgroundColor: '#fff',
-        color: '#292c31',
-        padding: '0.5rem',   
-      }
-    
-    }}>
-      <TableRow
-      sx={{
-        'th': {
-          '&:active': {
-            backgroudColor: 'red',
-            color: '#fff',
-          },
-          '&:focus': {
-            backgroundColor: 'red',
-            color: '#fff',
-          }
-          },
-        '.css-1s5sh37-MuiTableRow-root th': {
-          backgroundColor: 'red',
-        }
-        
-      }}>
-        <TableCell padding="checkbox">
-          <Checkbox
-            sx={{color:'#fff'}}
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            sortDirection={orderBy === headCell.id ? order : false}
-            sx={{
-              fontSize: '1rem',
-              fontWeight: 'bold',
-              color: '#fff',
-              textAlign: 'center',
-              cursor: 'pointer',
-              '&:active': {
-                backgroundColor: '#fff',
-                color: '#292c31',
-              },
-            }}
-
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-              sx={{
-                cursor: 'pointer',
-                fontSize: '0.8rem',
-                '&:hover': {
-                  color: 'primary',
-                },
-              }}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
-
-EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
-};
-
-const EnhancedTableToolbar = (props) => {
-
-  const { numSelected } = props;
-
-
-  return (
-    <>  
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} Equipos seleccionados
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Equipos
-        </Typography>
-        
-      )}
-     
-      
-    </Toolbar>
-    </>
-
-  );
-};
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
 
 export default function Equipos() {
-
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('nombre');
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("nombre");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-
   const [openExcel, setOpenExcel] = React.useState(false);
-  const [openDialogEquipos,setOpenDialogEquipos] = React.useState(false);
-  const [managers , setManagers] = React.useState([])
-  const [torneos , setTorneos] = React.useState([])
-  const [equipos , setEquipos] = React.useState([])
-  const [loading,setLoading] = React.useState(true);
+  const [openDialogEquipos, setOpenDialogEquipos] = React.useState(false);
+  const [managers, setManagers] = React.useState([]);
+  const [torneos, setTorneos] = React.useState([]);
+  const [equipos, setEquipos] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [pageSize, setPageSize] = React.useState(5);
 
   const [equiposSelect, setEquiposSelect] = React.useState({
     id: 0,
     nombre: "",
-    nacionalidad:[],
-    manager:0,
-    torneo:0,
-  })
+    nacionalidad: [],
+    manager: 0,
+    torneo: 0,
+  });
 
   const dispatch = useDispatch();
 
-  const [actionSelect, setActionSelect] = React.useState('');
-  
-  
-  
-  const getEquipos = async () =>{
-    const {clubes} = await equiposServices.getEquipos();
-    setEquipos(clubes)
-    console.log("Holas",clubes);
-  }
+  const [actionSelect, setActionSelect] = React.useState("");
 
-  const getTorneos = async () =>{
+  const getEquipos = async () => {
+    const { clubes } = await equiposServices.getEquipos();
+    setEquipos(clubes);
+    console.log("Holas", clubes);
+  };
 
-    setTorneos([{
-      id:1,
-      nombre:"Torneo 1",
-      tipo:"Liga",
-      nacionalidad:"Argentina",
-      total_equipos:10,
-      total_grupos:2,
-      temporada:"15",
-    }])
-  }
+  const getTorneos = async () => {
+    setTorneos([
+      {
+        id: 1,
+        nombre: "Torneo 1",
+        tipo: "Liga",
+        nacionalidad: "Argentina",
+        total_equipos: 10,
+        total_grupos: 2,
+        temporada: "15",
+      },
+    ]);
+  };
 
-  const getManagers = async () =>{
-
-    setManagers([{
-      id:1,
-      email:"mortega@hotmail.com",
-      username:"mortega",
-      nombre:"Marcos",
-      apellido:"Ortega",
-      fecha_nacimiento:"01/01/1990",
-      nacionalidad:"Argentina"
-    }])
-  }
+  const getManagers = async () => {
+    setManagers([
+      {
+        id: 1,
+        email: "mortega@hotmail.com",
+        username: "mortega",
+        nombre: "Marcos",
+        apellido: "Ortega",
+        fecha_nacimiento: "01/01/1990",
+        nacionalidad: "Argentina",
+      },
+    ]);
+  };
 
   React.useEffect(() => {
     dispatch(getRegiones());
-    getEquipos()
-    getTorneos()
+    getEquipos();
+    getTorneos();
     getManagers();
     setLoading(false);
-  }
-  ,[loading]); // eslint-disable-line react-hooks/exhaustive-deps
-  
+  }, [loading]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleOpenDialog = () => {
     setOpenDialogEquipos(true);
-  }
-  console.log("Equipos =>",equipos);
+  };
+  console.log("Equipos =>", equipos);
 
-  const handleEquipoSelect = (equipo,action) => {
+  const handleEquipoSelect = (equipo, action) => {
+    setActionSelect(action);
 
-    setActionSelect(action)
+    console.log("Equipo Select =>", equipo);
 
-     console.log("Equipo Select =>",equipo);
-
-    if(action === 'edit'){
-
-
+    if (action === "edit") {
       setEquiposSelect({
         id: equipo.id,
         nombre: equipo.nombre,
         nacionalidad: equipo.Nacionalidad.id,
         //manager: equipo.Manager&&equipo.Manager.nombre,
-        torneo: equipo.Torneo&&equipo.Torneo.nombre
-      })
-    }
-    else if (action === 'ver'){
+        torneo: equipo.Torneo && equipo.Torneo.nombre,
+      });
+    } else if (action === "ver") {
       setEquiposSelect({
         id: equipo.id,
         nombre: equipo.nombre,
         nacionalidad: equipo.Nacionalidad.nombre,
-       // manager: equipo.Manager&&equipo.Manager.nombre,
-        torneo: equipo.Torneo&&equipo.Torneo.nombre
-      })
+        // manager: equipo.Manager&&equipo.Manager.nombre,
+        torneo: equipo.Torneo && equipo.Torneo.nombre,
+      });
     }
-    
-    console.log("Equipo Select ULTIMO =>",equiposSelect);
 
-    handleOpenDialog()
-  }
- const handleCreateEquipos = () => {
-    setActionSelect('create')
-    setEquiposSelect({})
-    handleOpenDialog()
- }
+    console.log("Equipo Select ULTIMO =>", equiposSelect);
+
+    handleOpenDialog();
+  };
+  const handleCreateEquipos = () => {
+    setActionSelect("create");
+    setEquiposSelect({});
+    handleOpenDialog();
+  };
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
@@ -422,7 +238,7 @@ export default function Equipos() {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
+        selected.slice(selectedIndex + 1)
       );
     }
 
@@ -440,51 +256,44 @@ export default function Equipos() {
 
   const handleExcel = () => {
     setOpenExcel(true);
-  }
-
+  };
 
   const handleDelete = async (id) => {
-    console.log("ID DE equipo",id);
+    console.log("ID DE equipo", id);
     Swal.fire({
-      title: 'Advertencia',
-      text: '¿ Esta seguro que desea eliminar el equipo ?',
-      icon: 'warning',
-      iconColor: '#e8b71c',
+      title: "Advertencia",
+      text: "¿ Esta seguro que desea eliminar el equipo ?",
+      icon: "warning",
+      iconColor: "#e8b71c",
       showCancelButton: true,
-      confirmButtonText: 'Si, Eliminar',
-      confirmButtonColor: '#1e2024',
-      cancelButtonText: 'No, Cancelar',
+      confirmButtonText: "Si, Eliminar",
+      confirmButtonColor: "#1e2024",
+      cancelButtonText: "No, Cancelar",
     }).then(async (result) => {
       if (result.isConfirmed) {
-       const res = await equiposServices.deleteEquiposService(id);
-       console.log("QUE ONDA",res);
+        const res = await equiposServices.deleteEquiposService(id);
+        console.log("QUE ONDA", res);
 
-        if(res.status === 200){
-          await getEquipos()
-        Swal.fire(
-          'Eliminado!',
-        `${res.message}`,
-          'success'
-        )
-        }
-        else{
+        if (res.status === 200) {
+          await getEquipos();
+          Swal.fire("Eliminado!", `${res.message}`, "success");
+        } else {
           Swal.fire(
-            'Error!',
-            'El equipo no ha sido eliminado. Ocurrio un error en el servidor',
-            'error'
-          )
+            "Error!",
+            "El equipo no ha sido eliminado. Ocurrio un error en el servidor",
+            "error"
+          );
         }
       }
-    })
-  }
-
-
-
+    });
+  };
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   return (
-    <> <Container
+    <>
+      {/* 
+    <Container
     sx={{
       height: "50vh",
       width: "100%",     
@@ -554,8 +363,8 @@ export default function Equipos() {
               rowCount={equipos.length}
             />
             <TableBody>
-              {/* if you don't need to support IE11, you can replace the `stableSort` call with:
-                 rows.slice().sort(getComparator(order, orderBy)) */}
+               if you don't need to support IE11, you can replace the `stableSort` call with:
+                 rows.slice().sort(getComparator(order, orderBy)) 
               {stableSort(equipos, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
@@ -638,7 +447,91 @@ export default function Equipos() {
                 
     </Box>
     </Item>
-    </Container>
+    </Container> */}
+
+      <Container
+        sx={{
+          height: "50%",
+          width: "100%",
+          pt: 7,
+          backgroundColor: "primary.main",
+        }}
+      >
+        <Item sx={{ height: "100%" }}>
+          <Toolbar
+            variant="dense"
+            sx={{
+              backgroundColor: "secondary.main",
+              px: 0,
+              borderTopLeftRadius: 5,
+              borderTopRightRadius: 5,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+                height: "100%",
+                px: 32,
+              }}
+            >
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ flexGrow: 1, pr: 3, textAlign: "start", fontWeight: 700 }}
+              >
+                Equipos
+              </Typography>
+              <Box>
+                <Tooltip title="Agregar Equipos">
+                  <Button
+                    onClick={handleExcel}
+                    variant="contained"
+                    startIcon={<CloudUploadIcon />}
+                    endIcon={<StorageIcon />}
+                  >
+                    Subir Excel de Equipos
+                  </Button>
+                </Tooltip>
+                <Tooltip title="Agregar Equipos">
+                  <Button
+                    onClick={handleCreateEquipos}
+                    variant="contained"
+                    endIcon={<AddCircleIcon />}
+                  >
+                    Crear equipo
+                  </Button>
+                </Tooltip>
+              </Box>
+            </div>
+          </Toolbar>
+
+          <DataGrid
+            rows={equipos}
+            columns={columns}
+            loading={loading}
+            pageSize={pageSize}
+            disableColumnFilter
+            disableColumnSelector
+            disableDensitySelector
+            disableExtendRowFullWidth
+            autoHeight
+            disableSelectionOnClick
+            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+            rowsPerPageOptions={[5, 10, 20]}
+            components={{ Toolbar: GridToolbar }}
+            componentsProps={{
+              toolbar: {
+                showQuickFilter: true,
+              },
+            }}
+          />
+        </Item>
+
+        <DialogComponentEquipos open={openDialogEquipos} setOpen={setOpenDialogEquipos} torneos={torneos} managers={managers} equipo={equiposSelect} setEquipoSelect={setEquiposSelect} action={actionSelect} setLoading={setLoading} />
+      <DialogExcelEquipos updateEquipos={getEquipos} openExcel={openExcel} setOpenExcel={setOpenExcel} />
+      </Container>
     </>
   );
 }
