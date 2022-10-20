@@ -14,6 +14,7 @@ import './index.css';
 
 //Vistas Generales
 import AppRouter from './routes/AppRouter';
+import { SnackbarProvider } from 'notistack';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -21,7 +22,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
     <MuiThemeProvider theme={theme}>
+    < SnackbarProvider  maxSnack = { 3 } > 
       <AppRouter />
+    </ SnackbarProvider >
     </MuiThemeProvider>
     </Provider>
 
