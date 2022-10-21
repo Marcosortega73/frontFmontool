@@ -1,11 +1,6 @@
-import {
-  Box,
-  Grid,
-  Paper,
-} from "@mui/material";
+import { Box, Grid, Paper, Toolbar, Typography } from "@mui/material";
 import React from "react";
 //icons
-
 
 import { useDispatch, useSelector } from "react-redux";
 import { getTorneos } from "../../../redux/torneoSlice";
@@ -33,7 +28,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Paper>{children}</Paper>
+          <Box>{children}</Box>
         </Box>
       )}
     </div>
@@ -45,7 +40,6 @@ const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   color: theme.palette.text.secondary,
   height: 123,
-
 }));
 
 TabPanel.propTypes = {
@@ -54,36 +48,32 @@ TabPanel.propTypes = {
   value: PropTypes.number,
 };
 
-
 const Ligas = () => {
   const dispatch = useDispatch();
   const { torneos } = useSelector((state) => state.torneos);
-  const {fixture} = useSelector((state) => state.fixture);
+  const { fixture } = useSelector((state) => state.fixture);
   const [ligasData, setLigasData] = React.useState([]);
   const [value, setValue] = React.useState(0);
   const [fixtureData, setFixtureData] = React.useState([]);
 
   //tipo de torneo = 1 corresponde a los tipo de torneo "liga"
-  
-  
-  const getLigas = () => {
 
-   const torneosByTipo =  torneos.filter((liga) => {
+  const getLigas = () => {
+    const torneosByTipo = torneos.filter((liga) => {
       return liga.tipo_id === 1;
     });
 
-    console.log("TORNEO",torneosByTipo);
+    console.log("TORNEO", torneosByTipo);
 
     setLigasData(torneosByTipo);
 
     console.log("liga data getLigas", ligasData);
   };
 
-  const getFixtures= () => {
+  const getFixtures = () => {
     setFixtureData(fixture);
     console.log("fixture data getFixtures", fixtureData);
   };
-
 
   React.useEffect(() => {
     dispatch(getTorneos());
@@ -91,10 +81,9 @@ const Ligas = () => {
   }, [dispatch]);
 
   React.useEffect(() => {
-    getLigas()
-    getFixtures()
-  }, [torneos,fixture]); // eslint-disable-line react-hooks/exhaustive-deps
-
+    getLigas();
+    getFixtures();
+  }, [torneos, fixture]); // eslint-disable-line react-hooks/exhaustive-deps
 
   console.log("torneos aqui", torneos);
 
@@ -108,8 +97,16 @@ const Ligas = () => {
 
   return (
     <>
-      <Box sx={{ width: "100%" }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider",display:"flex",justifyContent:"center",mt:2 }}>
+      <Box sx={{ width: "100%", backgroundColor: "secondary.main" }}>
+        <Box
+          sx={{
+            borderBottom: 1,
+            borderColor: "divider",
+            display: "flex",
+            justifyContent: "center",
+            mt: 2,
+          }}
+        >
           <Tabs
             value={value}
             onChange={handleChange}
@@ -117,7 +114,6 @@ const Ligas = () => {
           >
             {ligasData.map((liga, index) => {
               return (
-        
                 <Tab
                   key={index}
                   label={liga.nombre}
@@ -134,53 +130,122 @@ const Ligas = () => {
                     />
                   }
                 />
-           
               );
             })}
           </Tabs>
         </Box>
-     
-          {ligasData?.map((liga, index) => {
-            return (
-              <TabPanel value={value} index={index} key={index}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} md={8}>
+
+        {ligasData?.map((liga, index) => {
+          return (
+            <TabPanel value={value} index={index} key={index}>
+              <Toolbar
+                variant="dense"
+                sx={{
+                  backgroundColor: "secondary.main",
+                  px: "0px !important",
+
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    width: "100%",
+                    height: "100%",
+                    px: 32,
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    component="div"
+                    sx={{
+                      flexGrow: 1,
+                      textAlign: "start",
+                      fontWeight: 700,
+                    }}
+                  >
+                    {liga.nombre}
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    component="div"
+                    sx={{
+                      flexGrow: 1,
+                      textAlign: "end",
+                      fontWeight: 700,
+                    }}
+                  >
+                    {liga?.Season.nombre}
+                  </Typography>
+                </div>
+              </Toolbar>
+              <Grid container spacing={2} elevation="0">
+                <Grid item xs={12} md={8}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "100%",
+                      height: "100%",
+                    }}
+                  >
                     <Box
                       sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
+                        backgroundColor: "primary.main",
                         width: "100%",
                         height: "100%",
-                      }}
-                    >
-                      <Item sx={{width:"100%",height:"100%"}}>
-                        <TableLigasClasificacionComponent equipos={ligasData[index]?.Equipos} />
-                      </Item>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12} md={4}>
-                    <Box
-                      sx={{
                         display: "flex",
                         flexDirection: "column",
-                        alignItems: "center",
                         justifyContent: "center",
-                        width: "100%",
-                        height: "100%",
+                        alignItems: "flex-start",
+                        borderRadius: 3,
                       }}
                     >
-                      <Item sx={{width:"100%",height:"100%"}}>
-                        <FixtureComponent liga={ligasData[index]} />
-                      </Item>
+                      <Toolbar
+                        sx={{
+                          backgroundColor: "primary.main",
+                          color: "#fff",
+                          display: "flex",
+                          justifyContent: "flex-start",
+                          minHeight: "37px !important",
+                          pt: 1,
+                          borderLeft: "5px solid #fff",
+                        }}
+                      >
+                        <Typography variant="h6" component="div" align="center">
+                          Tabla de posiciones
+                        </Typography>
+                      </Toolbar>
+                      <Box sx={{ width: "100%", height: "100%" }}>
+                        <TableLigasClasificacionComponent
+                          equipos={ligasData[index]?.Equipos}
+                          liga={ligasData[index]}
+                        />
+                      </Box>
                     </Box>
-                  </Grid>
-         
+                  </Box>
                 </Grid>
-              </TabPanel>
-            );
-          })}
+                <Grid item xs={12} md={4}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      elevation: 0,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "100%",
+                      height: "100%",
+                    }}
+                  >
+                    <FixtureComponent liga={ligasData[index]} />
+                  </Box>
+                </Grid>
+              </Grid>
+            </TabPanel>
+          );
+        })}
       </Box>
     </>
   );

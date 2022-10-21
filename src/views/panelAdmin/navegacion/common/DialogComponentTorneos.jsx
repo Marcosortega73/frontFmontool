@@ -128,9 +128,12 @@ export default function DialogComponentTorneos(props) {
   const getNacionalidadxRegion = async () => {
     setLoading(true);
     console.log("REGION nacion", selected);
-
+      const data = {
+        region_id: selected,
+        season_id: torneoCreated.season_id,
+      };
       const { nations, clubes } =
-      await regionesServices.getNacionalidadesxContinente(selected);
+      await regionesServices.getNacionalidadesxContinente(data);
 
     setNationsByRegion(nations);
     setEquipos(clubes);
@@ -142,6 +145,7 @@ export default function DialogComponentTorneos(props) {
   const getEquiposXnation = async () => {
     setLoading(true);
     console.log("NACION", selectNation);
+    console.log("TORNEO ID GET NACION", torneoCreated?.id);
     const clubes = await equiposServices.getEquiposXnacion(selectNation);
     console.log("clubes clubes ", clubes);
     setEquipos(clubes?.clubes);

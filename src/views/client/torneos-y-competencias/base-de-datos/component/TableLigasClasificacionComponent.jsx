@@ -4,6 +4,8 @@ import { styled } from "@mui/material/styles";
 import { Box, Container, Toolbar, Typography } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
+import "./TableLigasClasificacion.css";
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#f5f5f5",
   ...theme.typography.body2,
@@ -15,148 +17,133 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 const columns = [
   //posicion
-  { field: "posicion", headerName: "Pos", minWidth: 50,
+  {
+    field: "posicion",
+    headerName: "Pos",
+    width: 73,
     description: "Posicion en la tabla de posiciones",
     valueGetter: (params) => {
       return params.row?.Clasificacion?.posicion;
-    }
-     },
-    
- 
-  { field: "nombre", headerName: "Nombre", minWidth: 300,},
+    },
+    align: "left",
+    headerAlign: 'center',
+    headerClassName: 'headerClass',
+  },
+
+  { field: "nombre", headerName: "Nombre",flex: 1,headerClassName: 'headerClass',},
   {
     field: "puntos",
     headerName: "Puntos",
-    minWidth: 73,
+    width: 73,
     valueGetter: (params) => {
       return params.row?.Clasificacion?.puntos;
     },
-    flex: 1,
+    align: "center",
+    headerClassName: 'headerClass',
+    headerAlign: 'center',
+    
   },
   {
     field: "partidos_jugados",
     headerName: "PJ",
-    minWidth: 50,
+    width: 50,
     valueGetter: (params) => {
       return params.row?.Clasificacion?.partidos_jugados;
     },
+    align: "center",
+    headerAlign: 'center',
+    headerClassName: 'headerClass',
   },
   {
     field: "partidos_ganados",
     headerName: "PG",
-    minWidth: 50,
+    width: 50,
     valueGetter: (params) => {
       return params.row?.Clasificacion?.partidos_ganados;
     },
+    align: "center",
+    headerAlign: 'center',
+    headerClassName: 'headerClass',
   },
   {
     field: "partidos_empatados",
     headerName: "PE",
-   minWidth: 50,
+    width: 50,
     valueGetter: (params) => {
       return params.row?.Clasificacion?.partidos_empatados;
     },
     sortComparator: (v1, v2, param1, param2) => {
       return v1 - v2;
     },
+    align: "center",
+    headerAlign: 'center',
+    headerClassName: 'headerClass',
   },
   {
     field: "partidos_perdidos",
     headerName: "PP",
-   minWidth: 50,
+    width: 50,
     valueGetter: (params) => {
       return params.row?.Clasificacion?.partidos_perdidos;
     },
+    align: "center",
+    headerAlign: 'center',
+    headerClassName: 'headerClass',
   },
   {
     field: "goles_favor",
     headerName: "GF",
-   minWidth: 50,
+    width: 50,
     valueGetter: (params) => {
       return params.row?.Clasificacion?.goles_favor;
     },
+    align: "center",
+    headerAlign: 'center',
+    headerClassName: 'headerClass',
   },
   {
     field: "goles_contra",
     headerName: "GC",
-   minWidth: 50,
+    width: 50,
     valueGetter: (params) => {
       return params.row?.Clasificacion?.goles_contra;
     },
+    align: "center",
+    headerAlign: 'center',
+    headerClassName: 'headerClass',
   },
   {
     field: "diferencia_goles",
     headerName: "DIF",
-   minWidth: 50,
+    width: 50,
+    headerClassName: 'headerClass',
 
     valueGetter: (params) => {
       return params.row?.Clasificacion?.diferencia_goles;
     },
+    align: "center",
+    headerAlign: 'center',
   },
 ];
 
-export default function TableLigasClasificacionComponent({ equipos }) {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(equipos?.length);
-
-  const [order, setOrder] = React.useState("desc");
-  const [orderBy, setOrderBy] = React.useState("puntos");
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+export default function TableLigasClasificacionComponent({ equipos,liga }) {
 
   console.log("EQUIPOS TABLE CLASIFICACION", equipos);
 
   return (
-    <Container
+
+  
+    <Box
       sx={{
         height: "100%",
         width: "100%",
-        pt: 7,
-        backgroundColor: "primary.main",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+
       }}
     >
-      <Item sx={{ height: "100%" }}>
-        <Toolbar
-          variant="dense"
-          sx={{
-            backgroundColor: "secondary.main",
-            px: 0,
-            borderTopLeftRadius: 5,
-            borderTopRightRadius: 5,
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "100%",
-              height: "100%",
-              px: 32,
-            }}
-          >
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ flexGrow: 1, pr: 3, textAlign: "start", fontWeight: 700 }}
-            >
-              Liga
-            </Typography>
-          </div>
-        </Toolbar>
-
         <DataGrid
           rows={equipos}
           columns={columns}
@@ -171,24 +158,20 @@ export default function TableLigasClasificacionComponent({ equipos }) {
             },
           }}
           rowHeight={33}
-
+          headerHeight={43}
           autoHeight
           disableSelectionOnClick
           disableColumnMenu
           components={{ Toolbar: GridToolbar }}
-           sortModel={[
+          sortModel={[
             {
               field: "posicion",
               sort: "asc",
             },
-          ]} 
-    
-
-
+          ]}
+          className = "tableClasificacion"
         />
-      </Item>
-    </Container>
-
-    /*    </Paper> */
+    </Box>
+   
   );
 }

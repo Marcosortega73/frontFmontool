@@ -22,11 +22,11 @@ try{
 }
 
 //getnacionalidadesxcontinente
-const getNacionalidadesxContinente = async (idContinente) => {
-  console.log("LLEGE AL USER obtenerNacionalidadesxContinente SERVICE")
+const getNacionalidadesxContinente = async (ids) => {
+  console.log("LLEGE AL USER obtenerNacionalidadesxContinente SERVICE",ids)
 try{
   const data  =  http
-    .get(API_URL+"nacionalidadxregion/"+idContinente)
+    .get(API_URL+"nacionalidadxregion/"+ids.region_id+`?season=${ids.season_id}`)
     .then((response) => {
           console.log("LLEGE AL LA DATA obtenerNacionalidadesxContinente",response.data)
           return response.data;
