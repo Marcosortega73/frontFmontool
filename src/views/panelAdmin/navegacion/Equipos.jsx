@@ -52,19 +52,19 @@ const columns = [
   {
     field: "idFmrte",
     headerName: "Id",
-    flex: 1,
     description: "Id del equipo dentro del Juego",
+    with: 100,
   },
   {
     field: "nombre",
     headerName: "Nombre",
     minWidth: 200,
     description: "Nombre del equipo",
+    flex: 1,
   },
   {
     field: "Nacionalidad",
     headerName: "Nacionalidad",
-    minWidth: 200,
     renderCell: (params) => {
       return (
         <Tooltip title={params.value.nombre}>
@@ -76,20 +76,37 @@ const columns = [
     //solo tipo numero
   },
 
-/*   {
-    field: "Torneo",
+  {
+    field: "Torneos",
     headerName: "Torneos",
-    minWidth: 113,
-    editable: true,
     renderCell: (params) => {
       return (
-        <Tooltip title={params.value.nombre}>
-          <span>{params.value.nombre}</span>
-        </Tooltip>
+        <div style={{padding:3, display:"flex",flexWrap:"wrap"}}>
+        {  params.value.map((torneo) => {
+            return (
+              <>  
+              <Chip
+                label={torneo.nombre}
+                color="primary"
+                variant="outlined"
+                size="small"
+                sx={{m:"3px"}}
+              />
+              </>
+            );
+          })}
+          </div>
+        
       );
+    
     },
-    description: "Torneo en el que participa el equipo",
-  }, */
+    flex: 1,
+    
+    grow: 1,
+
+    description: "Torneos en los que participa el equipo",
+  },
+
   {
     field: "actions",
     type: "actions",
@@ -98,7 +115,7 @@ const columns = [
     getActions: (params) => [
       <GridActionsCellItem icon={<EditNotifications />} label="Edit" />,
     ],
-    flex: 1,
+    
   },
 ];
 
@@ -292,163 +309,6 @@ export default function Equipos() {
 
   return (
     <>
-      {/* 
-    <Container
-    sx={{
-      height: "50vh",
-      width: "100%",     
-      pt: 7,
-      backgroundColor: "primary.main",
-    }}
-  >
-    <Item>
-    <Toolbar
-            variant="dense"
-            sx={{
-              backgroundColor: "secondary.main",
-              px: 0,
-              borderTopLeftRadius: 5,
-              borderTopRightRadius: 5,
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
-                height: "100%",
-                px: 32,
-              }}
-            >
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{ flexGrow: 1, pr: 3, textAlign: "start", fontWeight: 700 }}
-              >
-                Equipos
-              </Typography>
-              <Box>
-              <Tooltip title="Agregar Equipos">
-        <Button onClick={handleExcel} variant="contained" startIcon={<CloudUploadIcon/>} endIcon={<StorageIcon />}>
-          Subir Excel de Equipos
-        </Button>
-        </Tooltip>
-                <Tooltip title="Agregar Equipos">
-        <Button onClick={handleCreateEquipos} variant="contained" endIcon={<AddCircleIcon />}>
-          Crear equipo
-        </Button>
-        </Tooltip>
-              </Box>
-            </div>
-          </Toolbar>
-    <Box sx={{ width: '100%',borderBottom:"none",  }}>
-      <Paper sx={{ width: '100%', mb: 2,  borderBottom:"none",   boxShadow: "1px 1px 4px 2px rgba(0,0,0,0.45)",}}>
-
-        <Paper sx={{mt:4, borderTop:"solid 2px #546e7a",borderBottom:"none"}}> 
-
-        <TableContainer >
-         
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            
-         
-          >
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={equipos.length}
-            />
-            <TableBody>
-               if you don't need to support IE11, you can replace the `stableSort` call with:
-                 rows.slice().sort(getComparator(order, orderBy)) 
-              {stableSort(equipos, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.nombre);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
-                  return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row.nombre)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.nombre}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        id={labelId}
-                      >
-                        {row.id}
-                      </TableCell>
-                      <TableCell align="left"  >{row&&row.nombre&&row.nombre}</TableCell>
-                      <TableCell align="left" >{row && row.Nacionalidad&& row.Nacionalidad.nombre}</TableCell>
-                      
-                      <TableCell align="left" >{row &&row.torneo&&row.torneo.nombre}</TableCell>
-                      <TableCell align="left">
-
-                        <Tooltip title="Ver">
-
-                          <IconButton aria-label="ver" onClick={() => handleEquipoSelect(row,"ver")}>
-                            <VisibilityIcon />
-                          </IconButton>
-                        </Tooltip>
-
-                        <Tooltip title="Editar">
-                          <IconButton aria-label="edit" onClick={() => handleEquipoSelect(row, "edit")}>
-                            <EditIcon />
-                          </IconButton>
-                        </Tooltip>
-
-                        <Tooltip title="Eliminar">
-                          <IconButton aria-label="delete" onClick={() => handleDelete(row.id)}>
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
-
-
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={equipos.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          labelRowsPerPage="Filas por página"
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          sx={{borderBottom:"none"}}
-        />
-        </Paper>
-      </Paper>
-      <DialogComponentEquipos open={openDialogEquipos} setOpen={setOpenDialogEquipos} torneos={torneos} managers={managers} equipo={equiposSelect} setEquipoSelect={setEquiposSelect} action={actionSelect} setLoading={setLoading} />
-      <DialogExcelEquipos updateEquipos={getEquipos} openExcel={openExcel} setOpenExcel={setOpenExcel} />
-                
-    </Box>
-    </Item>
-    </Container> */}
-
       <Container
         sx={{
           height: "50%",
@@ -490,6 +350,7 @@ export default function Equipos() {
                     variant="contained"
                     startIcon={<CloudUploadIcon />}
                     endIcon={<StorageIcon />}
+                    sx={{ mr: 1 }}
                   >
                     Subir Excel de Equipos
                   </Button>
@@ -515,6 +376,7 @@ export default function Equipos() {
             disableColumnFilter
             disableColumnSelector
             disableDensitySelector
+            disableColumnMenu
             disableExtendRowFullWidth
             autoHeight
             disableSelectionOnClick

@@ -117,6 +117,7 @@ const Ligas = () => {
           >
             {ligasData.map((liga, index) => {
               return (
+        
                 <Tab
                   key={index}
                   label={liga.nombre}
@@ -133,6 +134,7 @@ const Ligas = () => {
                     />
                   }
                 />
+           
               );
             })}
           </Tabs>
@@ -179,7 +181,6 @@ const Ligas = () => {
               </TabPanel>
             );
           })}
-  
       </Box>
     </>
   );
