@@ -88,10 +88,10 @@ const FixtureComponent = ({ liga }) => {
               
             }}
           >
-            <Typography variant="h6" component="div" align="start">
+            <Typography variant="h6" component="div" >
               {fixtureBytorneo?.length > 0 ? "Fixture" : "No hay fixture"}
             </Typography>
-            <Typography variant="h6" component="div" align="end" sx={{}}>
+            <Typography variant="h6" component="div"  sx={{}}>
               Fecha: {fecha}
             </Typography>
           </Toolbar>

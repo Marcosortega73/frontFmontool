@@ -212,6 +212,7 @@ const Ligas = () => {
                           minHeight: "37px !important",
                           pt: 1,
                           borderLeft: "5px solid #fff",
+                          borderTopLeftRadius: 7,
                         }}
                       >
                         <Typography variant="h6" component="div" align="center">

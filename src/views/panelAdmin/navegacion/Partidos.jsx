@@ -1,11 +1,17 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
-import { useDemoData } from "@mui/x-data-grid-generator";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {
+  Avatar,
   Button,
   Container,
+  Divider,
+  IconButton,
   Input,
+  ListItemIcon,
+  Menu,
+  MenuItem,
   Paper,
   Slide,
   Snackbar,
@@ -16,14 +22,20 @@ import {
   Typography,
 } from "@mui/material";
 //AddCircleIcon
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import DialogComponentTorneos from "./common/DialogComponentTorneos";
+import DeleteIcon from '@mui/icons-material/Delete';
+import RunCircleIcon from '@mui/icons-material/RunCircle';
 import DialogComponentTemporada from "./common/DialogComponentTemporada";
 import { useDispatch, useSelector } from "react-redux";
 import { getTorneos } from "../../../redux/torneoSlice";
-import { EditNotifications } from "@mui/icons-material";
+import {
+  EditNotifications,
+  Logout,
+  PersonAdd,
+  Settings,
+} from "@mui/icons-material";
 import FixtureServices from "../../../services/api/fixture/fixtureService";
-import { useSnackbar } from 'notistack';
+import { useSnackbar } from "notistack";
+import DialogComponentEstadisticas from "./common/DialogComponentEstadisticas";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#f5f5f5",
@@ -35,7 +47,78 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+function AccountMenu({ anchor, open, handleClose,setOpenDialogStats }) {
+  return (
+    <React.Fragment>
+      <Menu
+        anchorEl={anchor}
+        id="account-menu"
+        open={open}
+        onClose={handleClose}
+        onClick={handleClose}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: "visible",
+            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+            mt: 1.5,
+            "& .MuiAvatar-root": {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1,
+            },
+            "&:before": {
+              content: '""',
+              display: "block",
+              position: "absolute",
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: "background.paper",
+              transform: "translateY(-50%) rotate(45deg)",
+              zIndex: 0,
+            },
+          },
+        }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      >
+        <MenuItem onClick={()=>setOpenDialogStats(true)}>
+          <ListItemIcon>
+            <RunCircleIcon fontSize="small" />
+          </ListItemIcon>
+          Agregar Estadisticas
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <DeleteIcon fontSize="small" />
+          </ListItemIcon>
+          Borrar
+        </MenuItem>
+      </Menu>
+    </React.Fragment>
+  );
+}
+
 export default function Partidos() {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleEstadisticas = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClick = (event) => {
+    console.log("HANDLE CLICK", event.currentTarget);
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const columns = [
     {
       field: "num_fecha",
@@ -119,32 +202,41 @@ export default function Partidos() {
       type: "actions",
       headerName: "Acciones",
       disableReorder: true,
-      getActions: (params) => [
-        <GridActionsCellItem icon={<EditNotifications />} label="Edit" />,
-      ],
       flex: 1,
+      renderCell: (params) => {
+        return (
+          <>
+            <Box>
+            <Tooltip title="Opciones">
+              <IconButton
+                aria-label="settings"
+                aria-controls="account-menu"
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+              >
+                <MoreHorizIcon  />
+              </IconButton>
+              </Tooltip>
+            <AccountMenu anchor={anchorEl} open={open} handleClose={handleClose} setOpenDialogStats={setOpenDialogStats} />
+            
+            </Box>
+          </>
+        );
+      }
     },
   ];
 
   const { enqueueSnackbar } = useSnackbar();
-  const [openDialog, setOpenDialog] = React.useState(false);
-  const [openDialogTemp, setOpenDialogTemp] = React.useState(false);
-  const [action, setAction] = React.useState(null);
   const [partidosData, setPartidosData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
-  const [snackBarOpen, setSnackBarOpen] = React.useState(false);
-  const [snackMessage, setSnackMessage] = React.useState("");
-
   const [pageSize, setPageSize] = React.useState(5);
 
-  const handleDialogTemporada = () => {
-    setOpenDialogTemp(true);
-    setAction("create");
-  };
-  const handleDialogTorneo = () => {
-    setAction("create");
-    setOpenDialog(!openDialog);
-  };
+  const [openDialogStats, setOpenDialogStats] = React.useState(false);
+  const [action, setAction] = React.useState(null);
+
+
+
 
   const getPartidos = async () => {
     setLoading(true);
@@ -165,22 +257,23 @@ export default function Partidos() {
 
     if (response?.status === 200) {
       console.log("actualizado");
-      enqueueSnackbar(response.message, { 
-        variant: 'success'});
+      enqueueSnackbar(response.message, {
+        variant: "success",
+      });
       getPartidos();
     } else {
-      enqueueSnackbar(response.message, { 
-        variant: 'error'});
+      enqueueSnackbar(response.message, {
+        variant: "error",
+      });
     }
     getPartidos();
-    
   };
 
   React.useEffect(() => {
     getPartidos();
   }, []);
-  
-/*   const handleCloseSnack = () => {
+
+  /*   const handleCloseSnack = () => {
     setSnackBarOpen(false);
   }; */
 
@@ -272,6 +365,12 @@ export default function Partidos() {
           />
         </Item>
       </Container>
+
+      <DialogComponentEstadisticas 
+      open={openDialogStats}
+      setOpen={setOpenDialogStats}
+      action={action}
+      />
     </>
   );
 }
