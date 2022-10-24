@@ -70,9 +70,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function DialogComponentTorneos(props) {
-  const { open, setOpen, action} = props;
+  const { open, setOpen, action } = props;
   const [equipos, setEquipos] = React.useState([]);
   const [selectEquipos, setSelectEquipos] = React.useState([]);
+  const [searchClub, setSearchClub] = React.useState("");
   const [defaultValues, setDefaultValues] = React.useState({
     nombre: "",
     tipo_id: null,
@@ -128,17 +129,17 @@ export default function DialogComponentTorneos(props) {
   const getNacionalidadxRegion = async () => {
     setLoading(true);
     console.log("REGION nacion", selected);
-      const data = {
-        region_id: selected,
-        season_id: torneoCreated.season_id,
-      };
-      const { nations, clubes } =
-      await regionesServices.getNacionalidadesxContinente(data);
+    const data = {
+      region_id: selected,
+      season_id: torneoCreated.season_id,
+    };
+    const { nations, clubes } =
+      await regionesServices.getNacionalidadesAndClubByContinente(data);
 
     setNationsByRegion(nations);
     setEquipos(clubes);
 
-    console.log("nacionalidad y clubes", nations, clubes,nationsByRegion);
+    console.log("nacionalidad y clubes", nations, clubes, nationsByRegion);
     setLoading(false);
   };
 
@@ -158,6 +159,16 @@ export default function DialogComponentTorneos(props) {
     console.log("Hola equipos dialog torneo", selectEquipos.length);
   };
 
+  const getEquipos = async () => {
+    setLoading(true);
+    const res = await equiposServices.getEquiposSearchService(searchClub);
+    console.log("res", res);
+    if (res?.status === 200) {
+      setEquipos(res.equipos);
+    }
+    setLoading(false);
+  };
+
   React.useEffect(() => {
     getTemporadas();
     getTiposTorneos();
@@ -165,7 +176,7 @@ export default function DialogComponentTorneos(props) {
 
   React.useEffect(() => {
     getNacionalidadxRegion();
-  }, [selected ]);
+  }, [selected]);
 
   React.useEffect(() => {
     getEquiposXnation();
@@ -174,6 +185,10 @@ export default function DialogComponentTorneos(props) {
   React.useEffect(() => {
     getEquiposSelect();
   }, [selectEquipos]);
+
+  React.useEffect(() => {
+    getEquipos();
+  }, [searchClub]);
 
   const handleClose = () => {
     setOpen(false);
@@ -189,18 +204,16 @@ export default function DialogComponentTorneos(props) {
     defaultValues,
   });
 
-
   const onSubmit = async (formValue) => {
-    console.log("formvlaueeee",formValue);
+    console.log("formvlaueeee", formValue);
     console.log(action);
 
     if (action === "create") {
-
       if (sorteo) {
-        const data ={
+        const data = {
           fixtureCreado: fixtureCompleto,
           torneo_id: torneoCreated.id,
-       }
+        };
 
         console.log("sorteo", sorteo);
         console.log("fixture", fixture);
@@ -229,11 +242,9 @@ export default function DialogComponentTorneos(props) {
                 customClass: {
                   container: "swal-overlay",
                 },
-              })
+              });
 
               setOpen(false);
-
-
             } else {
               Swal.fire({
                 title: "Error!",
@@ -243,12 +254,9 @@ export default function DialogComponentTorneos(props) {
                   container: "swal-overlay",
                 },
               });
-
             }
           }
         });
-
-
       } else {
         if (selectEquipos.length > 0) {
           const { equipos, total_de_equipos } = formValue;
@@ -272,6 +280,7 @@ export default function DialogComponentTorneos(props) {
           handleNext();
           return;
         } else {
+          console.log("CRENADO EQUIPO",formValue)
           await torneosServices
             .createTorneosService(formValue)
             .then((res) => {
@@ -761,6 +770,7 @@ export default function DialogComponentTorneos(props) {
                                             opciones={equipos}
                                             selectEquipos={true}
                                             setSelected={setSelectEquipos}
+                                            setSearchClub={setSearchClub}
                                             tieneLabel={true}
                                             labelText="Seleccionar equipos participantes"
                                             textColor="primary.main"
@@ -1019,41 +1029,42 @@ export default function DialogComponentTorneos(props) {
                                             </Paper>
 
                                             <Item>
-                                              <Item sx={{display:"flex"}}>
-                                              <Grid item xs={6}>
-                                              <strong>Fecha desde:</strong>
-                                              <FormDate
-                                                control={control}
-                                                errors={errors}                                      
-                                                register={register}
-                                                textColor="primary.main"
-                                                name="fecha_desde"
-                                                labelText="Fecha desde"
-                                                rulesBol={true}
-                                                text="Fecha desde"
-                                                type="date"
-                                                /*  readOnly={readOnlyProfile} */
-                                              />
-                                            </Grid>
-                                          <Divider orientation="vertical" flexItem />
-                                            <Grid item xs={6}>
-                                            <strong>Fecha hasta:</strong>
-                                                <FormDate
-                                              
-                                                control={control}
-                                                errors={errors}
-                                               
-                                                register={register}
-                                                textColor="primary.main"
-                                                name="fecha_hasta"
-                                                labelText="Fecha hasta"
-                                                rulesBol={true}
-                                                text="Fecha desde"
-                                                type="date"
-                                                /*  readOnly={readOnlyProfile} */
-                                              />
-                                            </Grid>
-                                            </Item>
+                                              <Item sx={{ display: "flex" }}>
+                                                <Grid item xs={6}>
+                                                  <strong>Fecha desde:</strong>
+                                                  <FormDate
+                                                    control={control}
+                                                    errors={errors}
+                                                    register={register}
+                                                    textColor="primary.main"
+                                                    name="fecha_desde"
+                                                    labelText="Fecha desde"
+                                                    rulesBol={true}
+                                                    text="Fecha desde"
+                                                    type="date"
+                                                    /*  readOnly={readOnlyProfile} */
+                                                  />
+                                                </Grid>
+                                                <Divider
+                                                  orientation="vertical"
+                                                  flexItem
+                                                />
+                                                <Grid item xs={6}>
+                                                  <strong>Fecha hasta:</strong>
+                                                  <FormDate
+                                                    control={control}
+                                                    errors={errors}
+                                                    register={register}
+                                                    textColor="primary.main"
+                                                    name="fecha_hasta"
+                                                    labelText="Fecha hasta"
+                                                    rulesBol={true}
+                                                    text="Fecha desde"
+                                                    type="date"
+                                                    /*  readOnly={readOnlyProfile} */
+                                                  />
+                                                </Grid>
+                                              </Item>
                                               <Button
                                                 variant="contained"
                                                 onClick={handleFixture}

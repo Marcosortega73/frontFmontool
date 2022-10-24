@@ -16,14 +16,15 @@ import {
   Slide,
   Snackbar,
   styled,
+  TableContainer,
   TextField,
   Toolbar,
   Tooltip,
   Typography,
 } from "@mui/material";
 //AddCircleIcon
-import DeleteIcon from '@mui/icons-material/Delete';
-import RunCircleIcon from '@mui/icons-material/RunCircle';
+import DeleteIcon from "@mui/icons-material/Delete";
+import RunCircleIcon from "@mui/icons-material/RunCircle";
 import DialogComponentTemporada from "./common/DialogComponentTemporada";
 import { useDispatch, useSelector } from "react-redux";
 import { getTorneos } from "../../../redux/torneoSlice";
@@ -36,6 +37,7 @@ import {
 import FixtureServices from "../../../services/api/fixture/fixtureService";
 import { useSnackbar } from "notistack";
 import DialogComponentEstadisticas from "./common/DialogComponentEstadisticas";
+import translate from "../../../utils/translate/dataGridToolbar.json";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#f5f5f5",
@@ -47,7 +49,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-function AccountMenu({ anchor, open, handleClose,setOpenDialogStats }) {
+function AccountMenu({ anchor, open, handleClose, setOpenDialogStats }) {
   return (
     <React.Fragment>
       <Menu
@@ -85,7 +87,7 @@ function AccountMenu({ anchor, open, handleClose,setOpenDialogStats }) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={()=>setOpenDialogStats(true)}>
+        <MenuItem onClick={() => setOpenDialogStats(true)}>
           <ListItemIcon>
             <RunCircleIcon fontSize="small" />
           </ListItemIcon>
@@ -125,6 +127,9 @@ export default function Partidos() {
       headerName: "Fecha",
       flex: 1,
       description: "Numero de fecha del partido",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
     },
     {
       field: "local",
@@ -138,6 +143,9 @@ export default function Partidos() {
           </Tooltip>
         );
       },
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
     },
     {
       field: "visitante",
@@ -151,7 +159,9 @@ export default function Partidos() {
         );
       },
       description: "Equipo Visitante",
-      //solo tipo numero
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
     },
 
     {
@@ -164,6 +174,9 @@ export default function Partidos() {
       },
       description: "Goles del equipo local",
       type: "number",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
     },
     {
       field: "goles_visitante",
@@ -177,6 +190,9 @@ export default function Partidos() {
       },
       description: "Goles del equipo visitante",
       type: "number",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
     },
     {
       field: "Torneo",
@@ -186,6 +202,9 @@ export default function Partidos() {
         return params?.value?.nombre;
       },
       description: "Torneo al que pertenece el partido",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
     },
     {
       field: "estado",
@@ -195,6 +214,9 @@ export default function Partidos() {
         return params?.row?.estado != null ? params.row.estado : "Por jugar";
       },
       description: "Estado del partido",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
     },
 
     {
@@ -207,23 +229,30 @@ export default function Partidos() {
         return (
           <>
             <Box>
-            <Tooltip title="Opciones">
-              <IconButton
-                aria-label="settings"
-                aria-controls="account-menu"
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
-              >
-                <MoreHorizIcon  />
-              </IconButton>
+              <Tooltip title="Opciones">
+                <IconButton
+                  aria-label="settings"
+                  aria-controls="account-menu"
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  onClick={handleClick}
+                >
+                  <MoreHorizIcon />
+                </IconButton>
               </Tooltip>
-            <AccountMenu anchor={anchorEl} open={open} handleClose={handleClose} setOpenDialogStats={setOpenDialogStats} />
-            
+              <AccountMenu
+                anchor={anchorEl}
+                open={open}
+                handleClose={handleClose}
+                setOpenDialogStats={setOpenDialogStats}
+              />
             </Box>
           </>
         );
-      }
+      },
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
     },
   ];
 
@@ -234,9 +263,6 @@ export default function Partidos() {
 
   const [openDialogStats, setOpenDialogStats] = React.useState(false);
   const [action, setAction] = React.useState(null);
-
-
-
 
   const getPartidos = async () => {
     setLoading(true);
@@ -281,15 +307,8 @@ export default function Partidos() {
 
   return (
     <>
-      <Container
-        sx={{
-          height: "50%",
-          width: "100%",
-          pt: 7,
-          backgroundColor: "primary.main",
-        }}
-      >
-        <Item sx={{ height: "100%" }}>
+      <Box sx={{ overflow: "hidden" }}>
+        <Item sx={{ m: 5 }}>
           <Toolbar
             variant="dense"
             sx={{
@@ -338,38 +357,40 @@ export default function Partidos() {
               </Box> */}
             </div>
           </Toolbar>
-
-          <DataGrid
-            rows={partidosData}
-            columns={columns}
-            loading={loading}
-            pageSize={pageSize}
-            disableColumnFilter
-            disableColumnSelector
-            disableDensitySelector
-            disableExtendRowFullWidth
-            disableColumnMenu
-            autoHeight
-            disableSelectionOnClick
-            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-            rowsPerPageOptions={[5, 10, 20]}
-            components={{ Toolbar: GridToolbar }}
-            componentsProps={{
-              toolbar: {
-                showQuickFilter: true,
-              },
-            }}
-            onCellEditCommit={(params, event) =>
-              handleCellEditCommit(params, event)
-            }
-          />
+          <TableContainer>
+            <DataGrid
+              rows={partidosData}
+              columns={columns}
+              loading={loading}
+              pageSize={pageSize}
+              disableExtendRowFullWidth
+              disableColumnMenu
+              autoHeight
+              disableSelectionOnClick
+              onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+              rowsPerPageOptions={[5, 10, 20]}
+              components={{ Toolbar: GridToolbar }}
+              componentsProps={{
+                toolbar: {
+                  showQuickFilter: true,
+                },
+              }}
+              onCellEditCommit={(params, event) =>
+                handleCellEditCommit(params, event)
+              }
+              localeText={translate}
+              className="tableClasificacion"
+              rowHeight={53}
+              headerHeight={43}
+            />
+          </TableContainer>
         </Item>
-      </Container>
+      </Box>
 
-      <DialogComponentEstadisticas 
-      open={openDialogStats}
-      setOpen={setOpenDialogStats}
-      action={action}
+      <DialogComponentEstadisticas
+        open={openDialogStats}
+        setOpen={setOpenDialogStats}
+        action={action}
       />
     </>
   );

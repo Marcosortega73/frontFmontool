@@ -4,14 +4,14 @@ import { createSlice } from '@reduxjs/toolkit';
 import equiposServices from '../services/api/equipos/equiposServices';
 
 
-export const getEquipos = () => (dispatch) => {
+/* export const getEquipos = () => (dispatch) => {
 
     equiposServices.getEquipos().then((data) => {
         console.log("DATA EQUIPOS", data.clubes)
         dispatch(setEquipos(data.clubes))
     }
     )
-}
+} */
 
 
 export const equiposSlice = createSlice({

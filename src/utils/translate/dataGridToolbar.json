@@ -1,0 +1,57 @@
+{
+                "filterPanelAddFilter": "Agregar Filtro",
+                "filterPanelDeleteIconLabel": "Eliminar",
+                "filterPanelOperators": "Operadores",
+                "filterPanelColumns": "Columnas",
+                "filterOperatorContains": "contiene",
+                "filterOperatorEquals": "es igual a",
+                "filterOperatorStartsWith": "empieza con",
+                "filterOperatorEndsWith": "termina con",
+                "filterOperatorLessThan": "es menor que",
+                "filterOperatorIsAnyOf": "es cualquiera de",
+                "filterOperatorIs": "es",
+                "filterOperatorNot": "no es",
+                "filterOperatorAfter": "despues",
+                "filterOperatorOnOrAfter": "en o despues",
+                "filterOperatorBefore": "antes",
+                "filterOperatorOnOrBefore": "en o antes",
+                "filterOperatorIsEmpty": "esta vacio",
+                "filterOperatorIsNotEmpty": "no esta vacio",
+                "filterPanelInputLabel": "Valor",
+                "filterPanelInputPlaceholder": "Valor del filtro",
+                "columnMenuLabel": "Menu",
+                "columnMenuShowColumns": "Mostrar Columnas",
+                "columnMenuFilter": "Filtrar",
+                "columnMenuHideColumn": "Ocultar",
+                "columnMenuUnsort": "Desordenar",
+                "columnMenuSortAsc": "Ordenar Ascendente",
+                "columnMenuSortDesc": "Ordenar Descendente",
+                "toolbarDensity": "Densidad",
+                "toolbarDensityLabel": "Densidad",
+                "toolbarDensityCompact": "Compacto",
+                "toolbarDensityStandard": "Estándar",
+                "toolbarDensityComfortable": "Confortable",
+                "toolbarFilters": "Filtros",
+                "toolbarFiltersLabel": "Mostrar filtros",
+                "toolbarFiltersTooltipHide": "Ocultar filtros",
+                "toolbarFiltersTooltipShow": "Mostrar filtros",
+                "toolbarColumns": "Columnas",
+                "toolbarColumnsLabel": "Mostrar columnas",
+                "toolbarColumnsTooltipHide": "Ocultar columnas",
+                "toolbarExport": "Exportar",
+                "toolbarQuickFilterPlaceholder": "Buscar",
+                "footerTotalRows ": "Total Filas",
+                "paginationRowsPerPage": "Filas por página:",
+                "noRowsLabel": "No hay datos",
+                "MuiTablePagination": {
+                    "labelRowsPerPage": "Filas por página:"
+                }
+
+
+
+             
+
+
+
+
+}

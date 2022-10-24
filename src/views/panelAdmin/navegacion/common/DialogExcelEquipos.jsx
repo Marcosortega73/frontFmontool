@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import uploadsService from '../../../../services/api/uploads/uploadsService';
-export default function DialogExcel({openExcel,setOpenExcel,updateEquipos}) {
+export default function DialogExcel({openExcel,setOpenExcel,updateEquipos,setLoading}) {
     const {
         handleSubmit,
         register,
@@ -16,7 +16,10 @@ export default function DialogExcel({openExcel,setOpenExcel,updateEquipos}) {
 
 
   const handleClose = () => {
+    setLoading(false);
     setOpenExcel(false);
+
+
   };
 
 
@@ -42,6 +45,8 @@ export default function DialogExcel({openExcel,setOpenExcel,updateEquipos}) {
       }).then((result) => {
         if (result.value) {
 
+          setLoading(true);
+
             uploadsService.uploadEquiposService(formData)
          .then(res => {
                 console.log("CONSOLA DE RES",res);
@@ -54,6 +59,7 @@ export default function DialogExcel({openExcel,setOpenExcel,updateEquipos}) {
                     )
                     setOpenExcel(false);
                     updateEquipos();
+                    setLoading(false);
                 }
                 else {
                     Swal.fire(

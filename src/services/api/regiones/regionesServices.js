@@ -22,8 +22,8 @@ try{
 }
 
 //getnacionalidadesxcontinente
-const getNacionalidadesxContinente = async (ids) => {
-  console.log("LLEGE AL USER obtenerNacionalidadesxContinente SERVICE",ids)
+const getNacionalidadesAndClubByContinente = async (ids) => {
+  console.log("LLEGE AL USER obtenerNacionalidadesxContinente y equipos  SERVICE",ids)
 try{
   const data  =  http
     .get(API_URL+"nacionalidadxregion/"+ids.region_id+`?season=${ids.season_id}`)
@@ -62,7 +62,7 @@ try{
 const regionesServices = {
     getNacionalidades,
     getContinentes,
-    getNacionalidadesxContinente
+    getNacionalidadesAndClubByContinente
 
 }
 

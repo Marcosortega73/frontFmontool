@@ -41,6 +41,7 @@ export default function FormAutocomplete({
   opciones,
   multiple,
   selectEquipos,
+  setSearchClub,
 }) {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
@@ -148,6 +149,7 @@ export default function FormAutocomplete({
                   setSelected && setSelected(values.id);
                   name === "equipos" && selectEquipos && setSelected(values);
                   name === "equipos" && selectEquipos && handleChange(values);
+                  name === "equipos" && setSearchClub(values);
                 }}
                 renderInput={(params, index) => (
                   <TextField

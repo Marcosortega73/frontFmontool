@@ -1,9 +1,0 @@
-.MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
-.MuiDataGrid-root .MuiDataGrid-cell:focus {
-     outline: none;
-}
-
-fieldset{
-    border: none !important;
-    outline: none !important;
-}

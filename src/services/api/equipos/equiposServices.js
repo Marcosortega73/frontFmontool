@@ -3,11 +3,11 @@ import axiosHttp from "../../apiAxios";
 const http = axiosHttp()
 
 const API_URL = "equipos/";
-const getEquipos = async () => {
+const getEquipos = async (pagina,search,cantidadItems,querySort) => {
     console.log("LLEGE AL OBTENER EQUIPOS")
 try{
     const data  =  http
-      .get(API_URL+"obtenerEquipos")
+      .get(API_URL+`obtenerEquipos?pagina=${pagina}&search=${search}&cantidadItems=${cantidadItems}&field=${querySort.field}&order=${querySort.sort}`)
       .then((response) => {
             console.log("LLEGE AL LA DATA equipos VEVO",response.data)
             return response.data;
@@ -86,12 +86,35 @@ catch (error) {
   console.log("LLEGE AL ERROR",error)
 };
 }
+const getEquiposSearchService = async (search) => {
+  console.log("LLEGE AL OBTENER EQUIPOS X NACION")
+try{
+  const data  =  http
+
+  //query
+    .get(API_URL+"equiposSearch/"+search)
+    .then((response) => {
+          console.log("LLEGE AL LA DATA equipos X NACION",response.data)
+          return response.data;
+    });
+    return data
+
+}
+  catch (error) {
+console.log("LLEGE AL ERROR",error)
+};
+
+}
+
+
+
 const equiposServices = {
     getEquipos,
     createEquiposService,
     deleteEquiposService,
     updateEquiposService,
-    getEquiposXnacion
+    getEquiposXnacion,
+    getEquiposSearchService
 
 }
 

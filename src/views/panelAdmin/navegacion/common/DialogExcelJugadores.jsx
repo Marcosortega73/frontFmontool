@@ -53,6 +53,7 @@ export default function DialogExcel({ openExcel, setOpenExcel }) {
       confirmButtonText: "Si, subir!",
       cancelButtonText: "No, cancelar!",
     }).then((result) => {
+      
       if (result.value) {
         uploadsService
           .uploadJugadoresService(formData)

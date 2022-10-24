@@ -24,17 +24,33 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import SearchIcon from "@mui/icons-material/Search";
+import { useOutletContext } from "react-router-dom";
 
 import { getRegiones } from "../../../redux/regionesSlice";
 import { useDispatch } from "react-redux";
 import equiposServices from "../../../services/api/equipos/equiposServices";
-import { Chip, Container, IconButton, styled } from "@mui/material";
+import {
+  Chip,
+  Container,
+  IconButton,
+  InputAdornment,
+  styled,
+  TextField,
+} from "@mui/material";
 
 import Swal from "sweetalert2";
 import DialogExcelEquipos from "./common/DialogExcelEquipos";
 
-import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridToolbar,
+  esES,
+} from "@mui/x-data-grid";
 import { EditNotifications } from "@mui/icons-material";
+
+import translate from "../../../utils/translate/dataGridToolbar.json";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -46,34 +62,52 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-
-
 const columns = [
   {
     field: "idFmrte",
     headerName: "Id",
     description: "Id del equipo dentro del Juego",
     with: 100,
+    headerAlign: "center",
+    align: "center",
+    headerClassName: "headerClass", // <-- Header cell className
   },
   {
-    field: "nombre",
+    field: "nombre_corto",
     headerName: "Nombre",
     minWidth: 200,
     description: "Nombre del equipo",
     flex: 1,
+    renderCell: (params) => {
+      return (
+        <Tooltip title={params.row.nombre}>
+          <span>{params.row.nombre_corto}</span>
+        </Tooltip>
+      );
+    },
+    headerAlign: "center",
+    align: "center",
+    headerClassName: "headerClass",
   },
   {
     field: "Nacionalidad",
     headerName: "Nacionalidad",
     renderCell: (params) => {
       return (
-        <Tooltip title={params.value.nombre}>
-          <span>{params.value.nombre}</span>
+        <Tooltip title={params.row.Nacionalidad.nombre}>
+          <span>{params.row.Nacionalidad.nombre}</span>
         </Tooltip>
       );
     },
+    sortable: true,
+    sortComparator: (v1, v2, param1, param2) => {
+      console.log(v1, v2, param1, param2);
+      return param1.field.localeCompare(param2.value.Nacionalidad.nombre);
+    },
     description: "Nacionalidad del equipo",
-    //solo tipo numero
+    headerAlign: "center",
+    align: "center",
+    headerClassName: "headerClass",
   },
 
   {
@@ -81,30 +115,29 @@ const columns = [
     headerName: "Torneos",
     renderCell: (params) => {
       return (
-        <div style={{padding:3, display:"flex",flexWrap:"wrap"}}>
-        {  params.value.map((torneo) => {
+        <div style={{ padding: 3, display: "flex", flexWrap: "wrap" }}>
+          {params.value.map((torneo) => {
             return (
-              <>  
-              <Chip
-                label={torneo.nombre}
-                color="primary"
-                variant="outlined"
-                size="small"
-                sx={{m:"3px"}}
-              />
+              <>
+                <Chip
+                  label={torneo.nombre}
+                  color="primary"
+                  variant="outlined"
+                  size="small"
+                  sx={{ m: "3px" }}
+                />
               </>
             );
           })}
-          </div>
-        
+        </div>
       );
-    
     },
     flex: 1,
-    
     grow: 1,
-
     description: "Torneos en los que participa el equipo",
+    headerAlign: "center",
+    align: "center",
+    headerClassName: "headerClass",
   },
 
   {
@@ -115,18 +148,23 @@ const columns = [
     getActions: (params) => [
       <GridActionsCellItem icon={<EditNotifications />} label="Edit" />,
     ],
-    
+    headerAlign: "center",
+    align: "center",
+    headerClassName: "headerClass",
   },
 ];
-
-
 
 export default function Equipos() {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("nombre");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [filter, setFilter] = React.useState("");
+  const [queryOptions, setQueryOptions] = React.useState({
+    sort: "asc",
+    field: "nombre",
+  });
 
   const [openExcel, setOpenExcel] = React.useState(false);
   const [openDialogEquipos, setOpenDialogEquipos] = React.useState(false);
@@ -139,55 +177,29 @@ export default function Equipos() {
   const [equiposSelect, setEquiposSelect] = React.useState({
     id: 0,
     nombre: "",
+    nombre_corto: "",
     nacionalidad: [],
     manager: 0,
     torneo: 0,
   });
 
-  const dispatch = useDispatch();
-
   const [actionSelect, setActionSelect] = React.useState("");
 
   const getEquipos = async () => {
-    const { clubes } = await equiposServices.getEquipos();
+    const { clubes } = await equiposServices
+      .getEquipos(page, filter, rowsPerPage, queryOptions)
+      .finally(() => {
+        setLoading(false);
+      });
     setEquipos(clubes);
-    console.log("Holas", clubes);
-  };
-
-  const getTorneos = async () => {
-    setTorneos([
-      {
-        id: 1,
-        nombre: "Torneo 1",
-        tipo: "Liga",
-        nacionalidad: "Argentina",
-        total_equipos: 10,
-        total_grupos: 2,
-        temporada: "15",
-      },
-    ]);
-  };
-
-  const getManagers = async () => {
-    setManagers([
-      {
-        id: 1,
-        email: "mortega@hotmail.com",
-        username: "mortega",
-        nombre: "Marcos",
-        apellido: "Ortega",
-        fecha_nacimiento: "01/01/1990",
-        nacionalidad: "Argentina",
-      },
-    ]);
+    console.log("Holassssss", clubes);
+    console.log("rowsPerPage", rowsPerPage);
+    console.log("page", page);
   };
 
   React.useEffect(() => {
-    dispatch(getRegiones());
+    /*     dispatch(getRegiones()); */
     getEquipos();
-    getTorneos();
-    getManagers();
-    setLoading(false);
   }, [loading]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleOpenDialog = () => {
@@ -204,6 +216,7 @@ export default function Equipos() {
       setEquiposSelect({
         id: equipo.id,
         nombre: equipo.nombre,
+        nombre_corto: equipo.nombre_corto,
         nacionalidad: equipo.Nacionalidad.id,
         //manager: equipo.Manager&&equipo.Manager.nombre,
         torneo: equipo.Torneo && equipo.Torneo.nombre,
@@ -212,6 +225,7 @@ export default function Equipos() {
       setEquiposSelect({
         id: equipo.id,
         nombre: equipo.nombre,
+        nombre_corto: equipo.nombre_corto,
         nacionalidad: equipo.Nacionalidad.nombre,
         // manager: equipo.Manager&&equipo.Manager.nombre,
         torneo: equipo.Torneo && equipo.Torneo.nombre,
@@ -272,6 +286,7 @@ export default function Equipos() {
   };
 
   const handleExcel = () => {
+    setLoading(true);
     setOpenExcel(true);
   };
 
@@ -305,19 +320,32 @@ export default function Equipos() {
     });
   };
 
+  const handleSortModelChange = React.useCallback((sortModel) => {
+    // Here you save the data you need from the sort model
+    // and then call the service to get the data
+    const sort = sortModel[0];
+    setQueryOptions({
+      ...queryOptions,
+      field: sort.field,
+      sort: sort.sort,
+    });
+  }, []);
+  console.log("queryOptions", queryOptions);
+
+  const handleFilter = (e) => {
+    // limitar el numero de caracteres
+    if (e.length > 3) {
+      return;
+    }
+
+    setFilter(e);
+  };
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   return (
     <>
-      <Container
-        sx={{
-          height: "50%",
-          width: "100%",
-          pt: 7,
-          backgroundColor: "primary.main",
-        }}
-      >
-        <Item sx={{ height: "100%" }}>
+      <Box sx={{ overflow: "hidden" }}>
+        <Item sx={{ m: 5 }}>
           <Toolbar
             variant="dense"
             sx={{
@@ -368,32 +396,53 @@ export default function Equipos() {
             </div>
           </Toolbar>
 
-          <DataGrid
-            rows={equipos}
-            columns={columns}
-            loading={loading}
-            pageSize={pageSize}
-            disableColumnFilter
-            disableColumnSelector
-            disableDensitySelector
-            disableColumnMenu
-            disableExtendRowFullWidth
-            autoHeight
-            disableSelectionOnClick
-            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-            rowsPerPageOptions={[5, 10, 20]}
-            components={{ Toolbar: GridToolbar }}
-            componentsProps={{
-              toolbar: {
-                showQuickFilter: true,
-              },
-            }}
-          />
+          <TableContainer>
+            <DataGrid
+              rows={equipos}
+              columns={columns}
+              loading={loading}
+              pageSize={rowsPerPage}
+              page={page}
+              density="compact"
+              autoHeight
+              disableSelectionOnClick
+              onPageSizeChange={(newPageSize) => setRowsPerPage(newPageSize)}
+              onPageChange={(newPage) => setPage(newPage)}
+              rowsPerPageOptions={[5, 10, 20]}
+              pagination
+              components={{ Toolbar: GridToolbar }}
+              /*        onSortModelChange={handleSortModelChange} */
+              componentsProps={{
+                toolbar: {
+                  showQuickFilter: true,
+                },
+                //traducir filter panel
+              }}
+              localeText={translate}
+              className="tableClasificacion"
+              rowHeight={53}
+              headerHeight={43}
+            />
+          </TableContainer>
         </Item>
 
-        <DialogComponentEquipos open={openDialogEquipos} setOpen={setOpenDialogEquipos} torneos={torneos} managers={managers} equipo={equiposSelect} setEquipoSelect={setEquiposSelect} action={actionSelect} setLoading={setLoading} />
-      <DialogExcelEquipos updateEquipos={getEquipos} openExcel={openExcel} setOpenExcel={setOpenExcel} />
-      </Container>
+        <DialogComponentEquipos
+          open={openDialogEquipos}
+          setOpen={setOpenDialogEquipos}
+          torneos={torneos}
+          managers={managers}
+          equipo={equiposSelect}
+          setEquipoSelect={setEquiposSelect}
+          action={actionSelect}
+          setLoading={setLoading}
+        />
+        <DialogExcelEquipos
+          updateEquipos={getEquipos}
+          openExcel={openExcel}
+          setOpenExcel={setOpenExcel}
+          setLoading={setLoading}
+        />
+      </Box>
     </>
   );
 }

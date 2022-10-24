@@ -22,7 +22,9 @@ import { getRegiones } from "../../../redux/regionesSlice";
 import { useDispatch } from "react-redux";
 import jugadoresServices from "../../../services/api/jugadores/jugadoresService";
 import equiposServices from "../../../services/api/equipos/equiposServices";
-import { DataGrid } from "@mui/x-data-grid";
+
+import translate from "../../../utils/translate/dataGridToolbar.json";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import {
   Container,
   IconButton,
@@ -37,7 +39,7 @@ import Swal from "sweetalert2";
 import DialogExcel from "./common/DialogExcelJugadores";
 import ButtonPopperComponent from "./common/ButtonPopperComponent";
 
-import "./styles/Jugadores.css"
+import "./styles/Jugadores.css";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -55,11 +57,6 @@ const formatter = new Intl.NumberFormat("en-EN", {
   currency: "EUR",
   minimumFractionDigits: 2,
 });
-
-
-
-
-
 
 export default function Jugadores() {
   const [order, setOrder] = React.useState("asc");
@@ -93,22 +90,24 @@ export default function Jugadores() {
   const [loading, setLoading] = React.useState(true);
   const dispatch = useDispatch();
 
-
   const getJugadores = async () => {
     console.log("ROWperPage ", rowsPerPage);
     console.log("PAGE ", page);
+
     const players = await jugadoresServices.getFilterJugadoresService(
       page,
       filter,
       rowsPerPage
     );
+
     const getEquipos = async () => {
       const { clubes } = await equiposServices.getEquipos();
       setEquipos(clubes);
       console.log("Holas", clubes);
     };
-    
+
     console.log("DATA DEl FILTER", players);
+
     let countRedondeado = parseInt(players.players.count / rowsPerPage);
     setCount(countRedondeado);
 
@@ -210,18 +209,27 @@ export default function Jugadores() {
       field: "id",
       headerName: "Id",
       width: 100,
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
     },
     {
       field: "nombre",
       headerName: "Nombre",
       minWidth: 173,
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
     },
     {
       field: "Nacionalidad",
       headerName: "Nacionalidad",
       valueGetter: (params) => {
-        return params?.value?.nombre
+        return params?.value?.nombre;
       },
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
     },
     {
       field: "Equipo",
@@ -230,12 +238,18 @@ export default function Jugadores() {
       valueGetter: (params) => {
         return params?.value?.nombre;
       },
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
     },
     {
       field: "altura",
       headerName: "Altura",
       type: "number",
       width: 73,
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
       valueFormatter: ({ value }) => `${value} cm`,
     },
     {
@@ -246,18 +260,28 @@ export default function Jugadores() {
       valueFormatter: (params) => {
         return `${params.value} kg`;
       },
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
     },
     {
       field: "ca",
       headerName: "CA",
       type: "number",
       width: 50,
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
     },
+
     {
       field: "cp",
       headerName: "CP",
       type: "number",
       width: 50,
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
     },
     {
       field: "valor",
@@ -267,7 +291,9 @@ export default function Jugadores() {
       valueFormatter: (params) => {
         return formatter.format(params.value);
       },
-   
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
     },
     {
       field: "actions",
@@ -276,13 +302,20 @@ export default function Jugadores() {
       filterable: false,
       flex: 1,
       disableClickEventBubbling: true,
-      
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
       width: 200,
       renderCell: (params) => {
         return (
           <Stack direction="row" spacing={1}>
             <Tooltip title="Ver Acciones">
-            <ButtonPopperComponent handleDelete={handleDelete} handleJugadorSelect={handleJugadorSelect} row={params?.row} id={params?.id}/>
+              <ButtonPopperComponent
+                handleDelete={handleDelete}
+                handleJugadorSelect={handleJugadorSelect}
+                row={params?.row}
+                id={params?.id}
+              />
             </Tooltip>
           </Stack>
         );
@@ -290,18 +323,10 @@ export default function Jugadores() {
     },
   ];
 
-
   return (
     <>
-      <Container
-        sx={{
-          height: "50%",
-          width: "100%",
-          pt: 7,
-          backgroundColor: "primary.main",
-        }}
-      >
-        <Item sx={{ height: "100%" }}>
+      <Box sx={{ overflow: "hidden" }}>
+        <Item sx={{ m: 5 }}>
           <Toolbar
             variant="dense"
             sx={{
@@ -362,59 +387,37 @@ export default function Jugadores() {
               alignItems: "center",
             }}
           >
-            <Paper sx={{ width: "95%", borderBottom: "none" }}>
-              <Box>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "end",
-                  }}
-                >
-                  <TextField
-                    id="standard-search"
-                    type="search"
-                    placeholder="Buscar Jugador"
-                    variant="standard"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchIcon />
-                        </InputAdornment>
-                      ),
-                    }}
-                    onChange={(e) => setFilter(e.target.value)}
-                  />
-                </div>
-              </Box>
-
-              <Paper
-                sx={{
-                  mt: 2,
-                  borderTop: "solid 2px #546e7a",
-                  borderBottom: "none",
+            <TableContainer>
+              <DataGrid
+                rows={jugadores}
+                columns={columns}
+                pageSize={rowsPerPage}
+                className="dataTableGrid tableClasificacion"
+                disableExtendRowFullWidth
+                disableColumnMenu={true}
+                autoHeight
+                disableSelectionOnClick
+                onPageSizeChange={(newPageSize) => setRowsPerPage(newPageSize)}
+                rowsPerPageOptions={[
+                  5,
+                  10,
+                  20,
+                  { value: jugadores.length, label: "Todos" },
+                ]}
+                pagination
+                localeText={translate}
+                rowHeight={53}
+                headerHeight={43}
+                components={{
+                  Toolbar: GridToolbar,
                 }}
-              >
-                <TableContainer>
-                  <DataGrid
-                    rows={jugadores}
-                    columns={columns}
-                    pageSize={rowsPerPage}
-                    disableColumnFilter
-                    disableColumnSelector
-                    disableDensitySelector
-                    className="dataTableGrid"
-                    disableExtendRowFullWidth
-                    disableColumnMenu={true}
-                    autoHeight
-                    disableSelectionOnClick
-                    onPageSizeChange={(newPageSize) =>
-                      setRowsPerPage(newPageSize)
-                    }
-                    rowsPerPageOptions={[5, 10, 20]}
-                  />
-                </TableContainer>
-              </Paper>
-            </Paper>
+                componentsProps={{
+                  toolbar: {
+                    showQuickFilter: true,
+                  },
+                }}
+              />
+            </TableContainer>
             <Stack spacing={2}>
               <Pagination
                 count={count}
@@ -435,7 +438,7 @@ export default function Jugadores() {
             <DialogExcel openExcel={openExcel} setOpenExcel={setOpenExcel} />
           </Box>
         </Item>
-      </Container>
+      </Box>
     </>
   );
 }

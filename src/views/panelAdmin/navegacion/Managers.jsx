@@ -1,7 +1,18 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { Chip, Container, Grid,  Paper,  styled,  Typography } from "@mui/material";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import {
+  Box,
+  Button,
+  Chip,
+  Container,
+  Grid,
+  Paper,
+  styled,
+  TableContainer,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import userPendingService from "../../../services/api/auth/userPending";
 import usersAdminService from "../../../services/api/entity/userAdminService";
 import usersManagersService from "../../../services/api/managers/usersManagerService";
@@ -10,11 +21,13 @@ import EditIcon from "@mui/icons-material/Edit";
 
 import { GridActionsCellItem } from "@mui/x-data-grid-pro";
 
-
 import DialogManagerComponent from "./common/DialogManagerComponent";
 import equiposServices from "../../../services/api/equipos/equiposServices";
 import ButtonGroupComponent from "./common/ButtonGroupComponent";
 import userStatesService from "../../../services/api/entity/userStates";
+import translate from "../../../utils/translate/dataGridToolbar.json";
+//Date-Format
+import { format } from "date-fns";
 
 //import sweetalert2 from "sweetalert2";
 import Swal from "sweetalert2";
@@ -54,9 +67,14 @@ export default function Managers({ valor }) {
   const [countUserPending, setCountUserPending] = useState(0);
 
   const columns = [
-    { field: "id", headerName: "#", minWidth: 200 },
-    { field: "email", headerName: "Email", minWidth: 200  },
-    { field: "rol", headerName: "Rol", minWidth: 200, },
+    { field: "id", headerName: "#", width: 70,
+    description: "Id del Usuario", 
+    headerAlign: "center",
+    headerClassName: "headerClass", align: "center",},
+    { field: "email", headerName: "Email", flex: 1, headerAlign: "center",
+    headerClassName: "headerClass", align: "center", },
+    { field: "rol", headerName: "Rol", minWidth: 100, headerAlign: "center",
+    headerClassName: "headerClass", align: "center", },
     {
       field: "UserState",
       headerName: "Estado",
@@ -64,22 +82,29 @@ export default function Managers({ valor }) {
       renderCell: (props) => {
         return statusChip(props);
       },
+      headerAlign: "center",
+      headerClassName: "headerClass",
+      align: "center",
     },
     {
       field: "createdAt",
-      headerName: "Antiguedad",
+      headerName: "Fecha de creación",
       type: "date",
       minWidth: 200,
       renderCell: (props) => {
-        return <Typography variant="body2">{props.value}</Typography>;
-      }
-      
+        return <Typography variant="body2">{format(
+          new Date(props.value),
+          "dd/MM/yyyy"
+        )}</Typography>;
+      },
+      headerAlign: "center",
+      headerClassName: "headerClass",
+      align: "center",
     },
     {
       field: "actions",
       type: "actions",
       headerName: "Acciones",
-      minWidth: 200,
       disableReorder: true,
       getActions: (params) => [
         <GridActionsCellItem
@@ -97,6 +122,9 @@ export default function Managers({ valor }) {
           label="Delete"
         />,
       ],
+      headerAlign: "center",
+      headerClassName: "headerClass",
+      align: "center",
     },
   ];
 
@@ -109,7 +137,7 @@ export default function Managers({ valor }) {
     const response = await userPendingService.getUsersPendingService();
     const count = response.data.filter((user) => user.rol === "USER");
     setCountUserPending(count.length);
-  }
+  };
 
   const getUserAdminService = async () => {
     const response = await usersAdminService.getUsersAdminService();
@@ -138,21 +166,24 @@ export default function Managers({ valor }) {
     console.log("userStates", response.data);
   };
 
-  const handleFilter = async (state=null,rol=null) => {
+  const handleFilter = async (state = null, rol = null) => {
     if (state === null) {
-      const response = await userPendingService.getFilterUserpendingService(rol);
+      const response = await userPendingService.getFilterUserpendingService(
+        rol
+      );
       setUsersPending(response.data);
-    }else{
-    const response = await userPendingService.getFilterUserpendingService(parseInt(state));
-    setUsersPending(response.data);
+    } else {
+      const response = await userPendingService.getFilterUserpendingService(
+        parseInt(state)
+      );
+      setUsersPending(response.data);
     }
     setShowFilter(true);
-  }
-
+  };
 
   useEffect(() => {
     setLoadingPending(true);
-    if(!showFilter){
+    if (!showFilter) {
       getUsersPending();
     }
     getUserAdminService();
@@ -161,9 +192,7 @@ export default function Managers({ valor }) {
     getUserManagerService();
     getLengthUsersPending();
     setLoadingPending(false);
-
   }, [loadingPending, showFilter]);
-
 
   //handleManagerRechazar
   const handleManagerRechazar = async (user) => {
@@ -200,62 +229,102 @@ export default function Managers({ valor }) {
 
   return (
     <>
-     <Container
+      <Box
         sx={{
-          height: "50vh",
-          width: "100%",     
-          pt: 7,
-          backgroundColor: "primary.main",
+          overflow: "hidden",
         }}
       >
-        <Item>
-      <Grid
-        container
-        spacing={3}
-        sx={{ display: "flex", justifyContent: "center" }}
-      >
-        <ButtonGroupComponent
-          managersCount={userManager.length}
-          userStates={userStates}
-          administradoresLength={usersAdmin.length}
-          handleFilter={handleFilter}
-          setShowFilter={setShowFilter}
-          countUserTotal = {countUserTotal}
-          countUserPending = {countUserPending}
-        />
-      </Grid>
+        <Item sx={{m:5}}>
+        <Toolbar
+            variant="dense"
+            sx={{
+              backgroundColor: "secondary.main",
+              px: 0,
+              borderTopLeftRadius: 5,
+              borderTopRightRadius: 5,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+                height: "100%",
+                px: 32,
+              }}
+            >
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ flexGrow: 1, pr: 3, textAlign: "start", fontWeight: 700 }}
+              >
+                Usuarios
+              </Typography>
+            </div>
+          </Toolbar>
+          <Grid
+            container
+            spacing={3}
+            sx={{ display: "flex", justifyContent: "center" }}
+          >
+            <ButtonGroupComponent
+              managersCount={userManager.length}
+              userStates={userStates}
+              administradoresLength={usersAdmin.length}
+              handleFilter={handleFilter}
+              setShowFilter={setShowFilter}
+              countUserTotal={countUserTotal}
+              countUserPending={countUserPending}
+            />
+          </Grid>
 
-      <div style={{ height: 400, width: "100%" }}>
-        <DataGrid
-          columns={columns}
-          rows={usersPending}
-          loading={loadingPending}
-          initialState={{
-            filter: {
-              filterModel: {
-                items: [
-                  { columnField: "quantity", operatorValue: ">", value: 10000 },
-                ],
-              },
-            },
-            sorting: {
-              sortModel: [{ field: "desk", sort: "asc" }],
-            },
-          }}
-        />
-      </div>
-      <DialogManagerComponent
-        equipos={equipos}
-        open={openDialog}
-        userStates={userStates}
-        setOpen={setOpenDialog}
-        updateUser={getUsersPending}
-        managerId={managerId}
-        setLoadingPending={setLoadingPending}
-      
-      />
-      </Item>
-      </Container>
+          <TableContainer>
+            <DataGrid
+              columns={columns}
+              rows={usersPending}
+              loading={loadingPending}
+              autoHeight
+
+              initialState={{
+                filter: {
+                  filterModel: {
+                    items: [
+                      {
+                        columnField: "quantity",
+                        operatorValue: ">",
+                        value: 10000,
+                      },
+                    ],
+                  },
+                },
+                sorting: {
+                  sortModel: [{ field: "desk", sort: "asc" }],
+                },
+                
+              }}
+              components={{ Toolbar: GridToolbar }}
+              componentsProps={{
+                toolbar: {
+                  showQuickFilter: true,
+                },
+              }}
+              localeText={translate}
+              className = "tableClasificacion"
+              rowHeight={53}
+              headerHeight={43}
+            />
+          </TableContainer>
+          <DialogManagerComponent
+            equipos={equipos}
+            open={openDialog}
+            userStates={userStates}
+            setOpen={setOpenDialog}
+            updateUser={getUsersPending}
+            managerId={managerId}
+            setLoadingPending={setLoadingPending}
+          />
+        </Item>
+      </Box>
     </>
   );
 }
