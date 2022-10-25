@@ -139,7 +139,7 @@ export default function Partidos() {
       renderCell: (params) => {
         return (
           <Tooltip title={params.value.nombre}>
-            <span>{params.value.nombre}</span>
+            <span>{params.value.nombre_corto}</span>
           </Tooltip>
         );
       },
@@ -154,7 +154,7 @@ export default function Partidos() {
       renderCell: (params) => {
         return (
           <Tooltip title={params.value.nombre}>
-            <span>{params.value.nombre}</span>
+            <span>{params.value.nombre_corto}</span>
           </Tooltip>
         );
       },

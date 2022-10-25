@@ -131,14 +131,12 @@ export default function DialogComponentTorneos(props) {
     console.log("REGION nacion", selected);
     const data = {
       region_id: selected,
-      season_id: torneoCreated.season_id,
+      season_id: torneoCreated?.season_id,
     };
     const { nations, clubes } =
       await regionesServices.getNacionalidadesAndClubByContinente(data);
-
     setNationsByRegion(nations);
     setEquipos(clubes);
-
     console.log("nacionalidad y clubes", nations, clubes, nationsByRegion);
     setLoading(false);
   };
@@ -147,7 +145,13 @@ export default function DialogComponentTorneos(props) {
     setLoading(true);
     console.log("NACION", selectNation);
     console.log("TORNEO ID GET NACION", torneoCreated?.id);
-    const clubes = await equiposServices.getEquiposXnacion(selectNation);
+    const data = {
+      nacion_id: selectNation,
+      season_id: torneoCreated?.season_id
+     };
+
+    const clubes = await equiposServices.getEquiposXnacion(data);
+
     console.log("clubes clubes ", clubes);
     setEquipos(clubes?.clubes);
     console.log("equipos torneos", equipos);
@@ -186,9 +190,9 @@ export default function DialogComponentTorneos(props) {
     getEquiposSelect();
   }, [selectEquipos]);
 
-  React.useEffect(() => {
+/*   React.useEffect(() => {
     getEquipos();
-  }, [searchClub]);
+  }, [searchClub]); */
 
   const handleClose = () => {
     setOpen(false);

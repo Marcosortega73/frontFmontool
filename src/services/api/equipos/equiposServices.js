@@ -21,11 +21,11 @@ try{
 }
 
 //getEquiposXnacion
-const getEquiposXnacion = async (idNacion) => {
+const getEquiposXnacion = async (formData) => {
   console.log("LLEGE AL OBTENER EQUIPOS X NACION")
 try{
   const data  =  http
-    .get(API_URL+"equiposxnacion/"+idNacion)
+    .get(API_URL+"equiposxnacion/"+ formData.nacion_id+`?season_id=${formData.season_id}`)
     .then((response) => {
           console.log("LLEGE AL LA DATA equipos X NACION",response.data)
           return response.data;
