@@ -273,6 +273,7 @@ export default function Partidos() {
 
   const handleCellEditCommit = async (params, event) => {
     const { id, field, value } = params;
+    console.log("PARAMS", params, event);
     const formData = {
       id,
       field,
@@ -334,27 +335,6 @@ export default function Partidos() {
               >
                 Partidos
               </Typography>
-              {/*  <Box>
-                <Tooltip title="Agregar Temporada">
-                  <Button
-                    sx={{ mr: 2 }}
-                    variant="contained"
-                    onClick={handleDialogTemporada}
-                    endIcon={<AddCircleIcon />}
-                  >
-                    Crear temporada
-                  </Button>
-                </Tooltip>
-                <Tooltip title="Agregar torneo">
-                  <Button
-                    variant="contained"
-                    onClick={handleDialogTorneo}
-                    endIcon={<AddCircleIcon />}
-                  >
-                    Crear torneo
-                  </Button>
-                </Tooltip>
-              </Box> */}
             </div>
           </Toolbar>
           <TableContainer>

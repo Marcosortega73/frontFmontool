@@ -216,7 +216,7 @@ export default function Equipos() {
       setEquiposSelect({
         id: equipo.id,
         nombre: equipo.nombre,
-        nombre_corto: equipo.nombre_corto,
+        nombre_corto: equipo?.nombre_corto,
         nacionalidad: equipo.Nacionalidad.id,
         //manager: equipo.Manager&&equipo.Manager.nombre,
         torneo: equipo.Torneo && equipo.Torneo.nombre,
@@ -225,7 +225,7 @@ export default function Equipos() {
       setEquiposSelect({
         id: equipo.id,
         nombre: equipo.nombre,
-        nombre_corto: equipo.nombre_corto,
+        nombre_corto: equipo?.nombre_corto,
         nacionalidad: equipo.Nacionalidad.nombre,
         // manager: equipo.Manager&&equipo.Manager.nombre,
         torneo: equipo.Torneo && equipo.Torneo.nombre,
