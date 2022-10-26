@@ -3,21 +3,13 @@ import Box from "@mui/material/Box";
 import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {
-  Avatar,
-  Button,
-  Container,
-  Divider,
   IconButton,
-  Input,
   ListItemIcon,
   Menu,
   MenuItem,
   Paper,
-  Slide,
-  Snackbar,
   styled,
   TableContainer,
-  TextField,
   Toolbar,
   Tooltip,
   Typography,
@@ -25,15 +17,6 @@ import {
 //AddCircleIcon
 import DeleteIcon from "@mui/icons-material/Delete";
 import RunCircleIcon from "@mui/icons-material/RunCircle";
-import DialogComponentTemporada from "./common/DialogComponentTemporada";
-import { useDispatch, useSelector } from "react-redux";
-import { getTorneos } from "../../../redux/torneoSlice";
-import {
-  EditNotifications,
-  Logout,
-  PersonAdd,
-  Settings,
-} from "@mui/icons-material";
 import FixtureServices from "../../../services/api/fixture/fixtureService";
 import { useSnackbar } from "notistack";
 import DialogComponentEstadisticas from "./common/DialogComponentEstadisticas";
@@ -49,7 +32,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-function AccountMenu({ anchor, open, handleClose, setOpenDialogStats }) {
+function AccountMenu({ anchor, open, handleClose,params,handleEstadisticas }) {
   return (
     <React.Fragment>
       <Menu
@@ -87,7 +70,7 @@ function AccountMenu({ anchor, open, handleClose, setOpenDialogStats }) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={() => setOpenDialogStats(true)}>
+        <MenuItem onClick={() => handleEstadisticas(params)}>
           <ListItemIcon>
             <RunCircleIcon fontSize="small" />
           </ListItemIcon>
@@ -107,13 +90,11 @@ function AccountMenu({ anchor, open, handleClose, setOpenDialogStats }) {
 export default function Partidos() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
-  const handleEstadisticas = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const [dataItemSelect, setDataItemSelect] = React.useState(null);
 
   const handleClick = (event) => {
-    console.log("HANDLE CLICK", event.currentTarget);
+    console.log("HANDLE CLICK", event);
+
     setAnchorEl(event.currentTarget);
   };
 
@@ -221,12 +202,13 @@ export default function Partidos() {
 
     {
       field: "actions",
-      type: "actions",
       headerName: "Acciones",
       disableReorder: true,
       flex: 1,
-      renderCell: (params) => {
+      /* renderCell: (params) => {
+          console.log("PARAMS",params)
         return (
+          
           <>
             <Box>
               <Tooltip title="Opciones">
@@ -245,16 +227,45 @@ export default function Partidos() {
                 open={open}
                 handleClose={handleClose}
                 setOpenDialogStats={setOpenDialogStats}
+                handleEstadisticas={handleEstadisticas}
+                params={params}
               />
             </Box>
           </>
         );
-      },
+      }, */
+      type: 'actions',
+      getActions: (params) => [
+    
+        <GridActionsCellItem
+          icon={ <RunCircleIcon fontSize="small" />}
+          label="Agregar Estadisticas"
+          onClick={()=>{handleStats(params.row)}}
+          showInMenu
+        />,
+        <GridActionsCellItem
+          icon={ <DeleteIcon fontSize="small" />}
+          label="Resetear partido"
+          onClick={()=>{handleDelete(params.id)}}
+          showInMenu
+        />,
+      ],
       headerAlign: "center",
       align: "center",
       headerClassName: "headerClass",
     },
   ];
+
+
+const handleStats = (item) => {
+    console.log("eventeeeeeeeeeeees",item)
+    setDataItemSelect(item);
+    setOpenDialogStats(true)
+}
+
+const handleDelete = (id) => {
+    console.log("delete",id)
+}
 
   const { enqueueSnackbar } = useSnackbar();
   const [partidosData, setPartidosData] = React.useState([]);
@@ -274,24 +285,33 @@ export default function Partidos() {
   const handleCellEditCommit = async (params, event) => {
     const { id, field, value } = params;
     console.log("PARAMS", params, event);
-    const formData = {
-      id,
-      field,
-      value,
-    };
-    const response = await FixtureServices.updateFixtureService(formData);
-    console.log(response?.partidoCompleto);
 
-    if (response?.status === 200) {
-      console.log("actualizado");
-      enqueueSnackbar(response.message, {
-        variant: "success",
-      });
-      getPartidos();
-    } else {
-      enqueueSnackbar(response.message, {
+    if (value == null) {
+      //snack
+      enqueueSnackbar("No se puede dejar vacio", {
         variant: "error",
       });
+    } else {
+      const formData = {
+        id,
+        field,
+        value,
+      };
+
+      const response = await FixtureServices.updateFixtureService(formData);
+      console.log(response?.partidoCompleto);
+
+      if (response?.status === 200) {
+        console.log("actualizado");
+        enqueueSnackbar(response.message, {
+          variant: "success",
+        });
+        getPartidos();
+      } else {
+        enqueueSnackbar(response.message, {
+          variant: "error",
+        });
+      }
     }
     getPartidos();
   };
@@ -371,6 +391,7 @@ export default function Partidos() {
         open={openDialogStats}
         setOpen={setOpenDialogStats}
         action={action}
+        dataItemSelect={dataItemSelect}
       />
     </>
   );
