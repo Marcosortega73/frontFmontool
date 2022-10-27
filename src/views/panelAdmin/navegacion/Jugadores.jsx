@@ -91,6 +91,7 @@ export default function Jugadores() {
   const dispatch = useDispatch();
 
   const getJugadores = async () => {
+    setLoading(true);
     console.log("ROWperPage ", rowsPerPage);
     console.log("PAGE ", page);
 
@@ -99,12 +100,6 @@ export default function Jugadores() {
       filter,
       rowsPerPage
     );
-
-    const getEquipos = async () => {
-      const { clubes } = await equiposServices.getEquipos();
-      setEquipos(clubes);
-      console.log("Holas", clubes);
-    };
 
     console.log("DATA DEl FILTER", players);
 
