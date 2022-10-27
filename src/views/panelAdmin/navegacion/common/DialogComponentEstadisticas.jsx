@@ -4,28 +4,25 @@ import Dialog from "@mui/material/Dialog";
 import Slide from "@mui/material/Slide";
 import { styled } from "@mui/material/styles";
 
-import Paper from "@mui/material/Paper";
 import SaveIcon from "@mui/icons-material/Save";
-import { useSelector } from "react-redux";
-import Chip from "@mui/material/Chip";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import SquareIcon from "@mui/icons-material/Square";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import StarsIcon from "@mui/icons-material/Stars";
 
-import EventIcon from "@mui/icons-material/Event";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 
 //CONSTRUCCION DEL FORM
-import { useForm } from "react-hook-form";
-import { FormText } from "../../../../components/forms/imputs/FormText";
 
 import IconoAsistensias from "../../../../assets/images/iconos/Asistencias.png";
+import LogoLocal from "../../../../assets/images/logos/LogoLocal.png";
+import LogoVisitante from "../../../../assets/images/logos/LogoVisitante.png";
+
+import SearchIcon from "@mui/icons-material/Search";
 
 import {
-  Container,
   Grid,
   Typography,
   Toolbar,
@@ -39,10 +36,13 @@ import {
   ListSubheader,
   ListItem,
   ListItemText,
+  ListItemIcon,
+  ListItemAvatar,
+  Avatar,
+  InputBase,
+  Paper,
+  ListItemButton,
 } from "@mui/material";
-import Swal from "sweetalert2";
-import FormDate from "../../../../components/forms/imputs/FormDate";
-import { AddIcCallOutlined } from "@mui/icons-material";
 import GoleadoresComponents from "./components/GoleadoresComponents";
 import AsistenciasComponents from "./components/AsistenciasComponents";
 import TarjetaRojaComponents from "./components/TarjetaRojaComponents";
@@ -50,6 +50,7 @@ import TarjetaAmarillaComponents from "./components/TarjetaAmarillaComponents";
 import LesionNaranjaComponents from "./components/LesionNaranjaComponents";
 import LesionRojaComponents from "./components/LesionRojaComponents";
 import MvpComponents from "./components/MvpComponents";
+import { useForm } from "react-hook-form";
 
 const Item = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -87,12 +88,6 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-const fabStyle = {
-  position: "absolute",
-  bottom: 16,
-  right: 16,
-};
-
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -106,6 +101,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function DialogComponentEstadisticas(props) {
   const { open, setOpen, action, dataItemSelect } = props;
+  const [searchLocal, setSearchLocal] = React.useState([]);
+  const [searchVisitante, setSearchVisitante] = React.useState([]);
   const [valueTab, setValueTab] = React.useState(0);
 
   console.log("action", action);
@@ -115,8 +112,34 @@ export default function DialogComponentEstadisticas(props) {
     setOpen(false);
   };
 
+  React.useEffect(() => {
+    setSearchLocal(dataItemSelect?.local?.Jugadors);
+    setSearchVisitante(dataItemSelect?.visitante?.Jugadors);
+  }, [dataItemSelect, open]);
+
   const handleChangeTab = (event, newValue) => {
     setValueTab(newValue);
+  };
+
+  console.log("seachLocal", searchLocal);
+  console.log("seachVisitante", searchVisitante);
+
+  const handleSearchVisitante = (event) => {
+    console.log("event.target.value", event.target.value);
+    const dataVisitante = dataItemSelect?.visitante?.Jugadors.filter((item) =>
+      item.nombre.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+    setSearchVisitante(dataVisitante);
+    console.log("searchVisitante", searchVisitante);
+  };
+
+  const handleSearchLocal = (event) => {
+    console.log("event.target.value", event.target.value);
+    const dataLocal = dataItemSelect?.local?.Jugadors.filter((item) =>
+      item.nombre.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+    setSearchLocal(dataLocal);
+    console.log("searchLocal", searchLocal);
   };
 
   const {
@@ -199,14 +222,23 @@ export default function DialogComponentEstadisticas(props) {
               >
                 <Item
                   sx={{
-                    width: "30%",
+                    width: "23%",
                     display: "flex",
+                    flexDirection: "column",
                     alignItems: "center",
-                    justifyContent: "center",
+                    justifyContent: "space-evenly",
                     m: 0,
                     height: "100%",
                   }}
                 >
+                  <Item>
+                    <img
+                      width={213}
+                      height={200}
+                      src={LogoLocal}
+                      alt="icono futbol"
+                    />
+                  </Item>
                   <List
                     sx={{
                       width: "100%",
@@ -214,23 +246,71 @@ export default function DialogComponentEstadisticas(props) {
                       bgcolor: "background.paper",
                       position: "relative",
                       overflow: "auto",
-                      maxHeight: 300,
+                      maxHeight: 633,
                       "& ul": { padding: 0 },
                     }}
                     subheader={<li />}
                   >
-                    {dataItemSelect?.local.Jugadors.map((sectionId) => (
-                      <li key={sectionId.id}>
-                        <ul>
-                            <ListItem >
+                    <ListSubheader
+                      sx={{ backgroundColor: "primary.main", color: "white" }}
+                    >
+                      <Typography variant="h6" component="div">
+                        Jugadores
+                      </Typography>
+                    </ListSubheader>
+                    <ListSubheader>
+                      <Paper
+                        component="form"
+                        sx={{
+                          p: "2px 4px",
+                          display: "flex",
+                          alignItems: "center",
+                          maxWidth: 400,
+                        }}
+                      >
+                        <InputBase
+                          sx={{ ml: 1, flex: 1 }}
+                          placeholder="Buscar jugadores..."
+                          inputProps={{ "aria-label": "search" }}
+                          onChange={handleSearchLocal}
+                        />
+                        <IconButton
+                          type="button"
+                          sx={{ p: "10px" }}
+                          aria-label="search"
+                        >
+                          <SearchIcon />
+                        </IconButton>
+                      </Paper>
+                    </ListSubheader>
+                    {searchLocal?.length > 0 ? (
+                      searchLocal.map((sectionId) => (
+                        <li key={sectionId.id}>
+                          <ul>
+                          <ListItemButton>
+                              <ListItemAvatar>
+                                <Avatar src="/broken-image.jpg" />
+                              </ListItemAvatar>
                               <ListItemText primary={sectionId.nombre} />
-                            </ListItem>
+                            </ListItemButton>
+                          </ul>
+                        </li>
+                      ))
+                    ) : (
+                      <li key={1}>
+                        <ul>
+                          <ListItem>
+                            <ListItemAvatar>
+                              <Avatar src="/broken-image.jpg" />
+                            </ListItemAvatar>
+                            <ListItemText primary="No hay jugadores" />
+                          </ListItem>
                         </ul>
                       </li>
-                    ))}
+                    )}
                   </List>
                 </Item>
-                <Item sx={{ width: "70%", height: "100%" }}>
+                <Item sx={{ width: "54%", height: "100%" }}>
                   <Grid
                     container
                     spacing={1}
@@ -239,7 +319,32 @@ export default function DialogComponentEstadisticas(props) {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
+                
                   >
+                     <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            backgroundColor: "primary.main",
+                            mt: 0,
+                            mb: 0,
+                            mx: 0,
+                            width: "100%",
+                            height: "73px",
+                            borderLeft: "7px solid #cca500",
+                            borderRight: "7px solid #cca500",
+                          }}
+                        >
+                            <Typography variant="h7" component="div" color="white">
+                               Fecha {dataItemSelect?.Torneo?.nombre}
+                              </Typography>
+                          
+                              <Typography variant="h7" component="div" color="white">
+                               Fecha {dataItemSelect?.num_fecha}
+                              </Typography>
+                        
+                        </Box>
                     <Grid
                       item
                       xs={12}
@@ -258,7 +363,7 @@ export default function DialogComponentEstadisticas(props) {
                         borderBottom: "2px solid #cca500",
                       }}
                     >
-                      <Grid item xs={5} md={5}>
+                      <Grid item xs={5} md={5} >
                         <Item
                           sx={{
                             backgroundColor: "#E5E5E5",
@@ -278,14 +383,14 @@ export default function DialogComponentEstadisticas(props) {
                           </Typography>
                         </Item>
                       </Grid>
-                      <Grid item xs={2} md={2}>
+                      <Grid item xs={2} md={2} >
                         <Item
                           sx={{
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
                             backgroundColor: "primary.main",
-                            mt: 0,
+                            m: 0,
                             width: "100%",
                             borderBottomRightRadius: "33px",
                             borderBottomLeftRadius: "33px",
@@ -320,13 +425,14 @@ export default function DialogComponentEstadisticas(props) {
                               </Item>
                             </>
                           ) : (
-                            <Item sx={{ border: "2px white" }}>
-                              <Typography variant="h5" component="div">
+                            
+                              <Typography variant="h5" component="div" color="white">
                                 VS
                               </Typography>
-                            </Item>
+                            
                           )}
                         </Item>
+                       
                       </Grid>
                       <Grid item xs={5} md={5} sx={{ pr: 3 }}>
                         <Item
@@ -484,6 +590,98 @@ export default function DialogComponentEstadisticas(props) {
                       </Fab>
                     </Item>
                   </Grid>
+                </Item>
+                <Item
+                  sx={{
+                    width: "23%",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "space-evenly",
+                    m: 0,
+                    height: "100%",
+                  }}
+                >
+                  <Box>
+                    <img
+                      width={213}
+                      height={200}
+                      src={LogoVisitante}
+                      alt="icono futbol"
+                    />
+                  </Box>
+                  <List
+                   component="nav"
+                    sx={{
+                      width: "100%",
+                      maxWidth: 360,
+                      bgcolor: "background.paper",
+                      position: "relative",
+                      overflow: "auto",
+                      maxHeight: 633,
+                      "& ul": { padding: 0 },
+                      
+                    }}
+                    subheader={<li />}
+                  >
+                    <ListSubheader
+                      sx={{ backgroundColor: "primary.main", color: "white" }}
+                    >
+                      <Typography variant="h6" component="div">
+                        Jugadores
+                      </Typography>
+                    </ListSubheader>
+                    <ListSubheader>
+                      <Paper
+                        component="form"
+                        sx={{
+                          p: "2px 4px",
+                          display: "flex",
+                          alignItems: "center",
+                          maxWidth: 400,
+                        }}
+                      >
+                        <InputBase
+                          sx={{ ml: 1, flex: 1 }}
+                          placeholder="Buscar jugadores..."
+                          inputProps={{ "aria-label": "search" }}
+                          onChange={handleSearchVisitante}
+                        />
+                        <IconButton
+                          type="button"
+                          sx={{ p: "10px" }}
+                          aria-label="search"
+                        >
+                          <SearchIcon />
+                        </IconButton>
+                      </Paper>
+                    </ListSubheader>
+                    {searchVisitante?.length > 0 ? (
+                      searchVisitante?.map((sectionId) => (
+                        <li key={sectionId.id}>
+                          <ul>
+                          <ListItemButton> 
+                              <ListItemAvatar>
+                                <Avatar src="/broken-image.jpg" />
+                              </ListItemAvatar>
+                              <ListItemText primary={sectionId.nombre} />
+                              </ListItemButton>
+                          </ul>
+                        </li>
+                      ))
+                    ) : (
+                      <li key={`section-0`}>
+                        <ul>
+                          <ListItem>
+                            <ListItemAvatar>
+                              <Avatar src="/broken-image.jpg" />
+                            </ListItemAvatar>
+                            <ListItemText primary="No hay jugadores" />
+                          </ListItem>
+                        </ul>
+                      </li>
+                    )}
+                  </List>
                 </Item>
               </Stack>
             </Box>

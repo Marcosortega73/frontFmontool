@@ -101,6 +101,8 @@ export default function Jugadores() {
       rowsPerPage
     );
 
+    
+
     console.log("DATA DEl FILTER", players);
 
     let countRedondeado = parseInt(players.players.count / rowsPerPage);
@@ -118,6 +120,11 @@ export default function Jugadores() {
     getJugadores();
   }, [loading, rowsPerPage, page, filter]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  React.useEffect(() => {
+    getJugadores();
+  }, [loading])
+
+  
   const handleOpenDialog = () => {
     setOpenDialog(true);
   };
