@@ -74,8 +74,8 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+        <Box sx={{ p: 3,px:0}}>
+          <Box>{children}</Box>
         </Box>
       )}
     </div>
@@ -104,6 +104,8 @@ export default function DialogComponentEstadisticas(props) {
   const [searchLocal, setSearchLocal] = React.useState([]);
   const [searchVisitante, setSearchVisitante] = React.useState([]);
   const [valueTab, setValueTab] = React.useState(0);
+
+  const [selectedVisitante, setSelectedVisitante] = React.useState([]);
 
   console.log("action", action);
   console.log("dataItemSelect", dataItemSelect);
@@ -141,6 +143,19 @@ export default function DialogComponentEstadisticas(props) {
     setSearchLocal(dataLocal);
     console.log("searchLocal", searchLocal);
   };
+
+   const handleClickVisitante = (item) => {
+    console.log("item visitante", item);
+    //Cargar los datos de los jugadores seleccionados
+    setSelectedVisitante((prev) => [...prev, item]);
+    //quitar el jugador seleccionado de la lista
+    const dataVisitante = searchVisitante.filter(
+      (itemSearch) => itemSearch.id !== item.id && 
+      !selectedVisitante.some((itemSelected) => itemSelected.id === itemSearch.id) //que no se repitan
+    );
+    setSearchVisitante(dataVisitante);
+   };
+
 
   const {
     handleSubmit,
@@ -231,7 +246,7 @@ export default function DialogComponentEstadisticas(props) {
                     height: "100%",
                   }}
                 >
-                  <Item>
+                  <Item sx={{width:"233px", height:"223px"}}>
                     <img
                       width={213}
                       height={200}
@@ -284,14 +299,14 @@ export default function DialogComponentEstadisticas(props) {
                       </Paper>
                     </ListSubheader>
                     {searchLocal?.length > 0 ? (
-                      searchLocal.map((sectionId) => (
-                        <li key={sectionId.id}>
+                      searchLocal.map((jugador) => (
+                        <li key={jugador.id}>
                           <ul>
                           <ListItemButton>
                               <ListItemAvatar>
                                 <Avatar src="/broken-image.jpg" />
                               </ListItemAvatar>
-                              <ListItemText primary={sectionId.nombre} />
+                              <ListItemText primary={jugador.nombre} />
                             </ListItemButton>
                           </ul>
                         </li>
@@ -331,16 +346,16 @@ export default function DialogComponentEstadisticas(props) {
                             mb: 0,
                             mx: 0,
                             width: "100%",
-                            height: "73px",
+                            height: "53px",
                             borderLeft: "7px solid #cca500",
                             borderRight: "7px solid #cca500",
                           }}
                         >
-                            <Typography variant="h7" component="div" color="white">
-                               Fecha {dataItemSelect?.Torneo?.nombre}
+                            <Typography variant="h6" component="div" color="white" sx={{pl:1}}>
+                               Torneo {dataItemSelect?.Torneo?.nombre}
                               </Typography>
                           
-                              <Typography variant="h7" component="div" color="white">
+                              <Typography variant="h6" component="div" color="white" sx={{pr:1}}>
                                Fecha {dataItemSelect?.num_fecha}
                               </Typography>
                         
@@ -547,7 +562,7 @@ export default function DialogComponentEstadisticas(props) {
                           <form onSubmit={handleSubmit(onSubmit)}>
                             <TabPanel value={valueTab} index={0}>
                               <Item>
-                                <GoleadoresComponents />
+                                <GoleadoresComponents visitante={selectedVisitante} setSearchVisitante={setSearchVisitante}/>
                               </Item>
                             </TabPanel>
                             <TabPanel value={valueTab} index={1}>
@@ -602,14 +617,14 @@ export default function DialogComponentEstadisticas(props) {
                     height: "100%",
                   }}
                 >
-                  <Box>
+                   <Item sx={{width:"233px", height:"223px"}}>
                     <img
                       width={213}
                       height={200}
                       src={LogoVisitante}
                       alt="icono futbol"
                     />
-                  </Box>
+                  </Item>
                   <List
                    component="nav"
                     sx={{
@@ -657,14 +672,14 @@ export default function DialogComponentEstadisticas(props) {
                       </Paper>
                     </ListSubheader>
                     {searchVisitante?.length > 0 ? (
-                      searchVisitante?.map((sectionId) => (
-                        <li key={sectionId.id}>
+                      searchVisitante?.map((jugador) => (
+                        <li key={jugador.id}>
                           <ul>
-                          <ListItemButton> 
+                          <ListItemButton onClick={()=>handleClickVisitante(jugador)}> 
                               <ListItemAvatar>
                                 <Avatar src="/broken-image.jpg" />
                               </ListItemAvatar>
-                              <ListItemText primary={sectionId.nombre} />
+                              <ListItemText primary={jugador.nombre} />
                               </ListItemButton>
                           </ul>
                         </li>
