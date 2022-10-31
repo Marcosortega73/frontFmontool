@@ -29,7 +29,7 @@ const createEstadisticaservice = async (formData) => {
     console.log("LLEGE AL CREATE Estadisitica REQ",formData)
 try{
     const response  =  http
-      .post(API_URL +"crearEstadisitica", formData)
+      .post(API_URL +"cargarEstadisticas", formData)
       .then((res) => {
             console.log("LLEGE AL LA DATA CREATE Estadisitica",res)
             return res;

@@ -27,6 +27,9 @@ import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 
 import SaveIcon from "@mui/icons-material/Save";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import estadisticasServices from "../../../../../services/api/estadisticas/estadisticasService";
+import Swal from "sweetalert2";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -46,11 +49,14 @@ const GoleadoresComponents = ({
   setSearchLocal,
   setSelectedVisitante,
   setSelectedLocal,
+  partido,
+  torneo,
 }) => {
   console.log("VISITANTE EN GOLEADORES", visitante);
 
   const [goleadorVisitante, setGoleadorVisitante] = React.useState([]);
   const [goleadorLocal, setGoleadorLocal] = React.useState([]);
+  const [goleador, setGoleador] = React.useState(null);
 
   //que no se repitan los goleadores
 
@@ -95,15 +101,65 @@ const GoleadoresComponents = ({
     setSelectedLocal(goleadores);
   };
 
-  const handleSubmit = (e) => {
-    console.log("goleadores visitante", goleadorVisitante);
-    console.log("goleadores local", goleadorLocal);
+  const {
+    handleSubmit,
+    control,
+    register,
+    formState: { errors },
+  } = useForm(
+    {
+      defaultValues: {
+        infoPartido: [
+          {
+            partido_id: partido,
+            torneo_id: torneo,
+          },
+        ],
+      },
+    },
+    {
+      mode: "onBlur",
+    }
+  );
+  //useFieldArray
+
+  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
+    {
+      control, // control props comes from useForm (optional: if you are using FormContext)
+      name: "cantidad", // unique name for your Field Array
+    }
+  );
+
+  const onSubmit = async (data) => {
+    //unir los goleadores
+    console.log("goleadorsdadasdases", data);
+
+    /*  await estadisticasServices.createEstadisticaservice(formData).then((res) => {
+
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Estadisticas creadas correctamente",
+        showConfirmButton: false,
+        timer: 1500,
+    }).catch((err) => {
+      console.log(err);
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Error al crear las estadisticas",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+        
+    });
+  }); */
   };
 
   return (
     <>
       <Grid container spacing={2}>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Grid item xs={12} md={6} lg={6} sx={{ height: "100%" }}>
             <Item
               sx={{ display: "flex", maxHeight: "323px", overflow: "auto" }}
@@ -149,7 +205,6 @@ const GoleadoresComponents = ({
                                 edge="end"
                                 placeholder="Gol"
                                 name="gol"
-                                
                               />
                               <IconButton
                                 onClick={() => handleDeleteChipLocal(jugador)}
@@ -222,16 +277,29 @@ const GoleadoresComponents = ({
                           sx={{ p: 0.5 }}
                           secondaryAction={
                             <>
-                              <TextField
-                                sx={{
-                                  width: "73px",
-                                  pl: 1,
-                                }}
-                                size="small"
-                                id="outlined-number"
-                                type="number"
-                                edge="end"
-                                placeholder="Gol"
+                              <Controller
+                                name={`${jugador.id}[${index}].cantidad`}
+                                control={control}
+                                render={({ field }) => (
+                                  <Input
+                                    size="small"
+                                    id="outlined-number"
+                                    type="number"
+                                    edge="end"
+                                    onChange={(e) => {
+                                      field.onChange(
+                                        setGoleador((prev) => {
+                                          return [...prev, jugador];
+                                        })
+                                      );
+                                    }}
+                                    sx={{
+                                      width: "73px",
+                                      pl: 1,
+                                    }}
+                                    {...field}
+                                  />
+                                )}
                               />
                               <IconButton
                                 onClick={() => handleDeleteChip(jugador)}
@@ -271,7 +339,7 @@ const GoleadoresComponents = ({
           </Grid>
           <Grid item xl={4} lg={4} md={4} xs={6} sx={{ mt: 2 }}>
             <Fab
-            type="submit"
+              type="submit"
               size="x-large"
               color="secondary"
               aria-label="add"

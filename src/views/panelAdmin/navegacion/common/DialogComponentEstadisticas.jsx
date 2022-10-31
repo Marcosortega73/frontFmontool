@@ -805,27 +805,27 @@ export default function DialogComponentEstadisticas(props) {
                           <Box  onSubmit={handleSubmit(onSubmit)}>
                             <TabPanel value={valueTab} index={0}>
                              
-                                <GoleadoresComponents visitante={selectedVisitante} setSelectedVisitante={setSelectedVisitante}  local={selectedLocal} setSelectedLocal={setSelectedLocal} setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal}/>
+                                <GoleadoresComponents partido={dataItemSelect?.id} torneo={dataItemSelect?.torneo_id} visitante={selectedVisitante} setSelectedVisitante={setSelectedVisitante}  local={selectedLocal} setSelectedLocal={setSelectedLocal} setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal}/>
                            
                             </TabPanel>
                             <TabPanel value={valueTab} index={1}>
-                              <AsistenciasComponents visitante={selectedVisitanteAsistencias} setSelectedVisitante={setSelectedLocalAsistencias}  local={selectedLocalAsistencias} setSelectedLocal={setSelectedLocalAsistencias} setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal}  />
+                              <AsistenciasComponents  partido={dataItemSelect?.id} torneo={dataItemSelect?.torneo_id} visitante={selectedVisitanteAsistencias} setSelectedVisitante={setSelectedLocalAsistencias}  local={selectedLocalAsistencias} setSelectedLocal={setSelectedLocalAsistencias} setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal}  />
                             </TabPanel>
                             <TabPanel value={valueTab} index={2}>
-                              <TarjetaRojaComponents visitante={selectedVisitanteTarjetaRoja} setSelectedVisitante={setSelectedVisitanteTarjetaRoja}  local={selectedLocalTarjetaRoja} setSelectedLocal={setSelectedLocalTarjetaRoja} setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal} />
+                              <TarjetaRojaComponents partido={dataItemSelect?.id} torneo={dataItemSelect?.torneo_id} visitante={selectedVisitanteTarjetaRoja} setSelectedVisitante={setSelectedVisitanteTarjetaRoja}  local={selectedLocalTarjetaRoja} setSelectedLocal={setSelectedLocalTarjetaRoja} setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal} />
                             </TabPanel>
                             <TabPanel value={valueTab} index={3}>
-                              <TarjetaAmarillaComponents visitante={selectedVisitanteTarjetaAmarilla} setSelectedVisitante={setSelectedVisitanteTarjetaAmarilla}  local={selectedLocalTarjetaAmarilla} setSelectedLocal={setSelectedLocalTarjetaAmarilla} setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal} />
+                              <TarjetaAmarillaComponents partido={dataItemSelect?.id} torneo={dataItemSelect?.torneo_id} visitante={selectedVisitanteTarjetaAmarilla} setSelectedVisitante={setSelectedVisitanteTarjetaAmarilla}  local={selectedLocalTarjetaAmarilla} setSelectedLocal={setSelectedLocalTarjetaAmarilla} setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal} />
                             </TabPanel>
                             <TabPanel value={valueTab} index={4}>
-                              <LesionNaranjaComponents visitante={selectedVisitanteLesionNaranja} setSelectedVisitante={setSelectedVisitanteLesionNaranja}  local={selectedLocalLesionNaranja} setSelectedLocal={setSelectedLocalLesionNaranja} setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal} />
+                              <LesionNaranjaComponents  partido={dataItemSelect?.id} torneo={dataItemSelect?.torneo_id} visitante={selectedVisitanteLesionNaranja} setSelectedVisitante={setSelectedVisitanteLesionNaranja}  local={selectedLocalLesionNaranja} setSelectedLocal={setSelectedLocalLesionNaranja} setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal} />
                             </TabPanel>
                             <TabPanel value={valueTab} index={5}>
-                              <LesionRojaComponents visitante={selectedVisitanteLesionRoja} setSelectedVisitante={setSelectedVisitanteLesionRoja}  local={selectedLocalLesionRoja} setSelectedLocal={setSelectedLocalLesionRoja} setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal} />
+                              <LesionRojaComponents partido={dataItemSelect?.id} torneo={dataItemSelect?.torneo_id} visitante={selectedVisitanteLesionRoja} setSelectedVisitante={setSelectedVisitanteLesionRoja}  local={selectedLocalLesionRoja} setSelectedLocal={setSelectedLocalLesionRoja} setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal} />
                             </TabPanel>
                             <TabPanel value={valueTab} index={6} >
                              
-                              <MvpComponents jugador={selectedMvp} setJugador={setSelectedMvp}  setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal} />
+                              <MvpComponents partido={dataItemSelect?.id} torneo={dataItemSelect?.torneo_id}  jugador={selectedMvp} setJugador={setSelectedMvp}  setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal} />
                
                             </TabPanel>
                           </Box>
