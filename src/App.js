@@ -6,16 +6,14 @@ import Navbar from "./components/navbar/menu/Navbar";
 //PRUEBA PARA DESABILITAR NAV BAR
 import { useDispatch } from "react-redux";
 import { getRegiones } from "./redux/regionesSlice";
+import Footer from "./components/templates/Footer";
 
 function App() {
-  
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     dispatch(getRegiones());
-  }
-  ,[dispatch]);
-
+  }, [dispatch]);
 
   //PRUEBA PARA DESABILITAR NAV BAR
 
@@ -29,11 +27,14 @@ const dispatch = useDispatch();
           maxWidth: "100%",
         }}
       >
-          <Navbar />
+        <Navbar />
       </header>
       <section style={{ display: "flex", justifyContent: "center" }}>
         <Outlet />
       </section>
+      <footer>
+        <Footer />
+      </footer>
     </>
   );
 }

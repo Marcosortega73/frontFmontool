@@ -15,7 +15,7 @@ const theme = createTheme({
             contrastText: "#546e7a"
         },
         error: {
-            main: "#f44336",
+            main: "#B00020",
             light: "#e57373",
             dark: "#d32f2f",
             contrastText: "#fff"
@@ -31,6 +31,20 @@ const theme = createTheme({
             main: "#757575",
             light: "#E0E0E0",
     
+        },
+
+        customTheme:{
+            primary400: "#343338",
+            primary200: "#7C7985",
+            primary700: "#222729",
+            secondary400:"#CCA700",
+            secondary200:"#F0C400",
+            secondary700:"#B39200",
+            acento500:"#757575",
+            acento200:"#E5e5e5",
+            acento900:"#4D4D4D",
+
+
         }
     },
 })

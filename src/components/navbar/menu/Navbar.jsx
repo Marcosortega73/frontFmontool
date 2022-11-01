@@ -265,7 +265,7 @@ function Navbar() {
             }}
           >
             <div className="menu-icon" onClick={handleClick}>
-              {click ? <CloseIcon /> : <MenuIcon />}
+              {click ? <CloseIcon /> : <MenuIcon  color="#E5E5E5"/>}
             </div>
             <MenuList className={click ? "nav-menu active" : "nav-menu"}>
               <MenuItem className="nav-item">
