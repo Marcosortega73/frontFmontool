@@ -25,11 +25,11 @@ try{
 
 
 
-const createEstadisticaservice = async (formData) => {
-    console.log("LLEGE AL CREATE Estadisitica REQ",formData)
+const createEstadisticaservice = async (jugadores,data) => {
+    console.log("LLEGE AL CREATE Estadisitica REQ",jugadores)
 try{
     const response  =  http
-      .post(API_URL +"cargarEstadisticas", formData)
+      .post(API_URL +"cargarEstadisticas", jugadores)
       .then((res) => {
             console.log("LLEGE AL LA DATA CREATE Estadisitica",res)
             return res;
@@ -41,6 +41,23 @@ try{
     console.log("LLEGE AL ERROR CREATE",error)
   };
 }
+const tarjetaRojaEstadisticaservice = async (jugadores,data) => {
+    console.log("LLEGE AL CREATE Estadisitica REQ")
+try{
+    const response  =  http
+      .post(API_URL +"tarjetaRoja",jugadores,data)
+      .then((res) => {
+            console.log("LLEGE AL LA DATA CREATE Estadisitica",res)
+            return res;
+      });
+      return response
+
+  }
+  catch (error) {
+    console.log("LLEGE AL ERROR CREATE",error)
+  };
+}
+
 const updateEstadisticaservice = async (formData) => {
   console.log("LLEGE AL UPDATE Estadisitica REQ")
 try{
@@ -81,6 +98,8 @@ const estadisticasServices = {
     createEstadisticaservice,
     updateEstadisticaservice,
     deleteEstadisticaservice,
+    tarjetaRojaEstadisticaservice
+    
 
 
 

@@ -1,13 +1,9 @@
 import {
   Avatar,
-  Box,
-  Checkbox,
-  Chip,
   Divider,
   Fab,
   Grid,
   IconButton,
-  Input,
   List,
   ListItem,
   ListItemAvatar,
@@ -16,7 +12,6 @@ import {
   ListSubheader,
   Paper,
   styled,
-  TextField,
   Typography,
 } from "@mui/material";
 import React from "react";
@@ -27,6 +22,7 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
 import SaveIcon from "@mui/icons-material/Save";
+import estadisticasServices from "../../../../../services/api/estadisticas/estadisticasService";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -39,7 +35,7 @@ const Item = styled(Paper)(({ theme }) => ({
   width: "100% !important",
 }));
 
-const TarjetaRojaComponents = ({ visitante, setSearchVisitante,local,setSearchLocal,setSelectedVisitante,setSelectedLocal }) => {
+const TarjetaRojaComponents = ({partido,torneo, visitante, setSearchVisitante,local,setSearchLocal,setSelectedVisitante,setSelectedLocal }) => {
   console.log("VISITANTE EN Roja", visitante);
 
   const [rojaVisitante, setRojaVisitante] = React.useState([]);
@@ -89,9 +85,20 @@ const TarjetaRojaComponents = ({ visitante, setSearchVisitante,local,setSearchLo
     setSelectedLocal(goleadores);
   };
 
+  const handleSubmit = async () => {
+    const tarjetaRoja = [{jugadores: [...rojaVisitante, ...rojaLocal],partido:partido,torneo:torneo}];
+
+    console.log("TARJETA ROJA", tarjetaRoja);
+
+
+    const response = await estadisticasServices.createEstadisticaservice(tarjetaRoja); //enviar los datos al servicio
+    console.log("RESPONSE", response); //respuesta del servicio
+  };
+
 
   return (
     <>
+    <form onSubmit={handleSubmit}>
       <Grid container spacing={2}>
         <Grid
           item
@@ -241,7 +248,7 @@ const TarjetaRojaComponents = ({ visitante, setSearchVisitante,local,setSearchLo
         <Grid item xl={4} lg={4} md={4} xs={6} sx={{ mt: 2 }}>
               
                       <Fab
-               
+                        type="submit"
                         size="x-large"
                         color="secondary"
                         aria-label="add"
@@ -256,6 +263,7 @@ const TarjetaRojaComponents = ({ visitante, setSearchVisitante,local,setSearchLo
           
                   </Grid>
       </Grid>
+      </form>
     </>
   );
 };

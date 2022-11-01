@@ -470,7 +470,7 @@ export default function DialogComponentEstadisticas(props) {
                     flexItem
                   />
                 }
-                spacing={2}
+                spacing={1}
                 sx={{ width: "100%", height: "100%" }}
               >
                 <Item
@@ -728,14 +728,16 @@ export default function DialogComponentEstadisticas(props) {
                               onChange={handleChangeTab}
                               aria-label="basic tabs example"
                             >
-                              <Tab
+                              <Tab 
+                              sx={{p:0.5}}
                                 label="Goleadores"
                                 {...a11yProps(0)}
                                 icon={<SportsSoccerIcon fontSize="large" />}
                                 onClick={() => {
                                 }}
                               />
-                              <Tab
+                              <Tab 
+                              sx={{p:0.5}}
                                 label="Asistencias"
                                 {...a11yProps(1)}
                                 icon={
@@ -744,11 +746,12 @@ export default function DialogComponentEstadisticas(props) {
                                     height={45}
                                     src={IconoAsistensias}
                                     alt="asistencias"
-                                    fontSize="large"
+                                    
                                   />
                                 }
                               />
-                              <Tab
+                              <Tab 
+                              sx={{p:0.5}}
                                 label="Tarjeta Roja"
                                 {...a11yProps(2)}
                                 icon={
@@ -758,7 +761,8 @@ export default function DialogComponentEstadisticas(props) {
                                   />
                                 }
                               />
-                              <Tab
+                              <Tab 
+                              sx={{p:0.5}}
                                 label="Tarjeta Amarilla"
                                 {...a11yProps(3)}
                                 icon={
@@ -769,7 +773,8 @@ export default function DialogComponentEstadisticas(props) {
                                 }
                               />
 
-                              <Tab
+                              <Tab 
+                              sx={{p:0.5}}
                                 label="Lesion Naranja"
                                 {...a11yProps(4)}
                                 icon={
@@ -780,7 +785,8 @@ export default function DialogComponentEstadisticas(props) {
                                 }
                               />
 
-                              <Tab
+                              <Tab 
+                              sx={{p:0.5}}
                                 label="Lesion Roja"
                                 {...a11yProps(5)}
                                 icon={
@@ -790,7 +796,8 @@ export default function DialogComponentEstadisticas(props) {
                                   />
                                 }
                               />
-                              <Tab
+                              <Tab 
+                              sx={{p:0.5}}
                                 label="MVP"
                                 {...a11yProps(6)}
                                 icon={

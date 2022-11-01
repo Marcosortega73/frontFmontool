@@ -56,7 +56,7 @@ const GoleadoresComponents = ({
 
   const [goleadorVisitante, setGoleadorVisitante] = React.useState([]);
   const [goleadorLocal, setGoleadorLocal] = React.useState([]);
-  const [goleador, setGoleador] = React.useState(null);
+  const [goleador, setGoleador] = React.useState([]);
 
   //que no se repitan los goleadores
 
@@ -132,7 +132,8 @@ const GoleadoresComponents = ({
 
   const onSubmit = async (data) => {
     //unir los goleadores
-    console.log("goleadorsdadasdases", data);
+    console.log("goleadorsdadasdases", data)
+    console.log("data goleador", goleador); // { test: ['test', 'test'] }
 
     /*  await estadisticasServices.createEstadisticaservice(formData).then((res) => {
 
@@ -158,8 +159,9 @@ const GoleadoresComponents = ({
 
   return (
     <>
+    <form onSubmit={handleSubmit(onSubmit)} style={{margin:0,padding:0}}>
       <Grid container spacing={2}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        
           <Grid item xs={12} md={6} lg={6} sx={{ height: "100%" }}>
             <Item
               sx={{ display: "flex", maxHeight: "323px", overflow: "auto" }}
@@ -278,7 +280,7 @@ const GoleadoresComponents = ({
                           secondaryAction={
                             <>
                               <Controller
-                                name={`${jugador.id}[${index}].cantidad`}
+                                name={`cantidad[${index}]`}
                                 control={control}
                                 render={({ field }) => (
                                   <Input
@@ -286,11 +288,10 @@ const GoleadoresComponents = ({
                                     id="outlined-number"
                                     type="number"
                                     edge="end"
-                                    onChange={(e) => {
+                                    onChange={(_, values) => {
                                       field.onChange(
-                                        setGoleador((prev) => {
-                                          return [...prev, jugador];
-                                        })
+                                        setGoleador((values)
+                                        )
                                       );
                                     }}
                                     sx={{
@@ -352,8 +353,9 @@ const GoleadoresComponents = ({
               <SaveIcon />
             </Fab>
           </Grid>
-        </form>
+       
       </Grid>
+       </form>
     </>
   );
 };
