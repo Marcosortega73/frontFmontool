@@ -51,7 +51,7 @@
   }
   
   .nav-links:hover {
-    background-color: #1888ff;
+    background-color: #cca500;
     border-radius: 4px;
     transition: all 0.2s ease-out;
   }
@@ -70,24 +70,24 @@
   
   @media screen and (max-width: 960px) {
     .NavbarItems {
-      position: relative;
+      position: absolute;
     }
-  
     .nav-menu {
       display: flex;
       flex-direction: column;
-      width: 100%;
-      height: 90vh;
-      position: absolute;
+      overflow: hidden;
+      height: 100vh !important;
+      z-index: 50000;
+      position: relative;
       top: 80px;
       left: -100%;
-      opacity: 1;
       transition: all 0.5s ease;
     }
   
     .nav-menu.active {
       margin-top: auto;
-      background: #242222;
+      background: #1e2024;
+      color: linear-gradient(90deg, rgba(204,167,0,1) 0%, rgba(240,196,0,1) 38%, rgba(179,146,0,1) 100%);
       left: 0;
       opacity: 1;
       transition: all 0.5s ease;
@@ -96,21 +96,25 @@
   
     .nav-links {
       text-align: center;
-      padding: 2rem;
+      padding: .5rem;
       width: 100%;
       display: table;
     }
   
     .nav-links:hover {
-      background-color: #1888ff;
+      background-color: linear-gradient(90deg, rgba(204,167,0,1) 0%, rgba(240,196,0,1) 38%, rgba(179,146,0,1) 100%);
       border-radius: 0;
     }
-  
+    
+    .navbar{
+      display: flex;
+      justify-content: flex-start;
+    }
     .navbar-logo {
       position: absolute;
-      top: 0;
-      left: 0;
-      transform: translate(25%, 50%);
+      display: flex;
+      justify-content: flex-start;
+
     }
   
     .menu-icon {
@@ -121,6 +125,10 @@
       transform: translate(-100%, 60%);
       font-size: 1.8rem;
       cursor: pointer;
+      z-index: 50000;
+    }
+    .menu-icon svg{
+      color: white !important;
     }
   
     .fa-times {
@@ -135,7 +143,7 @@
       margin: 2rem auto;
       border-radius: 4px;
       width: 80%;
-      background: #1888ff;
+      background:#cca500;
       text-decoration: none;
       color: #fff;
       font-size: 1.5rem;
@@ -143,7 +151,7 @@
   
     .nav-links-mobile:hover {
       background: #fff;
-      color: #1888ff;
+      color: #cca500;
       transition: 250ms;
     }
   
