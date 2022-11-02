@@ -318,7 +318,7 @@ const handleDelete = (id) => {
 
   React.useEffect(() => {
     getPartidos();
-  }, []);
+  }, [open]);
 
   /*   const handleCloseSnack = () => {
     setSnackBarOpen(false);

@@ -80,6 +80,35 @@ const cargarMvpService = async (data) => {
   }
 };
 
+const cargarGoleadoresService = async (data) => {
+  console.log("LLEGE AL CREATE Estadisitica REQ", data);
+  try {
+    const response = http.post(API_URL + "cargarGoleadores", data).then((res) => {
+      console.log("LLEGE AL LA DATA CREATE Estadisitica", res);
+      return res;
+    });
+    return response;
+  } catch (error) {
+    console.log("LLEGE AL ERROR CREATE", error);
+  }
+};
+
+const cargarAsistenciasService = async (data) => {
+  console.log("LLEGE AL CREATE Estadisitica REQ", data);
+  try {
+    const response = http.post(API_URL + "cargarAsistencias", data).then((res) => {
+      console.log("LLEGE AL LA DATA CREATE Estadisitica", res);
+      return res;
+    });
+    return response;
+  } catch (error) {
+    console.log("LLEGE AL ERROR CREATE", error);
+  }
+};
+
+
+
+
 
 const estadisticasServices = {
   getEstadisticasService,
@@ -88,6 +117,8 @@ const estadisticasServices = {
   cargarLesionRojaService,
   cargarLesionNaranjaService,
   cargarMvpService,
+  cargarGoleadoresService,
+  cargarAsistenciasService,
 };
 
 export default estadisticasServices;

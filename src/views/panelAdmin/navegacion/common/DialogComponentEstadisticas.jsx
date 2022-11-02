@@ -53,6 +53,7 @@ import LesionRojaComponents from "./components/LesionRojaComponents";
 import MvpComponents from "./components/MvpComponents";
 import { useForm } from "react-hook-form";
 import estadisticasServices from "../../../../services/api/estadisticas/estadisticasService";
+import Swal from "sweetalert2";
 
 const Item = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -116,12 +117,14 @@ export default function DialogComponentEstadisticas(props) {
   //goleador select
   const [selectedVisitante, setSelectedVisitante] = React.useState([]);
   const [selectedLocal, setSelectedLocal] = React.useState([]);
+  const [goleadores, setGoleadores] = React.useState([]);
 
   //asistencias select
   const [selectedVisitanteAsistencias, setSelectedVisitanteAsistencias] =
     React.useState([]);
   const [selectedLocalAsistencias, setSelectedLocalAsistencias] =
     React.useState([]);
+  const [asistentes, setAsistentes] = React.useState([]);
 
   //tarjeta roja select
   const [selectedVisitanteTarjetaRoja, setSelectedVisitanteTarjetaRoja] =
@@ -466,6 +469,32 @@ export default function DialogComponentEstadisticas(props) {
 
     console.log(dataItemSelect);
 
+    if(goleadores?.length>0){
+      console.log("ENTRO A GOLEADORES PARA MANDAR AL BACH")
+      const dataGoleadores = {
+        goleadores: goleadores,
+        idPartido: dataItemSelect.id,
+        idTorneo: dataItemSelect.torneo_id,
+        estadistica_id: 1,
+      };
+      const response = await estadisticasServices.cargarGoleadoresService(dataGoleadores);
+      console.log("response", response);
+    }
+
+    if(asistentes?.length>0){
+      console.log("ENTRO A ASISTENCIAS PARA MANDAR AL BACH")
+      const dataAsistencias = {
+        asistencias: asistentes,
+        idPartido: dataItemSelect.id,
+        idTorneo: dataItemSelect.torneo_id,
+        estadistica_id: 2,
+      };
+      const response = await estadisticasServices.cargarAsistenciasService(dataAsistencias);
+      console.log("response", response);
+    }
+
+    
+
     if (
       selectedLocalTarjetaRoja.length > 0 ||
       selectedVisitanteTarjetaRoja.length > 0
@@ -554,6 +583,16 @@ export default function DialogComponentEstadisticas(props) {
       const response = await estadisticasServices.cargarMvpService(data);
       console.log(response);
     }
+
+    Swal.fire({
+      title: "Estadisticas cargadas correctamente",
+      icon: "success",
+      showConfirmButton: false,
+      timer: 1500,
+    }).then(() => {
+      setOpen(false);
+    });
+    
   };
 
   React.useEffect(() => {
@@ -566,9 +605,10 @@ export default function DialogComponentEstadisticas(props) {
     selectedVisitanteTarjetaRoja,
     selectedLocalAsistencias,
     selectedVisitanteAsistencias,
-  ]) // eslint-disable-line react-hooks/exhaustive-deps
+  ]) // eslint-disable-line 
 
   const handleDisabled = () => {
+
     if (
       selectedLocal?.length + selectedVisitante?.length >=
       dataItemSelect?.goles_local + dataItemSelect?.goles_visitante
@@ -1010,6 +1050,7 @@ export default function DialogComponentEstadisticas(props) {
                             </Tabs>
                           </Box>
                           <Box>
+                          {/* GOLEADORES TABS */}
                             <TabPanel value={valueTab} index={0}>
                               <GoleadoresComponents
                                 partido={dataItemSelect?.id}
@@ -1020,6 +1061,10 @@ export default function DialogComponentEstadisticas(props) {
                                 setSelectedLocal={setSelectedLocal}
                                 setSearchVisitante={setSearchVisitante}
                                 setSearchLocal={setSearchLocal}
+                                setGoleadores={setGoleadores}
+                                goleadores={goleadores}
+                                dataItemSelect={dataItemSelect}
+                                
                               />
                             </TabPanel>
                             <TabPanel value={valueTab} index={1}>
@@ -1034,6 +1079,8 @@ export default function DialogComponentEstadisticas(props) {
                                 setSelectedLocal={setSelectedLocalAsistencias}
                                 setSearchVisitante={setSearchVisitante}
                                 setSearchLocal={setSearchLocal}
+                                setAsistentes={setAsistentes}
+                                asistentes={asistentes}
                               />
                             </TabPanel>
                             <TabPanel value={valueTab} index={2}>

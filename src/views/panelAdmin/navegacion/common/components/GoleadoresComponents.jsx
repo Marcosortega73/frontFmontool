@@ -51,12 +51,15 @@ const GoleadoresComponents = ({
   setSelectedLocal,
   partido,
   torneo,
+  setGoleadores,
+  goleadores,
+  dataItemSelect,
 }) => {
   console.log("VISITANTE EN GOLEADORES", visitante);
 
   const [goleadorVisitante, setGoleadorVisitante] = React.useState([]);
   const [goleadorLocal, setGoleadorLocal] = React.useState([]);
-  const [goleador, setGoleador] = React.useState([]);
+  const [resetGoles, setResetGoles] = React.useState(0);
 
   //que no se repitan los goleadores
 
@@ -123,239 +126,370 @@ const GoleadoresComponents = ({
   );
   //useFieldArray
 
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
-    {
-      control, // control props comes from useForm (optional: if you are using FormContext)
-      name: "cantidad", // unique name for your Field Array
-    }
-  );
-
   const onSubmit = async (data) => {
     //unir los goleadores
-    console.log("goleadorsdadasdases", data)
-    console.log("data goleador", goleador); // { test: ['test', 'test'] }
-
-    /*  await estadisticasServices.createEstadisticaservice(formData).then((res) => {
-
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Estadisticas creadas correctamente",
-        showConfirmButton: false,
-        timer: 1500,
-    }).catch((err) => {
-      console.log(err);
-      Swal.fire({
-        position: "center",
-        icon: "error",
-        title: "Error al crear las estadisticas",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-        
-    });
-  }); */
+    console.log("goleadorsdadasdases", data);
+    console.log("data goleador",goleadores); // { test: ['test', 'test'] }
   };
+
+  const handleChangeLocal = (e,jugador) => {
+
+
+    console.log("e", e,jugador);
+    console.log("dataItemSelect", dataItemSelect);
+    //si es mayor a la cantidad de goles
+    
+    if (e.target.value > dataItemSelect?.goles_local) {
+      console.log("ESSSSSSSSSSSSS MAAAAAAAAYYYYYYYYYYYPPOOOOOOOOOOR")
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "No puede ingresar un numero mayor a la cantidad de goles",
+        customClass: {
+          container: "swal-overlay",
+        },
+        
+      });
+      return;
+    }
+
+    //si es menor que 0
+    if (e.target.value < 0) {
+      console.log("ESSSSSSSSSSSSS MEEEEEEEEENOOOOOOOOOOOR")
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "No puede ingresar un numero menor a 0",
+        customClass: {
+          container: "swal-overlay",
+        },
+
+      });
+      return;
+    }
+
+ /*    //si la suma de los goles es mayor a la cantidad de goles
+    let suma = 0;
+    goleadores?.map((goleador) => {
+      if (goleador?.jugador_id === jugador?.id) {
+        suma = suma + parseInt(e.target.value);
+      } else {
+        suma = suma + parseInt(goleador?.goles);
+      }
+    });
+
+    console.log("suma", suma);
+
+    if (suma > dataItemSelect?.goles_local) {
+      console.log("ESSSSSSSSSSSSS MAAAAAAAAYYYYYYYYYYYPPOOOOOOOOOOR")
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "No puede ingresar un numero mayor sunma a la cantidad de goles",
+        customClass: {
+          container: "swal-overlay",
+        },
+
+      });
+      return;
+    } */
+
+    const existe = goleadores.find((goleador) => {
+
+      return goleador.jugador_id === jugador;
+
+    });
+
+    console.log("existe", existe);
+
+    if (existe) {
+
+      const goleadoresFiltrados = goleadores.filter((goleador) => {
+        return goleador.jugador_id !== jugador;
+      });
+
+      console.log("goleadoresFiltrados", goleadoresFiltrados);
+      setGoleadores([
+        ...goleadoresFiltrados,
+        {
+          jugador_id: jugador,
+          goles: e.target.value,
+        },
+      ]);
+    } else {
+      setGoleadores([
+        ...goleadores,
+        {
+          jugador_id: jugador,
+          goles: e.target.value,
+        },
+      ]);
+    }
+    console.log("goleadoresss", goleadores);
+  };
+  const handleChangeVisitante = (e,jugador) => {
+
+
+    console.log("e", e,jugador);
+    console.log("dataItemSelect", dataItemSelect);
+    //si es mayor a la cantidad de goles
+    
+    if (e.target.value > dataItemSelect?.goles_visitante) {
+      console.log("ESSSSSSSSSSSSS MAAAAAAAAYYYYYYYYYYYPPOOOOOOOOOOR")
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "No puede ingresar un numero mayor a la cantidad de goles",
+        customClass: {
+          container: "swal-overlay",
+        },
+        
+      });
+      return;
+    }
+
+    //si es menor que 0
+    if (e.target.value < 0) {
+      console.log("ESSSSSSSSSSSSS MEEEEEEEEENOOOOOOOOOOOR")
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "No puede ingresar un numero menor a 0",
+        customClass: {
+          container: "swal-overlay",
+        },
+
+      });
+      return;
+    }
+
+ /*    //si la suma de los goles es mayor a la cantidad de goles
+    let suma = 0;
+    goleadores?.map((goleador) => {
+      if (goleador?.jugador_id === jugador?.id) {
+        suma = suma + parseInt(e.target.value);
+      } else {
+        suma = suma + parseInt(goleador?.goles);
+      }
+    });
+
+    console.log("suma", suma);
+
+    if (suma > dataItemSelect?.goles_local) {
+      console.log("ESSSSSSSSSSSSS MAAAAAAAAYYYYYYYYYYYPPOOOOOOOOOOR")
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "No puede ingresar un numero mayor sunma a la cantidad de goles",
+        customClass: {
+          container: "swal-overlay",
+        },
+
+      });
+      return;
+    } */
+
+    const existe = goleadores.find((goleador) => {
+
+      return goleador.jugador_id === jugador;
+
+    });
+
+    console.log("existe", existe);
+
+    if (existe) {
+
+      const goleadoresFiltrados = goleadores.filter((goleador) => {
+        return goleador.jugador_id !== jugador;
+      });
+
+      console.log("goleadoresFiltrados", goleadoresFiltrados);
+      setGoleadores([
+        ...goleadoresFiltrados,
+        {
+          jugador_id: jugador,
+          goles: e.target.value,
+        },
+      ]);
+    } else {
+      setGoleadores([
+        ...goleadores,
+        {
+          jugador_id: jugador,
+          goles: e.target.value,
+        },
+      ]);
+    }
+    console.log("goleadoresss", goleadores);
+  };
+
 
   return (
     <>
-    <form onSubmit={handleSubmit(onSubmit)} style={{margin:0,padding:0}}>
       <Grid container spacing={2}>
-        
-          <Grid item xs={12} md={6} lg={6} sx={{ height: "100%" }}>
-            <Item
-              sx={{ display: "flex", maxHeight: "323px", overflow: "auto" }}
-            >
-              {goleadorLocal?.length > 0 ? (
-                <List
-                  sx={{
-                    width: "100%",
-                    bgcolor: "background.paper",
-                    position: "relative",
-                    overflow: "auto",
-                    maxHeight: 323,
-                    "& ul": { padding: 0 },
-                  }}
-                  subheader={<li />}
-                >
-                  <ListSubheader sx={{ bgcolor: "primary.main" }}>
-                    <Grid container>
-                      <Grid item xs={6} align="left">
-                        <Typography sx={{ pl: 1, color: "white" }}>
-                          Nombre
-                        </Typography>
-                      </Grid>
+        <Grid item xs={12} md={6} lg={6} sx={{ height: "100%" }}>
+          <Item sx={{ display: "flex", maxHeight: "323px", overflow: "auto" }}>
+            {goleadorLocal?.length > 0 ? (
+              <List
+                sx={{
+                  width: "100%",
+                  bgcolor: "background.paper",
+                  position: "relative",
+                  overflow: "auto",
+                  maxHeight: 323,
+                  "& ul": { padding: 0 },
+                }}
+                subheader={<li />}
+              >
+                <ListSubheader sx={{ bgcolor: "primary.main" }}>
+                  <Grid container>
+                    <Grid item xs={6} align="left">
+                      <Typography sx={{ pl: 1, color: "white" }}>
+                        Nombre
+                      </Typography>
                     </Grid>
-                  </ListSubheader>
-                  {goleadorLocal?.map((jugador, index) => {
-                    //cantidad de gole
-                    return (
-                      <>
-                        <ListItem
-                          key={index}
-                          sx={{ p: 0.5 }}
-                          secondaryAction={
-                            <>
-                              <TextField
-                                sx={{
-                                  width: "73px",
-                                  pl: 1,
-                                }}
-                                size="small"
-                                id="outlined-number"
-                                type="number"
-                                edge="end"
-                                placeholder="Gol"
-                                name="gol"
-                              />
-                              <IconButton
-                                onClick={() => handleDeleteChipLocal(jugador)}
-                                edge="end"
-                                aria-label="delete"
-                              >
-                                <DeleteIcon />
-                              </IconButton>
-                            </>
-                          }
-                          disablePadding
-                        >
-                          <ListItemButton>
-                            <ListItemAvatar>
-                              <Avatar />
-                            </ListItemAvatar>
-                            <ListItemText
-                              sx={{ maxWidth: "47%" }}
-                              primary={jugador.nombre}
+                  </Grid>
+                </ListSubheader>
+                {goleadorLocal?.map((jugador, index) => {
+                  //cantidad de gole
+                  return (
+                    <>
+                      <ListItem
+                        key={jugador.id}
+                        sx={{ p: 0.5 }}
+                        secondaryAction={
+                          <>
+                            <TextField
+                              sx={{
+                                width: "73px",
+                                pl: 1,
+                              }}
+                              size="small"
+                              id="outlined-number"
+                              type="number"
+                              edge="end"
+                              name={jugador.id.toString()}
+                              onChange={(e)=>{handleChangeLocal(e,jugador.id)}}
                             />
-                          </ListItemButton>
-                        </ListItem>
-                        <Divider variant="inset" component="li" />
-                      </>
-                    );
-                  })}
-                </List>
-              ) : (
-                <>
-                  <ArrowCircleLeftIcon />
-                  <Typography sx={{ textAlign: "center", width: "100%" }}>
-                    Selecione un jugador
-                  </Typography>
-                </>
-              )}
-            </Item>
-          </Grid>
-          <Grid item xs={12} md={6} lg={6}>
-            <Item
-              sx={{ display: "flex", maxHeight: "323px", overflow: "auto" }}
-            >
-              {goleadorVisitante?.length > 0 ? (
-                <List
-                  sx={{
-                    width: "100%",
-                    bgcolor: "background.paper",
-                    position: "relative",
-                    overflow: "auto",
-                    maxHeight: 323,
+                            <IconButton
+                              onClick={() => handleDeleteChipLocal(jugador)}
+                              edge="end"
+                              aria-label="delete"
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </>
+                        }
+                        disablePadding
+                      >
+                        <ListItemButton>
+                          <ListItemAvatar>
+                            <Avatar />
+                          </ListItemAvatar>
+                          <ListItemText
+                            sx={{ maxWidth: "47%" }}
+                            primary={jugador.nombre}
+                          />
+                        </ListItemButton>
+                      </ListItem>
+                      <Divider variant="inset" component="li" />
+                    </>
+                  );
+                })}
+              </List>
+            ) : (
+              <>
+                <ArrowCircleLeftIcon />
+                <Typography sx={{ textAlign: "center", width: "100%" }}>
+                  Selecione un jugador
+                </Typography>
+              </>
+            )}
+          </Item>
+        </Grid>
+        <Grid item xs={12} md={6} lg={6}>
+          <Item sx={{ display: "flex", maxHeight: "323px", overflow: "auto" }}>
+            {goleadorVisitante?.length > 0 ? (
+              <List
+                sx={{
+                  width: "100%",
+                  bgcolor: "background.paper",
+                  position: "relative",
+                  overflow: "auto",
+                  maxHeight: 323,
 
-                    "& ul": { padding: 0 },
-                  }}
-                  subheader={<li />}
-                >
-                  <ListSubheader sx={{ bgcolor: "primary.main" }}>
-                    <Grid container>
-                      <Grid item xs={6} align="left">
-                        <Typography sx={{ pl: 1, color: "white" }}>
-                          Nombre
-                        </Typography>
-                      </Grid>
+                  "& ul": { padding: 0 },
+                }}
+                subheader={<li />}
+              >
+                <ListSubheader sx={{ bgcolor: "primary.main" }}>
+                  <Grid container>
+                    <Grid item xs={6} align="left">
+                      <Typography sx={{ pl: 1, color: "white" }}>
+                        Nombre
+                      </Typography>
                     </Grid>
-                  </ListSubheader>
-                  {goleadorVisitante?.map((jugador, index) => {
-                    //cantidad de gole
-                    return (
-                      <>
-                        <ListItem
-                          key={index}
-                          sx={{ p: 0.5 }}
-                          secondaryAction={
-                            <>
-                              <Controller
-                                name={`cantidad[${index}]`}
-                                control={control}
-                                render={({ field }) => (
-                                  <Input
-                                    size="small"
-                                    id="outlined-number"
-                                    type="number"
-                                    edge="end"
-                                    onChange={(_, values) => {
-                                      field.onChange(
-                                        setGoleador((values)
-                                        )
-                                      );
-                                    }}
-                                    sx={{
-                                      width: "73px",
-                                      pl: 1,
-                                    }}
-                                    {...field}
-                                  />
-                                )}
-                              />
-                              <IconButton
-                                onClick={() => handleDeleteChip(jugador)}
-                                edge="end"
-                                aria-label="delete"
-                              >
-                                <DeleteIcon />
-                              </IconButton>
-                            </>
-                          }
-                          disablePadding
-                        >
-                          <ListItemButton>
-                            <ListItemAvatar>
-                              <Avatar />
-                            </ListItemAvatar>
-                            <ListItemText
-                              sx={{ maxWidth: "47%" }}
-                              primary={jugador.nombre}
+                  </Grid>
+                </ListSubheader>
+                {goleadorVisitante?.map((jugador, index) => {
+                  //cantidad de gole
+                  return (
+                    <>
+                      <ListItem
+                        key={index}
+                        sx={{ p: 0.5 }}
+                        secondaryAction={
+                          <>
+                           <TextField
+                              sx={{
+                                width: "73px",
+                                pl: 1,
+                              }}
+                              size="small"
+                              id="outlined-number"
+                              type="number"
+                              edge="end"
+                              placeholder="Gol"
+                              name={jugador.id.toString()}
+                              onChange={(e)=>{handleChangeVisitante(e,jugador.id)}}
                             />
-                          </ListItemButton>
-                        </ListItem>
-                        <Divider variant="inset" component="li" />
-                      </>
-                    );
-                  })}
-                </List>
-              ) : (
-                <>
-                  <Typography sx={{ textAlign: "center", width: "100%" }}>
-                    Selecione un jugador
-                  </Typography>
-                  <ArrowCircleRightIcon />
-                </>
-              )}
-            </Item>
-          </Grid>
-          <Grid item xl={4} lg={4} md={4} xs={6} sx={{ mt: 2 }}>
-            <Fab
-              type="submit"
-              size="x-large"
-              color="secondary"
-              aria-label="add"
-              sx={{
-                position: "absolute",
-                bottom: 16,
-                right: 423,
-              }}
-            >
-              <SaveIcon />
-            </Fab>
-          </Grid>
-       
+                            <IconButton
+                              onClick={() => handleDeleteChip(jugador)}
+                              edge="end"
+                              aria-label="delete"
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </>
+                        }
+                        disablePadding
+                      >
+                        <ListItemButton>
+                          <ListItemAvatar>
+                            <Avatar />
+                          </ListItemAvatar>
+                          <ListItemText
+                            sx={{ maxWidth: "47%" }}
+                            primary={jugador.nombre}
+                          />
+                        </ListItemButton>
+                      </ListItem>
+                      <Divider variant="inset" component="li" />
+                    </>
+                  );
+                })}
+              </List>
+            ) : (
+              <>
+                <Typography sx={{ textAlign: "center", width: "100%" }}>
+                  Selecione un jugador
+                </Typography>
+                <ArrowCircleRightIcon />
+              </>
+            )}
+          </Item>
+        </Grid>
       </Grid>
-       </form>
     </>
   );
 };
