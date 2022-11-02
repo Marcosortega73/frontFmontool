@@ -1,32 +1,18 @@
 import {
-  Avatar,
   Box,
   Card,
   CardContent,
   CardMedia,
-  Checkbox,
-  Chip,
-  Divider,
   Fab,
   Grid,
-  IconButton,
-  Input,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemText,
-  ListSubheader,
   Paper,
   styled,
-  TextField,
+
   Typography,
 } from "@mui/material";
 import React from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import "./stylesComponents.css";
 
-import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
+import "./stylesComponents.css";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 
 import SaveIcon from "@mui/icons-material/Save";
@@ -43,15 +29,11 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const MvpComponents = ({
-  setSearchVisitante,
-  setSearchLocal,
   jugador,
-  setJugador,
 }) => {
   console.log("VISITANTE EN MVP", jugador);
 
   const [mvp, setMvp] = React.useState([]);
-  const [mvpLocal, setMvpLocal] = React.useState([]);
 
   //que no se repitan los goleadores
 
@@ -60,35 +42,8 @@ const MvpComponents = ({
     setMvp(jugador);
   }, [jugador]);
 
-  const handleDeleteChip = (jugador) => {
-    console.info("You clicked the delete icon.");
-    console.log("ID", jugador?.id);
-
-    const goleadores = mvp.filter((goleador) => {
-      return goleador.id !== jugador?.id;
-    });
-    console.log("goleadores visitante delete", goleadores);
-
-    setMvp(goleadores);
-
-    setSearchVisitante((prev) => {
-      return [...prev, jugador];
-    });
-  };
-
-  const handleDelete = (jugador) => {
-    console.info("You clicked the delete icon.");
-    console.log("ID", jugador?.id);
-    const goleadores = mvpLocal.filter((goleador) => {
-      return goleador.id !== jugador?.id;
-    });
-    setMvpLocal(goleadores);
-    setSearchLocal((prev) => {
-      return [...prev, jugador];
-    });
-  };
-
   return (
+    
     <>
       <Grid container  sx={{
             height: "100%",

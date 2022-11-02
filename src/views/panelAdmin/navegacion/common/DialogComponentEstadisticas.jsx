@@ -52,6 +52,7 @@ import LesionNaranjaComponents from "./components/LesionNaranjaComponents";
 import LesionRojaComponents from "./components/LesionRojaComponents";
 import MvpComponents from "./components/MvpComponents";
 import { useForm } from "react-hook-form";
+import estadisticasServices from "../../../../services/api/estadisticas/estadisticasService";
 
 const Item = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -75,7 +76,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3,px:0}}>
+        <Box sx={{ p: 3, px: 0 }}>
           <Box>{children}</Box>
         </Box>
       )}
@@ -106,7 +107,10 @@ export default function DialogComponentEstadisticas(props) {
   const [searchVisitante, setSearchVisitante] = React.useState([]);
   const [valueTab, setValueTab] = React.useState(0);
 
-  const [selectedIndexVisitante, setSelectedIndexVisitante] = React.useState(null);
+  const [disabledSelected, setDisabledSelected] = React.useState(false);
+
+  const [selectedIndexVisitante, setSelectedIndexVisitante] =
+    React.useState(null);
   const [selectedIndexLocal, setSelectedIndexLocal] = React.useState(null);
 
   //goleador select
@@ -114,24 +118,37 @@ export default function DialogComponentEstadisticas(props) {
   const [selectedLocal, setSelectedLocal] = React.useState([]);
 
   //asistencias select
-  const [selectedVisitanteAsistencias, setSelectedVisitanteAsistencias] = React.useState([]);
-  const [selectedLocalAsistencias, setSelectedLocalAsistencias] = React.useState([]);
+  const [selectedVisitanteAsistencias, setSelectedVisitanteAsistencias] =
+    React.useState([]);
+  const [selectedLocalAsistencias, setSelectedLocalAsistencias] =
+    React.useState([]);
 
   //tarjeta roja select
-  const [selectedVisitanteTarjetaRoja, setSelectedVisitanteTarjetaRoja] = React.useState([]);
-  const [selectedLocalTarjetaRoja, setSelectedLocalTarjetaRoja] = React.useState([]);
+  const [selectedVisitanteTarjetaRoja, setSelectedVisitanteTarjetaRoja] =
+    React.useState([]);
+  const [selectedLocalTarjetaRoja, setSelectedLocalTarjetaRoja] =
+    React.useState([]);
 
   //tarjeta amarilla select
-  const [selectedVisitanteTarjetaAmarilla, setSelectedVisitanteTarjetaAmarilla] = React.useState([]);
-  const [selectedLocalTarjetaAmarilla, setSelectedLocalTarjetaAmarilla] = React.useState([]);
+  const [
+    selectedVisitanteTarjetaAmarilla,
+    setSelectedVisitanteTarjetaAmarilla,
+  ] = React.useState([]);
+  const [selectedLocalTarjetaAmarilla, setSelectedLocalTarjetaAmarilla] =
+    React.useState([]);
 
   //lesion naranja select
-  const [selectedVisitanteLesionNaranja, setSelectedVisitanteLesionNaranja] = React.useState([]);
-  const [selectedLocalLesionNaranja, setSelectedLocalLesionNaranja] = React.useState([]);
+  const [selectedVisitanteLesionNaranja, setSelectedVisitanteLesionNaranja] =
+    React.useState([]);
+  const [selectedLocalLesionNaranja, setSelectedLocalLesionNaranja] =
+    React.useState([]);
 
   //lesion roja select
-  const [selectedVisitanteLesionRoja, setSelectedVisitanteLesionRoja] = React.useState([]);
-  const [selectedLocalLesionRoja, setSelectedLocalLesionRoja] = React.useState([]);
+  const [selectedVisitanteLesionRoja, setSelectedVisitanteLesionRoja] =
+    React.useState([]);
+  const [selectedLocalLesionRoja, setSelectedLocalLesionRoja] = React.useState(
+    []
+  );
 
   //mvp select
   const [selectedMvp, setSelectedMvp] = React.useState({});
@@ -154,12 +171,20 @@ export default function DialogComponentEstadisticas(props) {
       case 0:
         console.log("goleador");
         const dataLocal = dataItemSelect?.local?.Jugadors.filter(
-          (itemSearch) =>  //quitar los que ya estan seleccionados
-            !selectedLocal.find((itemSelected) => itemSelected.id === itemSearch.id)
+          (
+            itemSearch //quitar los que ya estan seleccionados
+          ) =>
+            !selectedLocal.find(
+              (itemSelected) => itemSelected.id === itemSearch.id
+            )
         );
         const dataVisitante = dataItemSelect?.visitante?.Jugadors.filter(
-          (itemSearch) => //quitar los que ya estan seleccionados
-            !selectedVisitante.find((itemSelected) => itemSelected.id === itemSearch.id)
+          (
+            itemSearch //quitar los que ya estan seleccionados
+          ) =>
+            !selectedVisitante.find(
+              (itemSelected) => itemSelected.id === itemSearch.id
+            )
         );
         console.log("dataLocalss goleador", dataVisitante);
         setSearchLocal(dataLocal);
@@ -168,13 +193,22 @@ export default function DialogComponentEstadisticas(props) {
       case 1:
         console.log("asistencias");
         const dataLocalAsistencias = dataItemSelect?.local?.Jugadors.filter(
-          (itemSearch) =>  //quitar los que ya estan seleccionados
-            !selectedLocalAsistencias.find((itemSelected) => itemSelected.id === itemSearch.id)
+          (
+            itemSearch //quitar los que ya estan seleccionados
+          ) =>
+            !selectedLocalAsistencias.find(
+              (itemSelected) => itemSelected.id === itemSearch.id
+            )
         );
-        const dataVisitanteAsistencias = dataItemSelect?.visitante?.Jugadors.filter(
-          (itemSearch) => //quitar los que ya estan seleccionados
-           !selectedVisitanteAsistencias.find((itemSelected) => itemSelected.id === itemSearch.id)
-        );
+        const dataVisitanteAsistencias =
+          dataItemSelect?.visitante?.Jugadors.filter(
+            (
+              itemSearch //quitar los que ya estan seleccionados
+            ) =>
+              !selectedVisitanteAsistencias.find(
+                (itemSelected) => itemSelected.id === itemSearch.id
+              )
+          );
 
         console.log("dataLocalss asistencias", dataVisitanteAsistencias);
         setSearchLocal(dataLocalAsistencias);
@@ -184,13 +218,22 @@ export default function DialogComponentEstadisticas(props) {
       case 2:
         console.log("tarjeta roja");
         const dataLocalTarjetaRoja = dataItemSelect?.local?.Jugadors.filter(
-          (itemSearch) =>  //quitar los que ya estan seleccionados
-            !selectedLocalTarjetaRoja.find((itemSelected) => itemSelected.id === itemSearch.id)
+          (
+            itemSearch //quitar los que ya estan seleccionados
+          ) =>
+            !selectedLocalTarjetaRoja.find(
+              (itemSelected) => itemSelected.id === itemSearch.id
+            )
         );
-        const dataVisitanteTarjetaRoja = dataItemSelect?.visitante?.Jugadors.filter(
-          (itemSearch) => //quitar los que ya estan seleccionados
-            !selectedVisitanteTarjetaRoja.find((itemSelected) => itemSelected.id === itemSearch.id)
-        );
+        const dataVisitanteTarjetaRoja =
+          dataItemSelect?.visitante?.Jugadors.filter(
+            (
+              itemSearch //quitar los que ya estan seleccionados
+            ) =>
+              !selectedVisitanteTarjetaRoja.find(
+                (itemSelected) => itemSelected.id === itemSearch.id
+              )
+          );
         setSearchLocal(dataLocalTarjetaRoja);
         setSearchVisitante(dataVisitanteTarjetaRoja);
 
@@ -198,64 +241,91 @@ export default function DialogComponentEstadisticas(props) {
       case 3:
         console.log("tarjeta amarilla");
         const dataLocalTarjetaAmarilla = dataItemSelect?.local?.Jugadors.filter(
-          (itemSearch) =>  //quitar los que ya estan seleccionados
-            !selectedLocalTarjetaAmarilla.find((itemSelected) => itemSelected.id === itemSearch.id)
+          (
+            itemSearch //quitar los que ya estan seleccionados
+          ) =>
+            !selectedLocalTarjetaAmarilla.find(
+              (itemSelected) => itemSelected.id === itemSearch.id
+            )
         );
-        const dataVisitanteTarjetaAmarilla = dataItemSelect?.visitante?.Jugadors.filter(
-          (itemSearch) => //quitar los que ya estan seleccionados
-            !selectedVisitanteTarjetaAmarilla.find((itemSelected) => itemSelected.id === itemSearch.id)
-        );
+        const dataVisitanteTarjetaAmarilla =
+          dataItemSelect?.visitante?.Jugadors.filter(
+            (
+              itemSearch //quitar los que ya estan seleccionados
+            ) =>
+              !selectedVisitanteTarjetaAmarilla.find(
+                (itemSelected) => itemSelected.id === itemSearch.id
+              )
+          );
         setSearchLocal(dataLocalTarjetaAmarilla);
         setSearchVisitante(dataVisitanteTarjetaAmarilla);
-
 
         break;
       case 4:
         console.log("lesion naranja");
         const dataLocalLesionNaranja = dataItemSelect?.local?.Jugadors.filter(
-          (itemSearch) =>  //quitar los que ya estan seleccionados
-            !selectedLocalLesionNaranja.find((itemSelected) => itemSelected.id === itemSearch.id)
+          (
+            itemSearch //quitar los que ya estan seleccionados
+          ) =>
+            !selectedLocalLesionNaranja.find(
+              (itemSelected) => itemSelected.id === itemSearch.id
+            )
         );
-        const dataVisitanteLesionNaranja = dataItemSelect?.visitante?.Jugadors.filter(
-          (itemSearch) => //quitar los que ya estan seleccionados
-            !selectedVisitanteLesionNaranja.find((itemSelected) => itemSelected.id === itemSearch.id)
-        );
+        const dataVisitanteLesionNaranja =
+          dataItemSelect?.visitante?.Jugadors.filter(
+            (
+              itemSearch //quitar los que ya estan seleccionados
+            ) =>
+              !selectedVisitanteLesionNaranja.find(
+                (itemSelected) => itemSelected.id === itemSearch.id
+              )
+          );
         setSearchLocal(dataLocalLesionNaranja);
         setSearchVisitante(dataVisitanteLesionNaranja);
         break;
       case 5:
         console.log("lesion roja");
         const dataLocalLesionRoja = dataItemSelect?.local?.Jugadors.filter(
-          (itemSearch) =>  //quitar los que ya estan seleccionados
-            !selectedLocalLesionRoja.find((itemSelected) => itemSelected.id === itemSearch.id)
+          (
+            itemSearch //quitar los que ya estan seleccionados
+          ) =>
+            !selectedLocalLesionRoja.find(
+              (itemSelected) => itemSelected.id === itemSearch.id
+            )
         );
-        const dataVisitanteLesionRoja = dataItemSelect?.visitante?.Jugadors.filter(
-          (itemSearch) => //quitar los que ya estan seleccionados
-            !selectedVisitanteLesionRoja.find((itemSelected) => itemSelected.id === itemSearch.id)
-        );
+        const dataVisitanteLesionRoja =
+          dataItemSelect?.visitante?.Jugadors.filter(
+            (
+              itemSearch //quitar los que ya estan seleccionados
+            ) =>
+              !selectedVisitanteLesionRoja.find(
+                (itemSelected) => itemSelected.id === itemSearch.id
+              )
+          );
         setSearchLocal(dataLocalLesionRoja);
         setSearchVisitante(dataVisitanteLesionRoja);
         break;
       case 6:
         console.log("mvp");
         const dataLocalMvp = dataItemSelect?.local?.Jugadors.filter(
-          (itemSearch) =>  //quitar los que ya estan seleccionados
-            !selectedMvp.id === itemSearch.id
+          (
+            itemSearch //quitar los que ya estan seleccionados
+          ) => !selectedMvp.id === itemSearch.id
         );
         const dataVisitanteMvp = dataItemSelect?.visitante?.Jugadors.filter(
-          (itemSearch) => //quitar los que ya estan seleccionados
-            !selectedMvp.id === itemSearch.id);
-          console.lot("dataLocalss mvp", setSelectedMvp);
+          (
+            itemSearch //quitar los que ya estan seleccionados
+          ) => !selectedMvp.id === itemSearch.id
+        );
+        console.lot("dataLocalss mvp", setSelectedMvp);
 
         setSearchLocal(dataLocalMvp);
-        setSearchVisitante(dataVisitanteMvp); 
+        setSearchVisitante(dataVisitanteMvp);
 
         break;
       default:
         break;
     }
-
-
   };
 
   console.log("seachLocal", searchLocal);
@@ -279,7 +349,7 @@ export default function DialogComponentEstadisticas(props) {
     console.log("searchLocal", searchLocal);
   };
 
-   const handleClickVisitante = (item) => {
+  const handleClickVisitante = (item) => {
     console.log("item visitante", item);
     //quitar el jugador seleccionado de la lista
     setSelectedIndexVisitante(item.id);
@@ -294,7 +364,7 @@ export default function DialogComponentEstadisticas(props) {
       case 1:
         setSelectedVisitanteAsistencias((prev) => [...prev, item]);
         const dataVisitanteAsistencias = searchVisitante.filter(
-          (itemSearch) =>  itemSearch.id !== item.id //quitar el jugador seleccionado de la lista
+          (itemSearch) => itemSearch.id !== item.id //quitar el jugador seleccionado de la lista
         );
         setSearchVisitante(dataVisitanteAsistencias);
         break;
@@ -308,7 +378,7 @@ export default function DialogComponentEstadisticas(props) {
       case 3:
         setSelectedVisitanteTarjetaAmarilla((prev) => [...prev, item]);
         const dataVisitanteTarjetaAmarilla = searchVisitante.filter(
-            (itemSearch) => itemSearch.id !== item.id //quitar el jugador seleccionado de la lista
+          (itemSearch) => itemSearch.id !== item.id //quitar el jugador seleccionado de la lista
         );
         setSearchVisitante(dataVisitanteTarjetaAmarilla);
 
@@ -334,8 +404,7 @@ export default function DialogComponentEstadisticas(props) {
       default:
         break;
     }
-
-   };
+  };
 
   const handleClickLocal = (item) => {
     setSelectedIndexLocal(item.id);
@@ -344,7 +413,7 @@ export default function DialogComponentEstadisticas(props) {
         setSelectedLocal((prev) => [...prev, item]);
 
         const dataLocal = searchLocal.filter(
-          (itemSearch) =>  itemSearch.id !== item.id //quitar el jugador seleccionado de la lista
+          (itemSearch) => itemSearch.id !== item.id //quitar el jugador seleccionado de la lista
         );
         setSearchLocal(dataLocal);
         break;
@@ -392,30 +461,145 @@ export default function DialogComponentEstadisticas(props) {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    console.log(dataItemSelect);
 
+    if (
+      selectedLocalTarjetaRoja.length > 0 ||
+      selectedVisitanteTarjetaRoja.length > 0
+    ) {
+      console.log("entro a rojas");
 
-  const {
-    handleSubmit,
-    control,
-    register,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {},
-  });
+      const data = {
+        idPartido: dataItemSelect.id,
+        idTorneo: dataItemSelect.torneo_id,
+        roja: [...selectedLocalTarjetaRoja, ...selectedVisitanteTarjetaRoja],
+        estadistica_id: 3,
+      };
 
-  const onSubmit = async (formValue) => {
-    console.log(formValue);
+      const response = await estadisticasServices.cargarRojasService(data);
+      console.log(response);
+    }
+
+    if (
+      selectedLocalTarjetaAmarilla.length > 0 ||
+      selectedVisitanteTarjetaAmarilla.length > 0
+    ) {
+      console.log("entro a amarillas");
+      const data = {
+        idPartido: dataItemSelect.id,
+        idTorneo: dataItemSelect.torneo_id,
+        amarilla: [
+          ...selectedLocalTarjetaAmarilla,
+          ...selectedVisitanteTarjetaAmarilla,
+        ],
+        estadistica_id: 4,
+      };
+
+      const response = await estadisticasServices.cargarAmarillasService(data);
+      console.log(response);
+    }
+
+    if (
+      selectedLocalLesionNaranja.length > 0 ||
+      selectedVisitanteLesionNaranja.length > 0
+    ) {
+      console.log("entro a lesion naranja");
+      const data = {
+        idPartido: dataItemSelect.id,
+        idTorneo: dataItemSelect.torneo_id,
+        lesionados: [
+          ...selectedLocalLesionNaranja,
+          ...selectedVisitanteLesionNaranja,
+        ],
+        estadistica_id: 5,
+      };
+
+      const response = await estadisticasServices.cargarLesionNaranjaService(
+        data
+      );
+      console.log(response);
+    }
+
+    if (
+      selectedLocalLesionRoja.length > 0 ||
+      selectedVisitanteLesionRoja.length > 0
+    ) {
+      console.log("entro a lesion rojas");
+      const data = {
+        idPartido: dataItemSelect.id,
+        idTorneo: dataItemSelect.torneo_id,
+        lesionados: [
+          ...selectedLocalLesionRoja,
+          ...selectedVisitanteLesionRoja,
+        ],
+        estadistica_id: 6,
+      };
+
+      const response = await estadisticasServices.cargarLesionRojaService(data);
+      console.log(response);
+    }
+
+    if (selectedMvp.length > 0) {
+      console.log("entro a mvp");
+      const data = {
+        idPartido: dataItemSelect.id,
+        idTorneo: dataItemSelect.torneo_id,
+        mvp: selectedMvp,
+        estadistica_id: 7,
+      };
+
+      const response = await estadisticasServices.cargarMvpService(data);
+      console.log(response);
+    }
+  };
+
+  React.useEffect(() => {
+    setDisabledSelected(false)
+    handleDisabled();
+  }, [
+    selectedLocal,
+    selectedVisitante,
+    selectedLocalTarjetaRoja,
+    selectedVisitanteTarjetaRoja,
+    selectedLocalAsistencias,
+    selectedVisitanteAsistencias,
+  ]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleDisabled = () => {
+    if (
+      selectedLocal?.length + selectedVisitante?.length >=
+      dataItemSelect?.goles_local + dataItemSelect?.goles_visitante
+    ) {
+      setDisabledSelected(true);
+    }
+
+    if (
+      selectedLocalAsistencias?.length + selectedVisitanteAsistencias?.length >=
+      dataItemSelect?.goles_local + dataItemSelect?.goles_visitante
+    ) {
+      setDisabledSelected(true);
+    }
+
+    if (
+      selectedLocalTarjetaRoja?.length >= 4 ||
+      selectedVisitanteTarjetaRoja?.length >= 4
+    ) {
+      setDisabledSelected(true);
+    }
+
   };
 
   return (
-    <div>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        fullScreen
-        TransitionComponent={Transition}
-      >
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      fullScreen
+      TransitionComponent={Transition}
+    >
+      <form onSubmit={handleSubmit}>
         <AppBar sx={{ position: "relative" }}>
           <Toolbar
             sx={{
@@ -484,7 +668,7 @@ export default function DialogComponentEstadisticas(props) {
                     height: "100%",
                   }}
                 >
-                  <Item sx={{width:"233px", height:"223px"}}>
+                  <Item sx={{ width: "233px", height: "223px" }}>
                     <img
                       width={213}
                       height={200}
@@ -540,9 +724,14 @@ export default function DialogComponentEstadisticas(props) {
                       searchLocal.map((jugador) => (
                         <li key={jugador.id}>
                           <ul>
-                          <ListItemButton selected={valueTab===6 && (selectedIndexLocal === jugador.id)}
-                            onClick={() => handleClickLocal(jugador)}
-                          >
+                            <ListItemButton
+                              disabled={disabledSelected}
+                              selected={
+                                valueTab === 6 &&
+                                selectedIndexLocal === jugador.id
+                              }
+                              onClick={() => handleClickLocal(jugador)}
+                            >
                               <ListItemAvatar>
                                 <Avatar src="/broken-image.jpg" />
                               </ListItemAvatar>
@@ -574,32 +763,40 @@ export default function DialogComponentEstadisticas(props) {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                
                   >
-                     <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            backgroundColor: "primary.main",
-                            mt: 0,
-                            mb: 0,
-                            mx: 0,
-                            width: "100%",
-                            height: "53px",
-                            borderLeft: "7px solid #cca500",
-                            borderRight: "7px solid #cca500",
-                          }}
-                        >
-                            <Typography variant="h6" component="div" color="white" sx={{pl:1}}>
-                               Torneo {dataItemSelect?.Torneo?.nombre}
-                              </Typography>
-                          
-                              <Typography variant="h6" component="div" color="white" sx={{pr:1}}>
-                               Fecha {dataItemSelect?.num_fecha}
-                              </Typography>
-                        
-                        </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        backgroundColor: "primary.main",
+                        mt: 0,
+                        mb: 0,
+                        mx: 0,
+                        width: "100%",
+                        height: "53px",
+                        borderLeft: "7px solid #cca500",
+                        borderRight: "7px solid #cca500",
+                      }}
+                    >
+                      <Typography
+                        variant="h6"
+                        component="div"
+                        color="white"
+                        sx={{ pl: 1 }}
+                      >
+                        Torneo {dataItemSelect?.Torneo?.nombre}
+                      </Typography>
+
+                      <Typography
+                        variant="h6"
+                        component="div"
+                        color="white"
+                        sx={{ pr: 1 }}
+                      >
+                        Fecha {dataItemSelect?.num_fecha}
+                      </Typography>
+                    </Box>
                     <Grid
                       item
                       xs={12}
@@ -618,7 +815,7 @@ export default function DialogComponentEstadisticas(props) {
                         borderBottom: "2px solid #cca500",
                       }}
                     >
-                      <Grid item xs={5} md={5} >
+                      <Grid item xs={5} md={5}>
                         <Item
                           sx={{
                             backgroundColor: "#E5E5E5",
@@ -638,7 +835,7 @@ export default function DialogComponentEstadisticas(props) {
                           </Typography>
                         </Item>
                       </Grid>
-                      <Grid item xs={2} md={2} >
+                      <Grid item xs={2} md={2}>
                         <Item
                           sx={{
                             display: "flex",
@@ -680,14 +877,15 @@ export default function DialogComponentEstadisticas(props) {
                               </Item>
                             </>
                           ) : (
-                            
-                              <Typography variant="h5" component="div" color="white">
-                                VS
-                              </Typography>
-                            
+                            <Typography
+                              variant="h5"
+                              component="div"
+                              color="white"
+                            >
+                              VS
+                            </Typography>
                           )}
                         </Item>
-                       
                       </Grid>
                       <Grid item xs={5} md={5} sx={{ pr: 3 }}>
                         <Item
@@ -710,9 +908,13 @@ export default function DialogComponentEstadisticas(props) {
                         </Item>
                       </Grid>
                     </Grid>
-                    <Grid item xs={12} md={12} sx={{display:"flex", alignItems:"center"}}>
-                      <Item 
-                              >
+                    <Grid
+                      item
+                      xs={12}
+                      md={12}
+                      sx={{ display: "flex", alignItems: "center" }}
+                    >
+                      <Item>
                         <Box sx={{ width: "100%" }}>
                           <Box
                             sx={{
@@ -728,16 +930,15 @@ export default function DialogComponentEstadisticas(props) {
                               onChange={handleChangeTab}
                               aria-label="basic tabs example"
                             >
-                              <Tab 
-                              sx={{p:0.5}}
+                              <Tab
+                                sx={{ p: 0.5 }}
                                 label="Goleadores"
                                 {...a11yProps(0)}
                                 icon={<SportsSoccerIcon fontSize="large" />}
-                                onClick={() => {
-                                }}
+                                onClick={() => {}}
                               />
-                              <Tab 
-                              sx={{p:0.5}}
+                              <Tab
+                                sx={{ p: 0.5 }}
                                 label="Asistencias"
                                 {...a11yProps(1)}
                                 icon={
@@ -746,12 +947,11 @@ export default function DialogComponentEstadisticas(props) {
                                     height={45}
                                     src={IconoAsistensias}
                                     alt="asistencias"
-                                    
                                   />
                                 }
                               />
-                              <Tab 
-                              sx={{p:0.5}}
+                              <Tab
+                                sx={{ p: 0.5 }}
                                 label="Tarjeta Roja"
                                 {...a11yProps(2)}
                                 icon={
@@ -761,8 +961,8 @@ export default function DialogComponentEstadisticas(props) {
                                   />
                                 }
                               />
-                              <Tab 
-                              sx={{p:0.5}}
+                              <Tab
+                                sx={{ p: 0.5 }}
                                 label="Tarjeta Amarilla"
                                 {...a11yProps(3)}
                                 icon={
@@ -773,8 +973,8 @@ export default function DialogComponentEstadisticas(props) {
                                 }
                               />
 
-                              <Tab 
-                              sx={{p:0.5}}
+                              <Tab
+                                sx={{ p: 0.5 }}
                                 label="Lesion Naranja"
                                 {...a11yProps(4)}
                                 icon={
@@ -785,8 +985,8 @@ export default function DialogComponentEstadisticas(props) {
                                 }
                               />
 
-                              <Tab 
-                              sx={{p:0.5}}
+                              <Tab
+                                sx={{ p: 0.5 }}
                                 label="Lesion Roja"
                                 {...a11yProps(5)}
                                 icon={
@@ -796,8 +996,8 @@ export default function DialogComponentEstadisticas(props) {
                                   />
                                 }
                               />
-                              <Tab 
-                              sx={{p:0.5}}
+                              <Tab
+                                sx={{ p: 0.5 }}
                                 label="MVP"
                                 {...a11yProps(6)}
                                 icon={
@@ -809,38 +1009,107 @@ export default function DialogComponentEstadisticas(props) {
                               />
                             </Tabs>
                           </Box>
-                          <Box  onSubmit={handleSubmit(onSubmit)}>
+                          <Box>
                             <TabPanel value={valueTab} index={0}>
-                             
-                                <GoleadoresComponents partido={dataItemSelect?.id} torneo={dataItemSelect?.torneo_id} visitante={selectedVisitante} setSelectedVisitante={setSelectedVisitante}  local={selectedLocal} setSelectedLocal={setSelectedLocal} setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal}/>
-                           
+                              <GoleadoresComponents
+                                partido={dataItemSelect?.id}
+                                torneo={dataItemSelect?.torneo_id}
+                                visitante={selectedVisitante}
+                                setSelectedVisitante={setSelectedVisitante}
+                                local={selectedLocal}
+                                setSelectedLocal={setSelectedLocal}
+                                setSearchVisitante={setSearchVisitante}
+                                setSearchLocal={setSearchLocal}
+                              />
                             </TabPanel>
                             <TabPanel value={valueTab} index={1}>
-                              <AsistenciasComponents  partido={dataItemSelect?.id} torneo={dataItemSelect?.torneo_id} visitante={selectedVisitanteAsistencias} setSelectedVisitante={setSelectedLocalAsistencias}  local={selectedLocalAsistencias} setSelectedLocal={setSelectedLocalAsistencias} setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal}  />
+                              <AsistenciasComponents
+                                partido={dataItemSelect?.id}
+                                torneo={dataItemSelect?.torneo_id}
+                                visitante={selectedVisitanteAsistencias}
+                                setSelectedVisitante={
+                                  setSelectedLocalAsistencias
+                                }
+                                local={selectedLocalAsistencias}
+                                setSelectedLocal={setSelectedLocalAsistencias}
+                                setSearchVisitante={setSearchVisitante}
+                                setSearchLocal={setSearchLocal}
+                              />
                             </TabPanel>
                             <TabPanel value={valueTab} index={2}>
-                              <TarjetaRojaComponents partido={dataItemSelect?.id} torneo={dataItemSelect?.torneo_id} visitante={selectedVisitanteTarjetaRoja} setSelectedVisitante={setSelectedVisitanteTarjetaRoja}  local={selectedLocalTarjetaRoja} setSelectedLocal={setSelectedLocalTarjetaRoja} setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal} />
+                              <TarjetaRojaComponents
+                                partido={dataItemSelect?.id}
+                                torneo={dataItemSelect?.torneo_id}
+                                visitante={selectedVisitanteTarjetaRoja}
+                                setSelectedVisitante={
+                                  setSelectedVisitanteTarjetaRoja
+                                }
+                                local={selectedLocalTarjetaRoja}
+                                setSelectedLocal={setSelectedLocalTarjetaRoja}
+                                setSearchVisitante={setSearchVisitante}
+                                setSearchLocal={setSearchLocal}
+                              />
                             </TabPanel>
                             <TabPanel value={valueTab} index={3}>
-                              <TarjetaAmarillaComponents partido={dataItemSelect?.id} torneo={dataItemSelect?.torneo_id} visitante={selectedVisitanteTarjetaAmarilla} setSelectedVisitante={setSelectedVisitanteTarjetaAmarilla}  local={selectedLocalTarjetaAmarilla} setSelectedLocal={setSelectedLocalTarjetaAmarilla} setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal} />
+                              <TarjetaAmarillaComponents
+                                partido={dataItemSelect?.id}
+                                torneo={dataItemSelect?.torneo_id}
+                                visitante={selectedVisitanteTarjetaAmarilla}
+                                setSelectedVisitante={
+                                  setSelectedVisitanteTarjetaAmarilla
+                                }
+                                local={selectedLocalTarjetaAmarilla}
+                                setSelectedLocal={
+                                  setSelectedLocalTarjetaAmarilla
+                                }
+                                setSearchVisitante={setSearchVisitante}
+                                setSearchLocal={setSearchLocal}
+                              />
                             </TabPanel>
                             <TabPanel value={valueTab} index={4}>
-                              <LesionNaranjaComponents  partido={dataItemSelect?.id} torneo={dataItemSelect?.torneo_id} visitante={selectedVisitanteLesionNaranja} setSelectedVisitante={setSelectedVisitanteLesionNaranja}  local={selectedLocalLesionNaranja} setSelectedLocal={setSelectedLocalLesionNaranja} setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal} />
+                              <LesionNaranjaComponents
+                                partido={dataItemSelect?.id}
+                                torneo={dataItemSelect?.torneo_id}
+                                visitante={selectedVisitanteLesionNaranja}
+                                setSelectedVisitante={
+                                  setSelectedVisitanteLesionNaranja
+                                }
+                                local={selectedLocalLesionNaranja}
+                                setSelectedLocal={setSelectedLocalLesionNaranja}
+                                setSearchVisitante={setSearchVisitante}
+                                setSearchLocal={setSearchLocal}
+                              />
                             </TabPanel>
                             <TabPanel value={valueTab} index={5}>
-                              <LesionRojaComponents partido={dataItemSelect?.id} torneo={dataItemSelect?.torneo_id} visitante={selectedVisitanteLesionRoja} setSelectedVisitante={setSelectedVisitanteLesionRoja}  local={selectedLocalLesionRoja} setSelectedLocal={setSelectedLocalLesionRoja} setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal} />
+                              <LesionRojaComponents
+                                partido={dataItemSelect?.id}
+                                torneo={dataItemSelect?.torneo_id}
+                                visitante={selectedVisitanteLesionRoja}
+                                setSelectedVisitante={
+                                  setSelectedVisitanteLesionRoja
+                                }
+                                local={selectedLocalLesionRoja}
+                                setSelectedLocal={setSelectedLocalLesionRoja}
+                                setSearchVisitante={setSearchVisitante}
+                                setSearchLocal={setSearchLocal}
+                              />
                             </TabPanel>
-                            <TabPanel value={valueTab} index={6} >
-                             
-                              <MvpComponents partido={dataItemSelect?.id} torneo={dataItemSelect?.torneo_id}  jugador={selectedMvp} setJugador={setSelectedMvp}  setSearchVisitante={setSearchVisitante} setSearchLocal={setSearchLocal} />
-               
+                            <TabPanel value={valueTab} index={6}>
+                              <MvpComponents
+                                partido={dataItemSelect?.id}
+                                torneo={dataItemSelect?.torneo_id}
+                                jugador={selectedMvp}
+                                setJugador={setSelectedMvp}
+                                setSearchVisitante={setSearchVisitante}
+                                setSearchLocal={setSearchLocal}
+                              />
                             </TabPanel>
                           </Box>
                         </Box>
                       </Item>
                     </Grid>
                   </Grid>
-                 {/*  <Grid item xl={4} lg={4} md={4} xs={6} sx={{ mt: 2 }}>
+                  {/*  <Grid item xl={4} lg={4} md={4} xs={6} sx={{ mt: 2 }}>
                     <Item>
                       <Fab
                         type="submit"
@@ -869,7 +1138,7 @@ export default function DialogComponentEstadisticas(props) {
                     height: "100%",
                   }}
                 >
-                   <Item sx={{width:"233px", height:"223px"}}>
+                  <Item sx={{ width: "233px", height: "223px" }}>
                     <img
                       width={213}
                       height={200}
@@ -878,7 +1147,7 @@ export default function DialogComponentEstadisticas(props) {
                     />
                   </Item>
                   <List
-                   component="nav"
+                    component="nav"
                     sx={{
                       width: "100%",
                       maxWidth: 360,
@@ -887,7 +1156,6 @@ export default function DialogComponentEstadisticas(props) {
                       overflow: "auto",
                       maxHeight: 633,
                       "& ul": { padding: 0 },
-                      
                     }}
                     subheader={<li />}
                   >
@@ -927,12 +1195,19 @@ export default function DialogComponentEstadisticas(props) {
                       searchVisitante?.map((jugador) => (
                         <li key={jugador.id}>
                           <ul>
-                          <ListItemButton selected={valueTab===6 && (selectedIndexVisitante === jugador.id)}  onClick={()=>handleClickVisitante(jugador)}> 
+                            <ListItemButton
+                              disabled={disabledSelected}
+                              selected={
+                                valueTab === 6 &&
+                                selectedIndexVisitante === jugador.id
+                              }
+                              onClick={() => handleClickVisitante(jugador)}
+                            >
                               <ListItemAvatar>
                                 <Avatar src="/broken-image.jpg" />
                               </ListItemAvatar>
                               <ListItemText primary={jugador.nombre} />
-                              </ListItemButton>
+                            </ListItemButton>
                           </ul>
                         </li>
                       ))
@@ -954,7 +1229,22 @@ export default function DialogComponentEstadisticas(props) {
             </Box>
           </Item>
         </Box>
-      </Dialog>
-    </div>
+        <Grid item xl={4} lg={4} md={4} xs={6} sx={{ mt: 2 }}>
+          <Fab
+            type="submit"
+            size="x-large"
+            color="primary"
+            aria-label="add"
+            sx={{
+              position: "absolute",
+              bottom: 1,
+              right: 273,
+            }}
+          >
+            <SaveIcon />
+          </Fab>
+        </Grid>
+      </form>
+    </Dialog>
   );
 }
