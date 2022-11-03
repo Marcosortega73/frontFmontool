@@ -79,14 +79,14 @@ function Navbar() {
     <>
       <nav className="navbar">
         <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
-          <ButtonBase sx={{ width: 128, height: 128 }}>
+          <ButtonBase className="logo-mobile" sx={{ width: 128, height: 128 }}>
             <Img alt="Competiciones-Online" src={logo} />
           </ButtonBase>
         </Link>
-        <Grid container>
-          <Grid container sx={{ pb: 2 }}>
+        <Grid   sx={{height:"100%"}}>
+          <Grid  sx={{ pb: 2 }}>
             <Grid item xs={9}>
-              <Search>
+              <Search className="search-mobile">
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
@@ -109,9 +109,10 @@ function Navbar() {
             >
               {!isLoggedIn ? (
                 <>
-                  <Grid item sx={{ pr: 2 }}>
+                  <Grid item sx={{ pr: 2 }} className="navbar-container">
                     <Link to="/login" sx={{ textDecoration: "none" }}>
                       <Button
+                      className="navbar-container"
                         sx={{
                           backgroundColor: "#1e2024",
                           color: "#b0bec5",
@@ -134,7 +135,7 @@ function Navbar() {
                     </Link>
                   </Grid>
 
-                  <Grid item sx={{ height: "50%" }}>
+                  <Grid  item sx={{ height: "50%" }}>
                     <Link to="/register">
                       <Button
                         sx={{
@@ -262,7 +263,10 @@ function Navbar() {
             container
             sx={{
               mt: 0,
+              height: "100%",
             }}
+            className="navbar-container"
+            
           >
             <div className="menu-icon" onClick={handleClick}>
               {click ? <CloseIcon /> : <MenuIcon  color="#E5E5E5"/>}

@@ -79,11 +79,20 @@
       height: 100vh !important;
       z-index: 50000;
       position: relative;
-      top: 80px;
       left: -100%;
       transition: all 0.5s ease;
     }
-  
+
+    .search-mobile{
+      display:none
+    }
+    
+    .logo-mobile{
+      z-index: 60000;
+    }
+    .navbar-container{
+      display:none !important;
+    }
     .nav-menu.active {
       margin-top: auto;
       background: #1e2024;

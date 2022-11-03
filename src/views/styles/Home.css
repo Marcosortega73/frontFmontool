@@ -1,12 +1,14 @@
+@import url();
 .bgImageContainer{
-    background-image: url('http://drive.google.com/uc?export=view&id=1JZJUgA0rrGzP9r1tpRDzAyiF_OidvlRj');
+    background-image: url("../../../public/images/home-bg.jpg");
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    height: 82vh;
-    width: 100vh;
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.bgImage{
+    display: block;
 }

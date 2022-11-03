@@ -161,8 +161,8 @@ export default function Footer() {
             alignItems: "center",
           }}
         >
-          <Typography variant="body1" color="customTheme.acento200">
-            <h4>COMPETICIONES ONLINE FM</h4>
+          <Typography variant="h5" component="p" color="customTheme.acento200">
+            COMPETICIONES ONLINE FM
           </Typography>
           <Copyright />
         </Container>
