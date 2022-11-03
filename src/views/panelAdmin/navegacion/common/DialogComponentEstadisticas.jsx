@@ -163,6 +163,27 @@ export default function DialogComponentEstadisticas(props) {
   };
 
   React.useEffect(() => {
+    //limpiar datos
+    setSelectedIndexVisitante(null);
+    setSelectedIndexLocal(null);
+    setSelectedVisitante([]);
+    setSelectedLocal([]);
+    setGoleadores([]);
+    setSelectedVisitanteAsistencias([]);
+    setSelectedLocalAsistencias([]);
+    setAsistentes([]);
+    setSelectedVisitanteTarjetaRoja([]);
+    setSelectedLocalTarjetaRoja([]);
+    setSelectedVisitanteTarjetaAmarilla([]);
+    setSelectedLocalTarjetaAmarilla([]);
+    setSelectedVisitanteLesionNaranja([]);
+    setSelectedLocalLesionNaranja([]);
+    setSelectedVisitanteLesionRoja([]);
+    setSelectedLocalLesionRoja([]);
+    setSelectedMvp({});
+    setDisabledSelected(false);
+    //fin limpiar datos
+
     setSearchLocal(dataItemSelect?.local?.Jugadors);
     setSearchVisitante(dataItemSelect?.visitante?.Jugadors);
   }, [dataItemSelect, open]);
@@ -172,6 +193,7 @@ export default function DialogComponentEstadisticas(props) {
 
     switch (newValue) {
       case 0:
+        setDisabledSelected(false);
         console.log("goleador");
         const dataLocal = dataItemSelect?.local?.Jugadors.filter(
           (
@@ -194,6 +216,7 @@ export default function DialogComponentEstadisticas(props) {
         setSearchVisitante(dataVisitante);
         break;
       case 1:
+        setDisabledSelected(false);
         console.log("asistencias");
         const dataLocalAsistencias = dataItemSelect?.local?.Jugadors.filter(
           (
@@ -215,10 +238,10 @@ export default function DialogComponentEstadisticas(props) {
 
         console.log("dataLocalss asistencias", dataVisitanteAsistencias);
         setSearchLocal(dataLocalAsistencias);
-
         setSearchVisitante(dataVisitanteAsistencias);
         break;
       case 2:
+        setDisabledSelected(false);
         console.log("tarjeta roja");
         const dataLocalTarjetaRoja = dataItemSelect?.local?.Jugadors.filter(
           (
@@ -228,6 +251,7 @@ export default function DialogComponentEstadisticas(props) {
               (itemSelected) => itemSelected.id === itemSearch.id
             )
         );
+       
         const dataVisitanteTarjetaRoja =
           dataItemSelect?.visitante?.Jugadors.filter(
             (
@@ -242,6 +266,7 @@ export default function DialogComponentEstadisticas(props) {
 
         break;
       case 3:
+        setDisabledSelected(false);
         console.log("tarjeta amarilla");
         const dataLocalTarjetaAmarilla = dataItemSelect?.local?.Jugadors.filter(
           (
@@ -265,6 +290,7 @@ export default function DialogComponentEstadisticas(props) {
 
         break;
       case 4:
+        setDisabledSelected(false);
         console.log("lesion naranja");
         const dataLocalLesionNaranja = dataItemSelect?.local?.Jugadors.filter(
           (
@@ -287,6 +313,7 @@ export default function DialogComponentEstadisticas(props) {
         setSearchVisitante(dataVisitanteLesionNaranja);
         break;
       case 5:
+        setDisabledSelected(false);
         console.log("lesion roja");
         const dataLocalLesionRoja = dataItemSelect?.local?.Jugadors.filter(
           (
@@ -309,6 +336,7 @@ export default function DialogComponentEstadisticas(props) {
         setSearchVisitante(dataVisitanteLesionRoja);
         break;
       case 6:
+        setDisabledSelected(false);
         console.log("mvp");
         const dataLocalMvp = dataItemSelect?.local?.Jugadors.filter(
           (
@@ -320,7 +348,6 @@ export default function DialogComponentEstadisticas(props) {
             itemSearch //quitar los que ya estan seleccionados
           ) => !selectedMvp.id === itemSearch.id
         );
-        console.lot("dataLocalss mvp", setSelectedMvp);
 
         setSearchLocal(dataLocalMvp);
         setSearchVisitante(dataVisitanteMvp);
@@ -425,39 +452,49 @@ export default function DialogComponentEstadisticas(props) {
         const dataVisitanteAsistencias = searchLocal.filter(
           (itemSearch) => itemSearch.id !== item.id //quitar el jugador seleccionado de la lista
         );
+       
         setSearchLocal(dataVisitanteAsistencias);
+       
         break;
       case 2:
         setSelectedLocalTarjetaRoja((prev) => [...prev, item]);
         const dataVisitanteTarjetaRoja = searchLocal.filter(
           (itemSearch) => itemSearch.id !== item.id //quitar el jugador seleccionado de la lista
         );
-
+       
         setSearchLocal(dataVisitanteTarjetaRoja);
+        
         break;
       case 3:
         setSelectedLocalTarjetaAmarilla((prev) => [...prev, item]);
         const dataVisitanteTarjetaAmarilla = searchLocal.filter(
           (itemSearch) => itemSearch.id !== item.id //quitar el jugador seleccionado de la lista
         );
+       
         setSearchLocal(dataVisitanteTarjetaAmarilla);
+       
         break;
       case 4:
         setSelectedLocalLesionNaranja((prev) => [...prev, item]);
         const dataVisitanteLesionNaranja = searchLocal.filter(
           (itemSearch) => itemSearch.id !== item.id //quitar el jugador seleccionado de la lista
         );
+       
         setSearchLocal(dataVisitanteLesionNaranja);
+     
         break;
       case 5:
         setSelectedLocalLesionRoja((prev) => [...prev, item]);
         const dataVisitanteLesionRoja = searchLocal.filter(
           (itemSearch) => itemSearch.id !== item.id //quitar el jugador seleccionado de la lista
         );
+       
         setSearchLocal(dataVisitanteLesionRoja);
+       
         break;
       case 6:
         setSelectedMvp(item);
+       
         break;
       default:
         break;
@@ -469,31 +506,33 @@ export default function DialogComponentEstadisticas(props) {
 
     console.log(dataItemSelect);
 
-    if(goleadores?.length>0){
-      console.log("ENTRO A GOLEADORES PARA MANDAR AL BACH")
+    if (goleadores?.length > 0) {
+      console.log("ENTRO A GOLEADORES PARA MANDAR AL BACH");
       const dataGoleadores = {
         goleadores: goleadores,
         idPartido: dataItemSelect.id,
         idTorneo: dataItemSelect.torneo_id,
         estadistica_id: 1,
       };
-      const response = await estadisticasServices.cargarGoleadoresService(dataGoleadores);
+      const response = await estadisticasServices.cargarGoleadoresService(
+        dataGoleadores
+      );
       console.log("response", response);
     }
 
-    if(asistentes?.length>0){
-      console.log("ENTRO A ASISTENCIAS PARA MANDAR AL BACH")
+    if (asistentes?.length > 0) {
+      console.log("ENTRO A ASISTENCIAS PARA MANDAR AL BACH");
       const dataAsistencias = {
         asistencias: asistentes,
         idPartido: dataItemSelect.id,
         idTorneo: dataItemSelect.torneo_id,
         estadistica_id: 2,
       };
-      const response = await estadisticasServices.cargarAsistenciasService(dataAsistencias);
+      const response = await estadisticasServices.cargarAsistenciasService(
+        dataAsistencias
+      );
       console.log("response", response);
     }
-
-    
 
     if (
       selectedLocalTarjetaRoja.length > 0 ||
@@ -570,8 +609,8 @@ export default function DialogComponentEstadisticas(props) {
       const response = await estadisticasServices.cargarLesionRojaService(data);
       console.log(response);
     }
-
-    if (selectedMvp.length > 0) {
+    console.log(selectedMvp, "SOLITARIO LOCALL")
+    if (Object.entries(selectedMvp).length > 0) {
       console.log("entro a mvp");
       const data = {
         idPartido: dataItemSelect.id,
@@ -589,14 +628,16 @@ export default function DialogComponentEstadisticas(props) {
       icon: "success",
       showConfirmButton: false,
       timer: 1500,
+      customClass: {
+        container: "swal-overlay",
+      },
     }).then(() => {
       setOpen(false);
     });
-    
   };
 
   React.useEffect(() => {
-    setDisabledSelected(false)
+    setDisabledSelected(false);
     handleDisabled();
   }, [
     selectedLocal,
@@ -605,31 +646,33 @@ export default function DialogComponentEstadisticas(props) {
     selectedVisitanteTarjetaRoja,
     selectedLocalAsistencias,
     selectedVisitanteAsistencias,
-  ]) // eslint-disable-line 
+    searchLocal,
+    searchVisitante
+  ]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDisabled = () => {
-
     if (
       selectedLocal?.length + selectedVisitante?.length >=
       dataItemSelect?.goles_local + dataItemSelect?.goles_visitante
+      && valueTab === 0
     ) {
       setDisabledSelected(true);
     }
 
     if (
       selectedLocalAsistencias?.length + selectedVisitanteAsistencias?.length >=
-      dataItemSelect?.goles_local + dataItemSelect?.goles_visitante
+      dataItemSelect?.goles_local + dataItemSelect?.goles_visitante && valueTab === 1
     ) {
       setDisabledSelected(true);
     }
 
     if (
-      selectedLocalTarjetaRoja?.length >= 4 ||
-      selectedVisitanteTarjetaRoja?.length >= 4
+      (selectedLocalTarjetaRoja?.length >= 4 ||
+      selectedVisitanteTarjetaRoja?.length >= 4)
+      && valueTab === 2
     ) {
       setDisabledSelected(true);
     }
-
   };
 
   return (
@@ -640,12 +683,12 @@ export default function DialogComponentEstadisticas(props) {
       TransitionComponent={Transition}
     >
       <form onSubmit={handleSubmit}>
-        <AppBar sx={{ position: "relative" }}>
+        <AppBar position="fixed">
           <Toolbar
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              backgroundColor: "#546e7a",
+              backgroundColor: "customTheme.acento500",
             }}
           >
             <IconButton
@@ -654,10 +697,10 @@ export default function DialogComponentEstadisticas(props) {
               onClick={handleClose}
               aria-label="close"
             >
-              Estadisticas
+              Cargar Estadisticas
             </IconButton>
-            <Button autoFocus color="inherit" onClick={handleClose}>
-              Save
+            <Button autoFocus variant="contained" color="primary" type="submit">
+              Guardar
             </Button>
           </Toolbar>
         </AppBar>
@@ -665,7 +708,7 @@ export default function DialogComponentEstadisticas(props) {
         <Box
           sx={{
             p: 3,
-            pt: 0,
+            pt: 8,
             backgroundColor: "primary.main",
             width: "100%",
             height: "100%",
@@ -687,7 +730,7 @@ export default function DialogComponentEstadisticas(props) {
                 divider={
                   <Divider
                     sx={{
-                      border: "solid 5px #546e7a",
+                      border: "solid 5px #757575",
                       backgroundColor: "secondary.main",
                     }}
                     orientation="vertical"
@@ -958,40 +1001,45 @@ export default function DialogComponentEstadisticas(props) {
                         <Box sx={{ width: "100%" }}>
                           <Box
                             sx={{
+                              flexGrow: 1,
+                    
                               borderBottom: 1,
                               borderColor: "divider",
                               display: "flex",
                               justifyContent: "center",
                               alignItems: "center",
+                              overflow: "auto",
                             }}
                           >
                             <Tabs
                               value={valueTab}
                               onChange={handleChangeTab}
-                              aria-label="basic tabs example"
+                              aria-label="scrollable auto tabs example"
+                              variant="scrollable"
+                              scrollButtons="auto"
                             >
                               <Tab
-                                sx={{ p: 0.5 }}
+                                sx={{ pr: 0.5 }}
                                 label="Goleadores"
                                 {...a11yProps(0)}
                                 icon={<SportsSoccerIcon fontSize="large" />}
                                 onClick={() => {}}
                               />
                               <Tab
-                                sx={{ p: 0.5 }}
+                                sx={{ p: 1 }}
                                 label="Asistencias"
                                 {...a11yProps(1)}
                                 icon={
                                   <img
-                                    width={45}
-                                    height={45}
+                                    width={37}
+                                    height={33}
                                     src={IconoAsistensias}
                                     alt="asistencias"
                                   />
                                 }
                               />
                               <Tab
-                                sx={{ p: 0.5 }}
+                                sx={{ p: 1 }}
                                 label="Tarjeta Roja"
                                 {...a11yProps(2)}
                                 icon={
@@ -1002,7 +1050,7 @@ export default function DialogComponentEstadisticas(props) {
                                 }
                               />
                               <Tab
-                                sx={{ p: 0.5 }}
+                                sx={{ p: 1 }}
                                 label="Tarjeta Amarilla"
                                 {...a11yProps(3)}
                                 icon={
@@ -1014,7 +1062,7 @@ export default function DialogComponentEstadisticas(props) {
                               />
 
                               <Tab
-                                sx={{ p: 0.5 }}
+                                sx={{ p: 1 }}
                                 label="Lesion Naranja"
                                 {...a11yProps(4)}
                                 icon={
@@ -1026,7 +1074,7 @@ export default function DialogComponentEstadisticas(props) {
                               />
 
                               <Tab
-                                sx={{ p: 0.5 }}
+                                sx={{ p: 1 }}
                                 label="Lesion Roja"
                                 {...a11yProps(5)}
                                 icon={
@@ -1037,7 +1085,7 @@ export default function DialogComponentEstadisticas(props) {
                                 }
                               />
                               <Tab
-                                sx={{ p: 0.5 }}
+                                sx={{ p: 1 }}
                                 label="MVP"
                                 {...a11yProps(6)}
                                 icon={
@@ -1050,7 +1098,7 @@ export default function DialogComponentEstadisticas(props) {
                             </Tabs>
                           </Box>
                           <Box>
-                          {/* GOLEADORES TABS */}
+                            {/* GOLEADORES TABS */}
                             <TabPanel value={valueTab} index={0}>
                               <GoleadoresComponents
                                 partido={dataItemSelect?.id}
@@ -1064,7 +1112,6 @@ export default function DialogComponentEstadisticas(props) {
                                 setGoleadores={setGoleadores}
                                 goleadores={goleadores}
                                 dataItemSelect={dataItemSelect}
-                                
                               />
                             </TabPanel>
                             <TabPanel value={valueTab} index={1}>
@@ -1073,7 +1120,7 @@ export default function DialogComponentEstadisticas(props) {
                                 torneo={dataItemSelect?.torneo_id}
                                 visitante={selectedVisitanteAsistencias}
                                 setSelectedVisitante={
-                                  setSelectedLocalAsistencias
+                                  setSelectedVisitanteAsistencias
                                 }
                                 local={selectedLocalAsistencias}
                                 setSelectedLocal={setSelectedLocalAsistencias}
@@ -1276,7 +1323,7 @@ export default function DialogComponentEstadisticas(props) {
             </Box>
           </Item>
         </Box>
-        <Grid item xl={4} lg={4} md={4} xs={6} sx={{ mt: 2 }}>
+        {/*  <Grid item xl={4} lg={4} md={4} xs={6} sx={{ mt: 2 }}>
           <Fab
             type="submit"
             size="x-large"
@@ -1290,7 +1337,7 @@ export default function DialogComponentEstadisticas(props) {
           >
             <SaveIcon />
           </Fab>
-        </Grid>
+        </Grid> */}
       </form>
     </Dialog>
   );

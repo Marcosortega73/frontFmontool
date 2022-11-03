@@ -98,7 +98,7 @@ const TarjetaRojaComponents = ({partido,torneo, visitante, setSearchVisitante,lo
 
   return (
     <>
-    <form onSubmit={handleSubmit}>
+
       <Grid container spacing={2}>
         <Grid
           item
@@ -245,25 +245,9 @@ const TarjetaRojaComponents = ({partido,torneo, visitante, setSearchVisitante,lo
           </Item>
           
         </Grid>
-        <Grid item xl={4} lg={4} md={4} xs={6} sx={{ mt: 2 }}>
-              
-                      <Fab
-                        type="submit"
-                        size="x-large"
-                        color="secondary"
-                        aria-label="add"
-                        sx={{
-                          position: "absolute",
-                          bottom: 16,
-                          right: 423,
-                        }}
-                      >
-                       <SaveIcon />
-                      </Fab>
-          
-                  </Grid>
+  
       </Grid>
-      </form>
+
     </>
   );
 };

@@ -49,8 +49,6 @@ const GoleadoresComponents = ({
   setSearchLocal,
   setSelectedVisitante,
   setSelectedLocal,
-  partido,
-  torneo,
   setGoleadores,
   goleadores,
   dataItemSelect,
@@ -59,7 +57,6 @@ const GoleadoresComponents = ({
 
   const [goleadorVisitante, setGoleadorVisitante] = React.useState([]);
   const [goleadorLocal, setGoleadorLocal] = React.useState([]);
-  const [resetGoles, setResetGoles] = React.useState(0);
 
   //que no se repitan los goleadores
 
@@ -71,7 +68,6 @@ const GoleadoresComponents = ({
   }, [visitante, local]);
 
   const handleDeleteChip = (jugador) => {
-    console.info("You clicked the delete icon.");
     console.log("ID", jugador?.id);
 
     const goleadores = goleadorVisitante.filter((goleador) => {
@@ -104,33 +100,6 @@ const GoleadoresComponents = ({
     setSelectedLocal(goleadores);
   };
 
-  const {
-    handleSubmit,
-    control,
-    register,
-    formState: { errors },
-  } = useForm(
-    {
-      defaultValues: {
-        infoPartido: [
-          {
-            partido_id: partido,
-            torneo_id: torneo,
-          },
-        ],
-      },
-    },
-    {
-      mode: "onBlur",
-    }
-  );
-  //useFieldArray
-
-  const onSubmit = async (data) => {
-    //unir los goleadores
-    console.log("goleadorsdadasdases", data);
-    console.log("data goleador",goleadores); // { test: ['test', 'test'] }
-  };
 
   const handleChangeLocal = (e,jugador) => {
 
@@ -436,7 +405,7 @@ const GoleadoresComponents = ({
                   return (
                     <>
                       <ListItem
-                        key={index}
+                        key={jugador.id}
                         sx={{ p: 0.5 }}
                         secondaryAction={
                           <>

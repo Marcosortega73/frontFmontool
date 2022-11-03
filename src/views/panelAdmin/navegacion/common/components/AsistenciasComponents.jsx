@@ -53,7 +53,7 @@ const AsistenciasComponents = ({ visitante, setSearchVisitante,local,setSearchLo
   }, [visitante,local]);
 
   const handleDeleteChip = (jugador) => {
-    console.info("You clicked the delete icon.");
+
     console.log("ID", jugador?.id);
 
     const asistentees = asistenciasVisitante.filter((asistente) => {
@@ -69,6 +69,7 @@ const AsistenciasComponents = ({ visitante, setSearchVisitante,local,setSearchLo
 
     setSelectedVisitante(asistentees);
   };
+ 
 
   const handleDeleteChipLocal = (jugador) => {
     console.info("You clicked the delete icon.");
@@ -167,7 +168,7 @@ const AsistenciasComponents = ({ visitante, setSearchVisitante,local,setSearchLo
         ...asistentesFiltrados,
         {
           jugador_id: jugador,
-          goles: e.target.value,
+          asistencias: e.target.value,
         },
       ]);
     } else {
@@ -175,7 +176,7 @@ const AsistenciasComponents = ({ visitante, setSearchVisitante,local,setSearchLo
         ...asistentes,
         {
           jugador_id: jugador,
-          goles: e.target.value,
+          asistencias: e.target.value,
         },
       ]);
     }
@@ -322,7 +323,7 @@ const AsistenciasComponents = ({ visitante, setSearchVisitante,local,setSearchLo
                 return (
                   <>
                     <ListItem
-                      key={index}
+                      key={jugador.id}
                       sx={{ p: 0.5 }}
                       secondaryAction={
                         <>
@@ -405,11 +406,11 @@ const AsistenciasComponents = ({ visitante, setSearchVisitante,local,setSearchLo
                 </Grid>
               </ListSubheader>
               {asistenciasVisitante?.map((jugador, index) => {
-                //cantidad de gole
+                //cantidad de asistencias
                 return (
                   <>
                     <ListItem
-                      key={index}
+                      key={jugador.id}
                       sx={{ p: 0.5 }}
                       secondaryAction={
                         <>

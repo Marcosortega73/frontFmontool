@@ -100,23 +100,6 @@ const MvpComponents = ({
           </Item>
         </Grid>
 
-        <Grid item xl={12} lg={12} md={12} xs={12} sx={{ mt: 2 }}>
-              
-              <Fab
-       
-                size="x-large"
-                color="secondary"
-                aria-label="add"
-                sx={{
-                  position: "absolute",
-                  bottom: 16,
-                  right: 423,
-                }}
-              >
-               <SaveIcon />
-              </Fab>
-  
-          </Grid>
       </Grid>
     </>
   );

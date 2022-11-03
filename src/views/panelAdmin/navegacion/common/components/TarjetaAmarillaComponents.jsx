@@ -237,23 +237,6 @@ const TarjetaAmarillaComponents = ({ visitante, setSearchVisitante,local,setSear
           </Item>
           
         </Grid>
-        <Grid item xl={4} lg={4} md={4} xs={6} sx={{ mt: 2 }}>
-              
-                      <Fab
-               
-                        size="x-large"
-                        color="secondary"
-                        aria-label="add"
-                        sx={{
-                          position: "absolute",
-                          bottom: 16,
-                          right: 423,
-                        }}
-                      >
-                       <SaveIcon />
-                      </Fab>
-          
-                  </Grid>
       </Grid>
     </>
   );
