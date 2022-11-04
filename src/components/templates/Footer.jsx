@@ -9,15 +9,17 @@ import Grid from "@mui/material/Unstable_Grid2";
 
 import Logo from "../../assets/images/entherprise/logo.png";
 
-
-
 function Copyright() {
   return (
     <Typography variant="body2" color="customTheme.secondary400">
       {"Copyright © "}
-      <Link color="customTheme.acento200" href="https://mui.com/" sx={{
-        textDecoration: "none",
-      }}>
+      <Link
+        color="customTheme.acento200"
+        href="https://mui.com/"
+        sx={{
+          textDecoration: "none",
+        }}
+      >
         | Todos los derechos reservados
       </Link>{" "}
       {new Date().getFullYear()}
@@ -29,7 +31,7 @@ function Copyright() {
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#222729",
   ...theme.typography.body2,
-  padding: theme.spacing(1),
+  /*   padding: theme.spacing(1), */
   textAlign: "center",
   color: "#E5E5E5",
   boxShadow: "none",
@@ -38,8 +40,7 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function Footer() {
   return (
     <Box sx={{ flexGrow: 1, backgroundColor: "customTheme.primary700" }}>
-      <CssBaseline />
-      <Grid container spacing={2}>
+      <Grid container zeroMinWidth={true} sx={{p:3}}>
         <Grid xs={12} md={5} lg={4}>
           <Item
             sx={{
@@ -54,7 +55,7 @@ export default function Footer() {
             </Typography>
           </Item>
         </Grid>
-        <Grid container xs={12} md={7} lg={8} spacing={4}>
+        <Grid container xs={12} md={7} lg={8} spacing={2}>
           <Grid xs={6} lg={3}>
             <Item>
               <Box
@@ -63,8 +64,11 @@ export default function Footer() {
               >
                 Category A
               </Box>
-              <Box component="ul" aria-labelledby="category-a" sx={{ pl: 2,listStyle:"none" }}>
-                <li>Link 1.1</li>
+              <Box
+                component="ul"
+                aria-labelledby="category-a"
+                sx={{ pl: 2, listStyle: "none" }}
+              >
                 <li>Link 1.2</li>
                 <li>Link 1.3</li>
               </Box>
@@ -78,8 +82,11 @@ export default function Footer() {
               >
                 Category B
               </Box>
-              <Box component="ul" aria-labelledby="category-b" sx={{ pl: 2,listStyle:"none" }}>
-                
+              <Box
+                component="ul"
+                aria-labelledby="category-b"
+                sx={{ pl: 2, listStyle: "none" }}
+              >
                 <li>Link 2.1</li>
                 <li>Link 2.2</li>
                 <li>Link 2.3</li>
@@ -94,7 +101,11 @@ export default function Footer() {
               >
                 Category C
               </Box>
-              <Box component="ul" aria-labelledby="category-c" sx={{ pl: 2,listStyle:"none" }}>
+              <Box
+                component="ul"
+                aria-labelledby="category-c"
+                sx={{ pl: 2, listStyle: "none" }}
+              >
                 <li>Link 3.1</li>
                 <li>Link 3.2</li>
                 <li>Link 3.3</li>
@@ -107,17 +118,25 @@ export default function Footer() {
                 id="category-d"
                 sx={{ fontSize: "12px", textTransform: "uppercase" }}
               >
-                Category D
+                Atribuciones
               </Box>
-              <Box component="ul" aria-labelledby="category-d" sx={{ pl: 2,listStyle:"none"}}>
-                <li>Link 4.1</li>
-                <li>Link 4.2</li>
+              <Box
+                component="ul"
+                aria-labelledby="category-d"
+                sx={{ pl: 2, listStyle: "none",color:"#e5e5e5" }}
+              >
+                <li>
+                  <a href="https://www.flaticon.es/" title="iconos">
+                    Iconos creados por Flat Icons - Flaticon
+                  </a>
+                </li>
+                <li><a href="https://www.flaticon.es/iconos-gratis/firma" title="firma iconos">Firma iconos creados por smalllikeart - Flaticon</a></li>
                 <li>Link 4.3</li>
               </Box>
             </Item>
           </Grid>
         </Grid>
-        <Grid
+        {/* <Grid
           xs={12}
           container
           justifyContent="space-between"
@@ -139,21 +158,19 @@ export default function Footer() {
               <Item>Link C</Item>
             </Grid>
           </Grid>
-        </Grid>
+        </Grid> */}
       </Grid>
 
       <Box
         component="footer"
         sx={{
           py: 3,
-          px: 2,
+
           mt: "auto",
           backgroundColor: "#343338",
-          
         }}
       >
-        <Container
-          maxWidth="sm"
+        <Box
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -165,7 +182,7 @@ export default function Footer() {
             COMPETICIONES ONLINE FM
           </Typography>
           <Copyright />
-        </Container>
+        </Box>
       </Box>
     </Box>
   );

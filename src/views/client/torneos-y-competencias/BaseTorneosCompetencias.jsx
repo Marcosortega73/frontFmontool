@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
-import { AppBar, Paper } from "@mui/material";
+import { AppBar, Paper, Toolbar } from "@mui/material";
 import { Link } from "react-router-dom";
 
 import Portada from "../../../assets/images/banners/portadacofm.png";
@@ -53,6 +53,7 @@ const BaseTorneosCompetencias = () => {
   };
   return (
     <>
+    <Toolbar />
       <Box
         sx={{
           display: "flex",
@@ -64,7 +65,7 @@ const BaseTorneosCompetencias = () => {
           <Img src={Portada} alt="Portada" />
         </Box>
 
-        <Box sx={{ bgcolor: "background.paper", width: "90%", mt:2}}>
+        <Box sx={{ bgcolor: "customTheme.acento500", width: "90%", mt:2,borderRadius:5}}>
           <AppBar position="static" className="appTabsGroup">
             <Tabs
               value={value}
@@ -106,23 +107,11 @@ const BaseTorneosCompetencias = () => {
               />
             </Tabs>
           </AppBar>
-         {/*  <TabPanel value={value} index={0}>
-            Item One
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            Item Two
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            Item Three
-          </TabPanel>
-          <TabPanel value={value} index={3}>
-            Item Four
-          </TabPanel> */}
              <Outlet />
         </Box>
-        <Box component="main">
+       {/*  <Box component="main">
        
-        </Box>
+        </Box> */}
       </Box>
     </>
   );

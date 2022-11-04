@@ -2,15 +2,18 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { Img } from "../styles-components/Layout";
 import siteEnConstruccion from "../assets/images/generales/SitioEnConstruccion.png";
+import { Toolbar } from "@mui/material";
 const SitioEnConstruccion = () => {
   return (
     <>
+    <Toolbar />
       <Container maxWidth="sm" sx={{
           backgroundColor:"#292c31",
           width:"100%",
           height:"100%",
           
           }}>
+            
         <Box
           sx={{
             width: "100%",

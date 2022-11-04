@@ -15,6 +15,8 @@ import TableLigasClasificacionComponent from "./base-de-datos/component/TableLig
 import FixtureComponent from "./base-de-datos/component/FixtureComponent";
 import { getFixture } from "../../../redux/fixtureSlice";
 
+import IconLiga from "../../../assets/images/iconos/liga.png";
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -97,7 +99,7 @@ const Ligas = () => {
 
   return (
     <>
-      <Box sx={{ width: "100%", backgroundColor: "secondary.main" }}>
+      <Box sx={{ width: "100%", backgroundColor: "customTheme.acento500",borderRadius:5 }}>
         <Box
           sx={{
             borderBottom: 1,
@@ -115,6 +117,7 @@ const Ligas = () => {
             {ligasData.map((liga, index) => {
               return (
                 <Tab
+                className="tab-opciones"
                   key={index}
                   label={liga.nombre}
                   onClick={() => {
@@ -125,7 +128,7 @@ const Ligas = () => {
                     <Img
                       width={73}
                       height={73}
-                      src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Logo_superliga.png"
+                      src={IconLiga}
                       alt="imagen"
                     />
                   }
@@ -138,7 +141,7 @@ const Ligas = () => {
         {ligasData?.map((liga, index) => {
           return (
             <TabPanel value={value} index={index} key={index}>
-              <Toolbar
+             {/*  <Toolbar
                 variant="dense"
                 sx={{
                   backgroundColor: "secondary.main",
@@ -178,7 +181,7 @@ const Ligas = () => {
                     {liga?.Season.nombre}
                   </Typography>
                 </div>
-              </Toolbar>
+              </Toolbar> */}
               <Grid container spacing={2} elevation="0">
                 <Grid item xs={12} md={8}>
                   <Box

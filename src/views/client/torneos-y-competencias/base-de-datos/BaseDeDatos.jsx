@@ -29,9 +29,6 @@ const BaseDeDatos = () => {
     <>
     <Container sx={{mt:3}}>
     <Box>
-         <FIlterComponentBaseDatos />
-    </Box>
-    <Box>
         <TableJugadores jugadores={jugadores} setOpen={setOpenDialog} setJugadorSelect={setJugadorSelect} />
     </Box>
 

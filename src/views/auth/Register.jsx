@@ -3,6 +3,7 @@ import {
   Container,
   FormControl,
   Grid,
+  Toolbar,
   Typography,
 } from "@mui/material";
 
@@ -117,7 +118,8 @@ const Register = ({ data }) => {
   //simulando una espera
 
   return (
-    <>
+    <>  
+    <Toolbar />
          <Container
           fixed
           sx={{
@@ -133,7 +135,7 @@ const Register = ({ data }) => {
           <Box
             elevation={4}
             sx={{
-              bgcolor: "#546e7a40 ",
+              bgcolor: "#75757597 ",
               height: "80%",
               width: "50%",
               borderRadius: "15px",
@@ -180,6 +182,7 @@ const Register = ({ data }) => {
                         labelText="Ingrese su email"
                         type="email"
                         text="Email:"
+                      
                       />
                     </Grid>
                     <Grid xs={12} sx={{mb:"20px"}}>

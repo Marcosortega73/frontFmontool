@@ -3,6 +3,7 @@ import {
     Container,
     FormControl,
     Grid,
+    Toolbar,
   } from "@mui/material";
   import { Box } from "@mui/system";
   import { useState,useEffect   } from "react";
@@ -77,6 +78,7 @@ import {useSelector} from "react-redux";
     
     return (
         <>
+        <Toolbar />
         <Container
           fixed
           sx={{

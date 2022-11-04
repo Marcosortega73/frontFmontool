@@ -7,6 +7,9 @@ import Navbar from "./components/navbar/menu/Navbar";
 import { useDispatch } from "react-redux";
 import { getRegiones } from "./redux/regionesSlice";
 import Footer from "./components/templates/Footer";
+import { Box, Container, Toolbar, Typography } from "@mui/material";
+
+import ImgBg from "./assets/images/imagenes/home-bg.jpg";
 
 function App() {
   const dispatch = useDispatch();
@@ -19,23 +22,29 @@ function App() {
 
   return (
     <>
-      <header
+    <Container  maxWidth="100vw" sx={{px:"0px !important",overflowX:"hidden"}}>
+    <Box sx={{backgroundColor:"red"}}>
+       <header
         style={{
           margin: 0,
           padding: 0,
           backgroundColor: "#1A2027",
-          maxWidth: "100%",
         }}
       >
-        <Navbar />
-      </header>
-      <section style={{ display: "flex", justifyContent: "center" }}>
-        <Outlet />
-      </section>
-      <footer>
-        <Footer />
-      </footer>
+      <Navbar />
+      </header> 
+    </Box>
+    <Box component="section" >
+      <Outlet />
+    </Box>
+    <Box component="footer" maxWidth={"100vw !important"} >
+      <Footer />
+    </Box>
+    </Container>
     </>
+   
+
+  
   );
 }
 

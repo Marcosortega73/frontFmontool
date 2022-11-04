@@ -33,7 +33,7 @@ const getFilterFixtureService = async (torneoId,fecha) => {
   console.log("LLEGE AL GET FILTER Fixture REQ")
 try{
   const response  =  http
-    .get(API_URL+`filtros/${torneoId}?fecha=${fecha}`)
+    .get(API_URL+`filtrosView/${torneoId}?fecha=${fecha}`)
     .then((res) => {
           console.log("FIXTURE FILTER ",res)
           return res.data?.fixture

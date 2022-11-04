@@ -41,7 +41,7 @@ const FixtureComponent = ({ liga }) => {
   const fechasTotales = (liga?.total_de_equipos - 1) * liga?.rondas;
 
   const getFixtureByTorneo = async () => {
-    setProgress(true);
+   
     const response = await FixtureServices.getFilterFixtureService(
       liga?.id,
       fecha
@@ -56,6 +56,7 @@ const FixtureComponent = ({ liga }) => {
   };
 
   React.useEffect(() => {
+    setProgress(true);
     getFixtureByTorneo();
   }, [liga, fecha]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -66,8 +67,8 @@ const FixtureComponent = ({ liga }) => {
   return (
     <>
       {progress ? (
-        <Box sx={{ backgroundColor: "primary.main", p: 0, m: 0 }}>
-          <CircularProgress />
+        <Box  sx={{ backgroundColor: "primary.main", p: 0, m: 0, borderRadius:3 ,width: "100%",height:"100%",display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center" }}>
+          <CircularProgress color="secondary" />
         </Box>
       ) : (
         <Box
@@ -102,6 +103,7 @@ const FixtureComponent = ({ liga }) => {
             <Divider />
             <List dense={dense} sx={{pb:0}}>
               {fixtureBytorneo?.map((fixture, index) => {
+                if(fixture.torneo_id === liga.id){
                 return (
                   <Box sx={{ borderRadius: 5 }} key={index}>
                     <ListItem
@@ -175,12 +177,12 @@ const FixtureComponent = ({ liga }) => {
                             marginBottom: "3px",
                           }}
                         >
-                          <Chip size="small" label={fixture?.local?.nombre} />
+                          <Chip size="small" label={fixture?.local?.nombre_corto} />
                         </div>
                         <div>
                           <Chip
                             size="small"
-                            label={fixture?.visitante?.nombre}
+                            label={fixture?.visitante?.nombre_corto}
                           />
                         </div>
                       </ListItemText>
@@ -188,6 +190,7 @@ const FixtureComponent = ({ liga }) => {
                     <Divider component="li" />
                   </Box>
                 );
+                        }
               })}
             </List>
           </Item>
