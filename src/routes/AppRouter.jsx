@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import App from "../App";
 
 //Vistas Generales
-import Home from "../views/Home";
+import Home from "../views/home/Home";
 
 //Auth
 import Login from "../views/auth/Login.jsx";

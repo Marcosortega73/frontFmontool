@@ -30,7 +30,7 @@ const columns = [
     headerClassName: 'headerClass',
   },
 
-  { field: "nombre", headerName: "Nombre",flex: 1,headerClassName: 'headerClass',},
+  { field: "nombre_corto", headerName: "Nombre",flex: 1,headerClassName: 'headerClass',},
   {
     field: "puntos",
     headerName: "Puntos",

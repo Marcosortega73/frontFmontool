@@ -1,6 +1,6 @@
 @import url();
 .bgImageContainer{
-    background-image: url("../../../public/images/home-bg.jpg");
+    background-image: url("../../../../public/images/home-bg.jpg");
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -35,10 +35,8 @@
 }
 
 .box{
-    background-color: blueviolet;
-    margin-bottom: 20px;
-    height: 100%;
-    width: 100%;
+    background-color: #cca500;
+    z-index: 500000;
 }
     
     

@@ -14,12 +14,18 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
-import IconContrato from "../assets/images/iconos/firma-digital.png";
+import IconContrato from "../../assets/images/iconos/firma-digital.png";
 
-import ImageBg from "../assets/images/imagenes/home-bg.jpg";
-import IconSuperLiga from "../assets/images/entherprise/logoSuperliga.png";
-import ImageFM from "../assets/images/entherprise/FM23.jpg";
-import LogoFM from "../assets/images/entherprise/FM23-Light.png";
+import ImageBg from "../../assets/images/imagenes/home-bg.jpg";
+import IconSuperLiga from "../../assets/images/entherprise/logoSuperliga.png";
+import ImageFM from "../../assets/images/entherprise/FM23.jpg";
+import LogoFM from "../../assets/images/entherprise/FM23-Light.png";
+import SectionLigaComponets from "./components/SectionLigaComponets";
+
+import { useDispatch, useSelector } from "react-redux";
+import { getTorneos } from "../../redux/torneoSlice";
+
+
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#343338",
@@ -58,12 +64,14 @@ const BoxMotion = ({ num }) => {
       <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
             <Grid xs={12} md={6}>
               <Item sx={{ overflowY: "auto" }}>
+              <Grid xs={12}>
                 <img
-                  style={{ maxHeight: "7vh" }}
+                  style={{ maxHeight: "15vh" }}
                   src={LogoFM}
                   alt="bg"
                   className="logoFm"
                 />
+              </Grid>
                 <Typography variant="caption" sx={{ color: "#e5e5e5" }}>
                   UN JUEGO DE SIMULACIÓN INCOMPARABLE
                   <br />
@@ -92,20 +100,57 @@ const BoxMotion = ({ num }) => {
               </Item>
             </Grid>
             <Grid  xs={12} md={6}>
-              <Item sx={{height:"300px",mb:7}}>
+              <Box sx={{}}>
                 <img width={"100%"} height={"100%"} src={ImageFM} alt="bg" />
-              </Item>
+              </Box>
             </Grid>
           </Grid>
     </motion.div>
   );
 };
+
+const LigasMotion = ({torneos}) => {
+  const control = useAnimation();
+  const [ref, inView] = useInView();
+
+  React.useEffect(() => {
+    if (inView) {
+      control.start("visible");
+    } else {
+      control.start("hidden");
+    }
+  }, [control, inView]);
+
+  return (
+    <motion.div
+      ref={ref}
+      variants={boxVariant}
+      initial="hidden"
+      animate={control}
+    >
+      <Grid container>
+            <Grid xs={12} md={12}>
+              <Item sx={{ overflowY: "auto" }}>
+                <SectionLigaComponets torneos={torneos} />
+              </Item>
+            </Grid>
+      </Grid>
+    </motion.div>
+  );
+};
 const Home = () => {
   const [checked, setChecked] = React.useState(false);
+  const { torneos } = useSelector((state) => state.torneos);
+  const dispatch = useDispatch();
 
   const handleChange = () => {
     setChecked((prev) => !prev);
   };
+
+  React.useEffect(() => {
+    dispatch(getTorneos());
+  }, [ dispatch]);
+
   return (
     <>
       <Box component="main" sx={{}}>
@@ -174,13 +219,13 @@ const Home = () => {
             </Box>
           </Box>
         </Box>
-        <Box component="section" sx={{ px: 3, my:5, height: 400 }}>
+        <Box component="section" sx={{ px: 3, my:5}}>
         <BoxMotion num={1} />
         </Box>
-        
-{/*         <BoxMotion num={2} />
-        <BoxMotion num={3} /> */}
       </Box>
+        <Box  sx={{ px: 3, my:5,  }}>
+        <LigasMotion torneos={torneos}/>
+        </Box> 
     </>
   );
 };

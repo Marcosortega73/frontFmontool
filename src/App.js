@@ -37,8 +37,8 @@ function App() {
     <Box component="section" >
       <Outlet />
     </Box>
-    <Box component="footer" maxWidth={"100vw !important"} >
-      <Footer />
+    <Box component="footer">
+    {/*   <Footer /> */}
     </Box>
     </Container>
     </>
