@@ -49,7 +49,7 @@ const columns = [
   },
 ];
 
-export default function TableLigasClasificacionComponent({ equipos, liga }) {
+export default function TableLigasClasificacionComponentSmall({ equipos, liga }) {
   console.log("EQUIPOS TABLE CLASIFICACION", equipos);
 
   return (

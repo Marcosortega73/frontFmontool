@@ -39,7 +39,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function Footer() {
   return (
-    <Box sx={{ flexGrow: 1, backgroundColor: "customTheme.primary700" }}>
+    <Box sx={{ flexGrow: 1, backgroundColor: "customTheme.primary700",mt:5 }}>
       <Grid container zeroMinWidth={true} sx={{p:3}}>
         <Grid xs={12} md={5} lg={4}>
           <Item

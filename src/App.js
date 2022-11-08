@@ -38,7 +38,7 @@ function App() {
       <Outlet />
     </Box>
     <Box component="footer">
-    {/*   <Footer /> */}
+       <Footer />
     </Box>
     </Container>
     </>

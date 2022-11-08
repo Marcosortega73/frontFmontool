@@ -67,14 +67,14 @@ const FixtureComponent = ({ liga }) => {
   return (
     <>
       {progress ? (
-        <Box  sx={{ backgroundColor: "primary.main", p: 0, m: 0, borderRadius:3 ,width: "100%",height:"100%",display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center" }}>
+        <Box  sx={{ backgroundColor: "customTheme.primary700", p: 0, m: 0, borderRadius:3 ,width: "100%",height:"100%",display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center" }}>
           <CircularProgress color="secondary" />
         </Box>
       ) : (
         <Box
-          sx={{ backgroundColor: "primary.main", p: 0, m: 0, borderRadius:3 ,width: "100%",height:"100%",display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center" }}
+          sx={{ backgroundColor: "customTheme.primary700", p: 0, m: 0, borderRadius:3 ,width: "100%",height:"100%",display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center" }}
         >
-          <Box sx={{ width: "100%",height:"100%", backgroundColor: "primary.main",borderRadius:3 }}>
+          <Box sx={{ width: "100%",height:"100%", backgroundColor: "customTheme.primary700",borderRadius:3 }}>
           <Toolbar
             sx={{
               color: "#fff",

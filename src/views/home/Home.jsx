@@ -21,11 +21,10 @@ import IconSuperLiga from "../../assets/images/entherprise/logoSuperliga.png";
 import ImageFM from "../../assets/images/entherprise/FM23.jpg";
 import LogoFM from "../../assets/images/entherprise/FM23-Light.png";
 import SectionLigaComponets from "./components/SectionLigaComponets";
+import IconArrow from "../../assets/images/iconos/arrow-down.png";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getTorneos } from "../../redux/torneoSlice";
-
-
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#343338",
@@ -38,10 +37,10 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const boxVariant = {
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
-  hidden: { opacity: 0, scale: 0},
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.1 } },
+  hidden: { opacity: 0, scale: 0 },
 };
-const BoxMotion = ({ num }) => {
+const BoxMotion = () => {
   const control = useAnimation();
   const [ref, inView] = useInView();
 
@@ -61,55 +60,97 @@ const BoxMotion = ({ num }) => {
       initial="hidden"
       animate={control}
     >
-      <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-            <Grid xs={12} md={6}>
-              <Item sx={{ overflowY: "auto" }}>
-              <Grid xs={12}>
-                <img
-                  style={{ maxHeight: "15vh" }}
-                  src={LogoFM}
-                  alt="bg"
-                  className="logoFm"
-                />
-              </Grid>
-                <Typography variant="caption" sx={{ color: "#e5e5e5" }}>
-                  UN JUEGO DE SIMULACIÓN INCOMPARABLE
-                  <br />
-                  <br />
-                </Typography>
-                <Typography
-                  variant="caption"
-                  sx={{ color: "#e5e5e5" }}
-                  gutterBottom
-                >
-                  Métete en el papel de un verdadero mánager dirigiendo a los
-                  mejores equipos de fútbol del planeta y juega al deporte rey a
-                  tu manera.
-                  <br />
-                  <br />
-                  Ya sea fichando mejor, entrenando más duro o siendo más
-                  inteligente que el rival, el arte de la gestión futbolística
-                  consiste en encontrar el margen de victoria.
-                  <br />
-                  <br />
-                  Football Manager es un juego en el que ningún sueño es
-                  demasiado grande y ni ninguna ambición demasiado extravagante.
-                  No te limites a cumplir las expectativas. Toma el control de
-                  tu club, sueña a lo grande y arrasa.
-                </Typography>
-              </Item>
-            </Grid>
-            <Grid  xs={12} md={6}>
-              <Box sx={{}}>
-                <img width={"100%"} height={"100%"} src={ImageFM} alt="bg" />
-              </Box>
-            </Grid>
-          </Grid>
+      <Grid container columnSpacing={{ xs: 1 }}>
+        <Grid xs={12} md={6} sx={{ p: 3 }}>
+          <Box
+            sx={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Box>
+              <img
+                style={{ maxHeight: "15vh", maxWidth: "100%" }}
+                src={LogoFM}
+                alt="bg"
+                className="logoFm"
+              />
+            </Box>
+
+            <Typography sx={{ color: "#e5e5e5" }}>
+              UN JUEGO DE SIMULACIÓN INCOMPARABLE
+              <br />
+              <br />
+            </Typography>
+            <Typography sx={{ color: "#e5e5e5" }}>
+              Métete en el papel de un verdadero mánager dirigiendo a los
+              mejores equipos de fútbol del planeta y juega al deporte rey a tu
+              manera.
+              <br />
+              <br />
+              Ya sea fichando mejor, entrenando más duro o siendo más
+              inteligente que el rival, el arte de la gestión futbolística
+              consiste en encontrar el margen de victoria.
+              <br />
+              <br />
+              Football Manager es un juego en el que ningún sueño es demasiado
+              grande y ni ninguna ambición demasiado extravagante. No te limites
+              a cumplir las expectativas. Toma el control de tu club, sueña a lo
+              grande y arrasa.
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid xs={12} md={6} sx={{ p: 3 }}>
+          <Box
+            sx={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Box>
+              <img
+                style={{ maxHeight: "15vh", maxWidth: "100%" }}
+                src={IconSuperLiga}
+                alt="bg"
+                className="logoFm"
+              />
+            </Box>
+
+            <Typography sx={{ color: "#e5e5e5" }}>
+              SUPER LIGA DE LAS AMÉRICAS
+              <br />
+              <br />
+            </Typography>
+            <Typography sx={{ color: "#e5e5e5" }}>
+              Somos una comunidad de habla hispana, jugadores de Football
+              Manager con mas de 10 años de antigüedad, que se unen para jugar
+              una liga online con mas de 60 managers de todo el mundo, los
+              cuales su objetivo es llevar a su equipo a la cima.
+              <br />
+              <br />
+              En nuestros torneos, participan equipos de toda América, se arman torneos relampagos, debates de futbol y mas.
+              <br />
+              <br />
+              Arma el equipo a tu gusto, contrata los jugadores que siempre
+              deseaste, interactua con tecnicos de todo el mundo, y convierte a
+              tu equipo en el mejor de la liga y del mundo.
+            </Typography>
+          </Box>
+        </Grid>
+      </Grid>
     </motion.div>
   );
 };
 
-const LigasMotion = ({torneos}) => {
+const LigasMotion = ({ torneos }) => {
   const control = useAnimation();
   const [ref, inView] = useInView();
 
@@ -129,27 +170,51 @@ const LigasMotion = ({torneos}) => {
       animate={control}
     >
       <Grid container>
-            <Grid xs={12} md={12}>
-              <Item sx={{ overflowY: "auto" }}>
-                <SectionLigaComponets torneos={torneos} />
-              </Item>
-            </Grid>
+        <Grid xs={12} md={12}>
+          <Item sx={{ overflowY: "auto" }}>
+            <SectionLigaComponets torneos={torneos} />
+          </Item>
+        </Grid>
       </Grid>
     </motion.div>
   );
 };
+
+const ArrowMotion = ({ torneos }) => {
+  return (
+    <motion.div
+      animate={{
+        scale: [1, 2, 2, 1, 1],
+        rotate: [0, 0, 180, 180, 0],
+        borderRadius: ["0%", "0%", "50%", "50%", "0%"],
+      }}
+      transition={{
+        duration: 2,
+        ease: "easeInOut",
+        times: [0, 0.2, 0.5, 0.8, 1],
+        repeat: Infinity,
+        repeatDelay: 1,
+      }}
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <img src={IconArrow} alt="bg" />
+    </motion.div>
+  );
+};
+
 const Home = () => {
-  const [checked, setChecked] = React.useState(false);
   const { torneos } = useSelector((state) => state.torneos);
   const dispatch = useDispatch();
 
-  const handleChange = () => {
-    setChecked((prev) => !prev);
-  };
-
   React.useEffect(() => {
     dispatch(getTorneos());
-  }, [ dispatch]);
+  }, [dispatch]);
 
   return (
     <>
@@ -216,16 +281,21 @@ const Home = () => {
                 <span style={{ marginRight: "13px" }}>Inscríbete</span>
                 <img w src={IconContrato} alt="contrato" />
               </Button>
+
+              <Box sx={{ mt: 3 }}>
+                <Typography variant="h6" sx={{ color: "#fff" }}>
+                  Conocenos
+                </Typography>
+                <ArrowMotion />
+              </Box>
             </Box>
           </Box>
         </Box>
-        <Box component="section" sx={{ px: 3, my:5}}>
-        <BoxMotion num={1} />
-        </Box>
       </Box>
-        <Box  sx={{ px: 3, my:5,  }}>
-        <LigasMotion torneos={torneos}/>
-        </Box> 
+      <Box component="section" sx={{ px: 3, my: 1 }} className="bgImage">
+        <BoxMotion />
+        <LigasMotion torneos={torneos} />
+      </Box>
     </>
   );
 };
