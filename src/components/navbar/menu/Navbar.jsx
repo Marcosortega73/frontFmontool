@@ -40,7 +40,7 @@ function Navbar(props) {
   const drawer = (
     <Box
       onClick={handleDrawerToggle}
-      sx={{ backgroundColor: "customTheme.primary700", textAlign: "center" }}
+      sx={{ backgroundColor: "customTheme.primary700", textAlign: "center",height: "100%" }}
     >
       <Box
         component="div"
@@ -52,16 +52,47 @@ function Navbar(props) {
       >
         <Img height="73" width="73" alt="Competiciones-Online" src={logo} />
       </Box>
+      <Box sx={{
+          flexGrow: 1,
+          display: { xs: "flex", sm: "none" },
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}>
       <Divider />
-      <List>
+      <List >
         {pages.map((item, idx) => (
-          <ListItem key={idx} disablePadding>
-            <ListItemButton sx={{ textAlign: "center", color: "white" }}>
-              <ListItemText primary={item.title} />
-            </ListItemButton>
-          </ListItem>
+          <Link key={idx} to={item.href}>
+            <ListItem key={idx} disablePadding>
+              <ListItemButton sx={{ textAlign: "center", color: "white" }}>
+                <ListItemText primary={item.title} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
         ))}
       </List>
+      <Divider />
+      <List
+      sx={{display:"flex",flexDirection:"column",justifyContent:"flex-end"}} 
+      >
+        <Link to="/login">
+          <ListItem disablePadding>
+            <ListItemButton sx={{ textAlign: "center", color: "white" }}>
+              <ListItemText primary="Iniciar Sesión" />
+            </ListItemButton>
+          </ListItem>
+        </Link>
+        <Link to="/register">
+          <ListItem disablePadding>
+            <ListItemButton
+              color="secondary"
+              sx={{ textAlign: "center", color: "white" }}
+            >
+              <ListItemText primary="Registrarce" />
+            </ListItemButton>
+          </ListItem>
+        </Link>
+      </List>
+      </Box>
     </Box>
   );
 
@@ -96,34 +127,44 @@ function Navbar(props) {
               </Link>
             ))}
           </Box>
-          <Box sx={{  display: { xs: "none", md: "flex" } ,justifyContent:"flex-end"}}>
-            <Link to="/login">
-            <Button
-              variant="contained"
-              
-              sx={{ my: 2,backgroundColor:"#343338",mr:2, color: "white", display: "block",
-              letterSpacing: 1,
-              '&:hover': {
-                color: "#1e2024 !important",
-                backgroundColor: "#e5e5e5",
-              }
-            
+          <Box
+            sx={{
+              display: { xs: "none", md: "flex" },
+              justifyContent: "flex-end",
             }}
-            >
-              Iniciar Sesión
-            </Button>
+          >
+            <Link to="/login">
+              <Button
+                variant="contained"
+                sx={{
+                  my: 2,
+                  backgroundColor: "#343338",
+                  mr: 2,
+                  color: "white",
+                  display: "block",
+                  letterSpacing: 1,
+                  "&:hover": {
+                    color: "#1e2024 !important",
+                    backgroundColor: "#e5e5e5",
+                  },
+                }}
+              >
+                Iniciar Sesión
+              </Button>
             </Link>
             <Link to="/register">
-            <Button
-              variant="contained"
-              color="secondary"
-              sx={{ my: 2,  display: "block",
-              fontWeight: "bold",
-              letterSpacing: 1,
-              }}
-            >
-              Registrarse
-            </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                sx={{
+                  my: 2,
+                  display: "block",
+                  fontWeight: "bold",
+                  letterSpacing: 1,
+                }}
+              >
+                Registrarse
+              </Button>
             </Link>
           </Box>
         </Toolbar>

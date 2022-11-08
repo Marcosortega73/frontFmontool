@@ -15,7 +15,11 @@ import TableLigasClasificacionComponent from "./base-de-datos/component/TableLig
 import FixtureComponent from "./base-de-datos/component/FixtureComponent";
 import { getFixture } from "../../../redux/fixtureSlice";
 
+
+
 import IconLiga from "../../../assets/images/iconos/liga.png";
+import CarouselGoleadoresComponent from "./base-de-datos/component/CarouselGoleadoresComponent.jsx";
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -99,7 +103,13 @@ const Ligas = () => {
 
   return (
     <>
-      <Box sx={{ width: "100%", backgroundColor: "customTheme.acento500",borderRadius:5 }}>
+      <Box
+        sx={{
+          width: "100%",
+          backgroundColor: "customTheme.acento500",
+          borderRadius: 5,
+        }}
+      >
         <Box
           sx={{
             borderBottom: 1,
@@ -117,7 +127,7 @@ const Ligas = () => {
             {ligasData.map((liga, index) => {
               return (
                 <Tab
-                className="tab-opciones"
+                  className="tab-opciones"
                   key={index}
                   label={liga.nombre}
                   onClick={() => {
@@ -125,12 +135,7 @@ const Ligas = () => {
                     setValue(index);
                   }}
                   icon={
-                    <Img
-                      width={73}
-                      height={73}
-                      src={IconLiga}
-                      alt="imagen"
-                    />
+                    <Img width={73} height={73} src={IconLiga} alt="imagen" />
                   }
                 />
               );
@@ -141,7 +146,7 @@ const Ligas = () => {
         {ligasData?.map((liga, index) => {
           return (
             <TabPanel value={value} index={index} key={index}>
-             {/*  <Toolbar
+              {/*  <Toolbar
                 variant="dense"
                 sx={{
                   backgroundColor: "secondary.main",
@@ -247,6 +252,52 @@ const Ligas = () => {
                   </Box>
                 </Grid>
               </Grid>
+              {/* CARRUSEL DE GOLEADORES } */}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <Box
+                  sx={{
+                    backgroundColor: "primary.main",
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "flex-start",
+                    borderRadius: 3,
+                  }}
+                >
+                  <Toolbar
+                    sx={{
+                      backgroundColor: "primary.main",
+                      color: "#fff",
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      minHeight: "37px !important",
+                      pt: 1,
+                      borderLeft: "5px solid #fff",
+                      borderTopLeftRadius: 7,
+                    }}
+                  >
+                    <Typography variant="h6" component="div" align="center">
+                      Goleadores
+                    </Typography>
+                  </Toolbar>
+                  <Box sx={{ width: "100%", height: "100%" }}>
+                    <CarouselGoleadoresComponent
+                  
+                    />
+                  </Box>
+                </Box>
+              </Box>
             </TabPanel>
           );
         })}

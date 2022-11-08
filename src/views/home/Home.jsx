@@ -4,6 +4,7 @@ import {
   Button,
   Container,
   Grow,
+  IconButton,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -22,16 +23,21 @@ import ImageFM from "../../assets/images/entherprise/FM23.jpg";
 import LogoFM from "../../assets/images/entherprise/FM23-Light.png";
 import SectionLigaComponets from "./components/SectionLigaComponets";
 import IconArrow from "../../assets/images/iconos/arrow-down.png";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import YouTubeIcon from "@mui/icons-material/YouTube";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getTorneos } from "../../redux/torneoSlice";
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: "#343338",
+  backgroundColor: "#34333891",
   ...theme.typography.body2,
   padding: theme.spacing(2),
   textAlign: "center",
   height: "100%",
+  mb: 55,
 
   color: theme.palette.text.secondary,
 }));
@@ -136,7 +142,8 @@ const BoxMotion = () => {
               cuales su objetivo es llevar a su equipo a la cima.
               <br />
               <br />
-              En nuestros torneos, participan equipos de toda América, se arman torneos relampagos, debates de futbol y mas.
+              En nuestros torneos, participan equipos de toda América, se arman
+              torneos relampagos, debates de futbol y mas.
               <br />
               <br />
               Arma el equipo a tu gusto, contrata los jugadores que siempre
@@ -170,10 +177,18 @@ const LigasMotion = ({ torneos }) => {
       animate={control}
     >
       <Grid container>
-        <Grid xs={12} md={12}>
-          <Item sx={{ overflowY: "auto" }}>
-            <SectionLigaComponets torneos={torneos} />
-          </Item>
+        <Grid
+          xs={12}
+          md={12}
+          sx={{ backgroundColor: "#F0C40011", p: 5, my: 3, borderRadius: 5 }}
+        >
+          <Typography
+            variant="h5"
+            sx={{ color: "#e5e5e5", textAlign: "center", mb: 5 }}
+          >
+            Torneos y Competencias FM
+          </Typography>
+          <SectionLigaComponets torneos={torneos} />
         </Grid>
       </Grid>
     </motion.div>
@@ -292,9 +307,113 @@ const Home = () => {
           </Box>
         </Box>
       </Box>
-      <Box component="section" sx={{ px: 3, my: 1 }} className="bgImage">
-        <BoxMotion />
-        <LigasMotion torneos={torneos} />
+      <Box component="section" className="bgImage">
+        <Box sx={{ backgroundColor: "#34333891 !important", px: 3, my: 1 }}>
+          <BoxMotion />
+          <LigasMotion torneos={torneos} />
+        </Box>
+      </Box>
+      <Box
+        component="section"
+        sx={{ backgroundColor: "#34333891 !important", px: 3, my: 1 }}
+      >
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+          <Grid item xs={12} md={6}>
+            <Typography variant="h5" sx={{ color: "#e5e5e5" }}>
+              Unite a la comunidad
+            </Typography>
+            <Typography variant="body1" sx={{ color: "#e5e5e5" }}>
+              Registrate y forma parte de la comunidad de Competiciones Online
+              FM, donde podras interactuar con otros managers de todo el mundo,
+              compartir tus experiencias, y mucho mas y convertirte en el mejor
+              manager de la comunidad.
+            </Typography>
+
+            <Button
+              variant="contained"
+              color="secondary"
+              sx={{ mt: 2, fontSize: 20 }}
+            >
+              <span style={{ marginRight: "13px" }}>Inscríbete</span>
+              <img w src={IconContrato} alt="contrato" />
+            </Button>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            {/* widget de discord */}
+            <iframe
+              title="discord"
+              src="https://discord.com/widget?id=703697712138420255&theme=dark"
+              width="100%"
+              height="500"
+              allowTransparency="true"
+              frameBorder="0"
+              sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+            ></iframe>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box component="aside" sx={{ backgroundColor: "#34333891 !important" }}>
+        <Box sx={{ px: 3, my: 1 }}>
+          <Grid
+            container
+            rowSpacing={1}
+            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          >
+            <Grid item xs={12}>
+              <Typography variant="h5" sx={{ color: "#e5e5e5" }}>
+                Seguinos en nuestras redes sociales
+              </Typography>
+              <Typography variant="body1" sx={{ color: "#e5e5e5" }}>
+                Seguinos en nuestras redes sociales para estar al tanto de las
+                ultimas novedades de Competiciones Online FM. Donde podras
+                interactuar con otros managers de todo el mundo, compartir tus
+                experiencias, y mucho mas
+              </Typography>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  mt: 2,
+                }}
+              >
+                <IconButton
+                  size="large"
+                  variant="contained"
+                  color="secondary"
+                  sx={{ mr: 2 }}
+                >
+                  <FacebookIcon />
+                </IconButton>
+                <IconButton
+                  size="large"
+                  variant="contained"
+                  color="secondary"
+                  sx={{ mr: 2 }}
+                >
+                  <TwitterIcon />
+                </IconButton>
+                <IconButton
+                  size="large"
+                  variant="contained"
+                  color="secondary"
+                  sx={{ mr: 2 }}
+                >
+                  <InstagramIcon />
+                </IconButton>
+                <IconButton
+                  size="large"
+                  variant="contained"
+                  color="secondary"
+                  sx={{ mr: 2 }}
+                >
+                  <YouTubeIcon  />
+                </IconButton>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
       </Box>
     </>
   );
