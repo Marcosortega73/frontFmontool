@@ -7,10 +7,10 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import getEstadisticasServices from "../../../../../services/api/estadisticas/getEstadisticasService";
+import getEstadisticasServices from "../../../../services/api/estadisticas/getEstadisticasService";
 import { Chip, CircularProgress, Tooltip } from "@mui/material";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
-import IconPodio from "../../../../../assets/images/iconos/podio.png";
+import IconPodio from "../../../../assets/images/iconos/podio.png";
 
 const responsive = {
   superLargeDesktop: {
@@ -40,8 +40,12 @@ const CarouselGoleadoresComponent = ({ torneo }) => {
   const [goleadores, setGoleadores] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const getGoleadores = async () => {
-    const response = await getEstadisticasServices.getGoleadoresByTorneo(
-      torneo
+    const data = {
+      torneo: torneo,
+      tipo:1,
+    }
+    const response = await getEstadisticasServices.getEstadisticasByTorneo(
+      data
     );
     setGoleadores(response?.estadisticas);
     setLoading(false);
@@ -72,13 +76,13 @@ const CarouselGoleadoresComponent = ({ torneo }) => {
               <Card  sx={{ maxWidth: 300, maxHeight: "auto" }}>
                 <CardMedia
                   component="img"
-                  image={require("../../../../../assets/images/persons/silueta.png")}
+                  image={require("../../../../assets/images/persons/silueta.png")}
                   alt="green iguana"
                   width="73px"
                   height="73px"
                 />
                 <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
+                  <Typography gutterBottom variant="h6" component="div">
                     {goleador.nombre}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">

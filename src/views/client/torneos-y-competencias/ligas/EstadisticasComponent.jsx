@@ -6,6 +6,8 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import CarouselGoleadoresComponent from "./CarouselGoleadoresComponent";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
+import CarouselAsistenciasComponent from "./CarouselAsistenciasComponent";
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -77,6 +79,7 @@ export default function EstadisticasComponent({torneo}) {
           <CarouselGoleadoresComponent torneo={torneo}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
+        <CarouselAsistenciasComponent torneo={torneo}/>
       </TabPanel>
     </Box>
   );

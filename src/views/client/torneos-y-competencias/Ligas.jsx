@@ -18,8 +18,9 @@ import { getFixture } from "../../../redux/fixtureSlice";
 
 
 import IconLiga from "../../../assets/images/iconos/liga.png";
-import CarouselGoleadoresComponent from "./base-de-datos/component/CarouselGoleadoresComponent.jsx";
-import EstadisticasComponent from "./base-de-datos/component/EstadisticasComponent";
+import EstadisticasComponent from "./ligas/EstadisticasComponent";
+import SancionesLesionesComponent from "./ligas/SancionesLesionesComponent";
+
 
 
 function TabPanel(props) {
@@ -299,7 +300,7 @@ const Ligas = () => {
                     </Typography>
                   </Toolbar>
                   <Box sx={{ width: "100%", height: "auto",backgroundColor:"primary.main" }}>
-                   
+                   <SancionesLesionesComponent equipos={ligasData[index]?.Equipos} />
                   </Box>
                 </Box>
               </Box>
