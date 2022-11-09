@@ -19,6 +19,7 @@ import { getFixture } from "../../../redux/fixtureSlice";
 
 import IconLiga from "../../../assets/images/iconos/liga.png";
 import CarouselGoleadoresComponent from "./base-de-datos/component/CarouselGoleadoresComponent.jsx";
+import EstadisticasComponent from "./base-de-datos/component/EstadisticasComponent";
 
 
 function TabPanel(props) {
@@ -146,48 +147,9 @@ const Ligas = () => {
         {ligasData?.map((liga, index) => {
           return (
             <TabPanel value={value} index={index} key={index}>
-              {/*  <Toolbar
-                variant="dense"
-                sx={{
-                  backgroundColor: "secondary.main",
-                  px: "0px !important",
 
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    width: "100%",
-                    height: "100%",
-                    px: 32,
-                  }}
-                >
-                  <Typography
-                    variant="h6"
-                    component="div"
-                    sx={{
-                      flexGrow: 1,
-                      textAlign: "start",
-                      fontWeight: 700,
-                    }}
-                  >
-                    {liga.nombre}
-                  </Typography>
-                  <Typography
-                    variant="h6"
-                    component="div"
-                    sx={{
-                      flexGrow: 1,
-                      textAlign: "end",
-                      fontWeight: 700,
-                    }}
-                  >
-                    {liga?.Season.nombre}
-                  </Typography>
-                </div>
-              </Toolbar> */}
-              <Grid container spacing={2} elevation="0">
+              <Grid container spacing={2} elevation="0"
+             >
                 <Grid item xs={12} md={8}>
                   <Box
                     sx={{
@@ -260,7 +222,52 @@ const Ligas = () => {
                   alignItems: "center",
                   justifyContent: "center",
                   width: "100%",
+                  height:"auto",
+                  mt:3
+                }}
+              >
+                <Box
+                  sx={{
+                    backgroundColor: "primary.main",
+                    width: "100%",
+                    height: "auto",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "flex-start",
+                    borderRadius: 3,
+                  }}
+                >
+                  <Toolbar
+                    sx={{
+                      backgroundColor: "primary.main",
+                      color: "#fff",
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      minHeight: "37px !important",
+                      pt: 1,
+                      borderLeft: "5px solid #fff",
+                      borderTopLeftRadius: 7,
+                    }}
+                  >
+                    <Typography variant="h6" component="div" align="center">
+                      Estadisticas
+                    </Typography>
+                  </Toolbar>
+                  
+                    <EstadisticasComponent torneo={liga.id} />
+               
+                </Box>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
                   height: "100%",
+                  mt:7
                 }}
               >
                 <Box
@@ -288,13 +295,11 @@ const Ligas = () => {
                     }}
                   >
                     <Typography variant="h6" component="div" align="center">
-                      Goleadores
+                      Sanciones y Lesiones
                     </Typography>
                   </Toolbar>
-                  <Box sx={{ width: "100%", height: "100%" }}>
-                    <CarouselGoleadoresComponent
-                  
-                    />
+                  <Box sx={{ width: "100%", height: "auto",backgroundColor:"primary.main" }}>
+                   
                   </Box>
                 </Box>
               </Box>
