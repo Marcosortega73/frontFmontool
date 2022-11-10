@@ -35,7 +35,7 @@ function a11yProps(index) {
   };
 }
 
-export default function SancionesLesionesComponent({ equipos }) {
+export default function SancionesLesionesComponent({ equipos,torneo }) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -79,7 +79,7 @@ export default function SancionesLesionesComponent({ equipos }) {
                 <h3 className="text-center">{equipo?.nombre}</h3>
               </div>
             </div>
-            <TablaSancionados jugadores={equipo?.id} />
+            <TablaSancionados equipo_id={equipo?.id} torneo={torneo} />
           </TabPanel>
         );
       })}

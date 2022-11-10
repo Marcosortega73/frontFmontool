@@ -19,10 +19,10 @@ const getEstadisticasByTorneo = async (data) => {
   }
 };
 
-const getSancionadosByTorneo = async (data) => {
+const getSancionadosByTorneoEquipo = async (data) => {
   console.log("LLEGE AL GET Sancionados REQ");
   try {
-    const response = http.get(API_URL + "obtenerSancionados/"+data.torneo).then((res) => {
+    const response = http.get(API_URL + "obtenerSancionados/"+data.equipo_id+`?torneo_id=${data.torneo_id}`).then((res) => {
       console.log("LLEGE AL LA DATA GET Sancionados", res.data);
       return res.data;
     });
@@ -30,19 +30,13 @@ const getSancionadosByTorneo = async (data) => {
   } catch (error) {
     console.log("LLEGE AL ERROR GET", error);
   }
+
+};
   
-
-
-
-
-
-
-
-
-
 
 const getEstadisticasServices = {
   getEstadisticasByTorneo,
+  getSancionadosByTorneoEquipo
 
 };
 

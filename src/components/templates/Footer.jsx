@@ -131,7 +131,10 @@ export default function Footer() {
                   </a>
                 </li>
                 <li><a href="https://www.flaticon.es/iconos-gratis/firma" title="firma iconos">Firma iconos creados por smalllikeart - Flaticon</a></li>
-                <li>Link 4.3</li>
+                <li><a href="https://www.flaticon.es/iconos-gratis/tarjeta-roja" title="tarjeta roja iconos">Tarjeta roja iconos creados por Freepik - Flaticon</a></li>
+                <li><a href="https://www.flaticon.es/iconos-gratis/deportes-y-competicion" title="deportes y competición iconos">Deportes y competición iconos creados por Marz Gallery - Flaticon</a></li>
+                <li><a href="https://www.flaticon.es/iconos-gratis/deportes-y-competicion" title="deportes y competición iconos">Deportes y competición iconos creados por Marz Gallery - Flaticon</a></li>
+
               </Box>
             </Item>
           </Grid>

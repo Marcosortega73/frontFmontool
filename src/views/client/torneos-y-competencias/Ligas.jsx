@@ -15,13 +15,9 @@ import TableLigasClasificacionComponent from "./base-de-datos/component/TableLig
 import FixtureComponent from "./base-de-datos/component/FixtureComponent";
 import { getFixture } from "../../../redux/fixtureSlice";
 
-
-
 import IconLiga from "../../../assets/images/iconos/liga.png";
 import EstadisticasComponent from "./ligas/EstadisticasComponent";
 import SancionesLesionesComponent from "./ligas/SancionesLesionesComponent";
-
-
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -148,9 +144,7 @@ const Ligas = () => {
         {ligasData?.map((liga, index) => {
           return (
             <TabPanel value={value} index={index} key={index}>
-
-              <Grid container spacing={2} elevation="0"
-             >
+              <Grid container spacing={2} elevation="0">
                 <Grid item xs={12} md={8}>
                   <Box
                     sx={{
@@ -223,8 +217,8 @@ const Ligas = () => {
                   alignItems: "center",
                   justifyContent: "center",
                   width: "100%",
-                  height:"auto",
-                  mt:3
+                  height: "auto",
+                  mt: 3,
                 }}
               >
                 <Box
@@ -255,9 +249,8 @@ const Ligas = () => {
                       Estadisticas
                     </Typography>
                   </Toolbar>
-                  
-                    <EstadisticasComponent torneo={liga.id} />
-               
+
+                  <EstadisticasComponent torneo={liga.id} />
                 </Box>
               </Box>
               <Box
@@ -268,7 +261,7 @@ const Ligas = () => {
                   justifyContent: "center",
                   width: "100%",
                   height: "100%",
-                  mt:7
+                  mt: 7,
                 }}
               >
                 <Box
@@ -299,8 +292,17 @@ const Ligas = () => {
                       Sanciones y Lesiones
                     </Typography>
                   </Toolbar>
-                  <Box sx={{ width: "100%", height: "auto",backgroundColor:"primary.main" }}>
-                   <SancionesLesionesComponent equipos={ligasData[index]?.Equipos} />
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: "auto",
+                      backgroundColor: "primary.main",
+                    }}
+                  >
+                    <SancionesLesionesComponent
+                      equipos={ligasData[index]?.Equipos}
+                      torneo={ligasData[index]}
+                    />
                   </Box>
                 </Box>
               </Box>
