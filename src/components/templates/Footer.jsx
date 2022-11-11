@@ -134,7 +134,7 @@ export default function Footer() {
                 <li><a href="https://www.flaticon.es/iconos-gratis/tarjeta-roja" title="tarjeta roja iconos">Tarjeta roja iconos creados por Freepik - Flaticon</a></li>
                 <li><a href="https://www.flaticon.es/iconos-gratis/deportes-y-competicion" title="deportes y competición iconos">Deportes y competición iconos creados por Marz Gallery - Flaticon</a></li>
                 <li><a href="https://www.flaticon.es/iconos-gratis/deportes-y-competicion" title="deportes y competición iconos">Deportes y competición iconos creados por Marz Gallery - Flaticon</a></li>
-
+                <li><a href="https://www.flaticon.es/iconos-gratis/prohibido" title="prohibido iconos">Prohibido iconos creados por Bartama Graphic - Flaticon</a></li>
               </Box>
             </Item>
           </Grid>

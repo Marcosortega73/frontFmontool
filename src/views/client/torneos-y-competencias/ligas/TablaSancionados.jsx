@@ -13,6 +13,7 @@ import TarjetaRoja from "../../../../assets/images/iconos/tarjeta_roja.png";
 import TarjetaAmarilla from "../../../../assets/images/iconos/tarjeta_amarilla.png";
 import LesionNaranja from "../../../../assets/images/iconos/lesion_naranja.png";
 import LesionRoja from "../../../../assets/images/iconos/lesion_roja.png";
+import Suspendido from "../../../../assets/images/iconos/prohibido.png";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -22,6 +23,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
   },
+  border: "1px solid #e5e5e5",
+  
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -32,6 +35,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:last-child td, &:last-child th": {
     border: 0,
   },
+  border: "5px solid #ffff",
+
 }));
 
 const TablaSancionados = ({ equipo_id, torneo }) => {
@@ -96,12 +101,13 @@ const TablaSancionados = ({ equipo_id, torneo }) => {
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Nombre</StyledTableCell>
+            <StyledTableCell sx={{width:"7px"}}>N°</StyledTableCell>
+              <StyledTableCell sx={{width:"50%"}}>Nombre</StyledTableCell>
               {/* columna dinamicas de acuerdo a las fechas*/}
               {fechas.map((fecha, index) => {
                 return (
                   <StyledTableCell key={index} align="center">
-                    {fecha.fecha}
+                    {fecha?.fecha}
                   </StyledTableCell>
                 );
               })}
@@ -110,6 +116,9 @@ const TablaSancionados = ({ equipo_id, torneo }) => {
           <TableBody>
             {sancionados.map((row, idx) => (
               <StyledTableRow key={row.idx}>
+                 <StyledTableCell component="th" scope="row" align="left">
+                  {idx+1}
+                </StyledTableCell>
                 <StyledTableCell component="th" scope="row" align="left">
                   {row.nombre}
                 </StyledTableCell>
@@ -117,16 +126,14 @@ const TablaSancionados = ({ equipo_id, torneo }) => {
 
                 {fechas.map((fecha, index) => {
                   return (
-                    <StyledTableCell key={index} align="center">
+                    <StyledTableCell key={index} align="right" sx={{maxWidth:"7px"}}>
                       {row.sancion.length > 0 ? (
-                        row.sancion.map((sancion, indexs) => {
+                         <div style={{ display: "flex",justifyContent:"center", }}>
+                        { row.sancion.map((sancion, indexs) => {
                           return (
-                            <div>
-                              {
-                              sancion.fecha === fecha.fecha &&
-                              (sancion.tipo === 3 ? (
-                                <div key={indexs}>
-                                  <div>
+                             sancion.fecha === fecha?.fecha &&
+                                (sancion.tipo === 3 ? (
+                                  <div key={indexs}>
                                     <img
                                       width={33}
                                       height={33}
@@ -134,37 +141,27 @@ const TablaSancionados = ({ equipo_id, torneo }) => {
                                       alt="roja"
                                     />
                                   </div>
-                                </div>
-                              ) : sancion.tipo === 4 && (
+                                ) : sancion.tipo === 4 ? (
                                   <div key={indexs}>
-                                    <div>
-                                      <div>
-                                        <img
-                                          width={33}
-                                          height={33}
-                                          src={TarjetaAmarilla}
-                                          alt="roja"
-                                        />
-                                      </div>
-                                    </div>
+                                    <img
+                                      width={33}
+                                      height={33}
+                                      src={TarjetaAmarilla}
+                                      alt="roja"
+                                    />
                                   </div>
-                                ) ? (
-                                sancion.tipo === 5 && (
+                                ) : sancion.tipo === 5 ? (
                                   <div key={indexs}>
-                                    <div>
-                                      <img
-                                        width={33}
-                                        height={33}
-                                        src={LesionNaranja}
-                                        alt="roja"
-                                      />
-                                    </div>
+                                    <img
+                                      width={33}
+                                      height={33}
+                                      src={LesionNaranja}
+                                      alt="roja"
+                                    />
                                   </div>
-                                )
-                              ) : (
-                                sancion.tipo === 6 && (
-                                  <div key={indexs}>
-                                    <div>
+                                ) : 
+                                  sancion.tipo === 6 ? (
+                                    <div key={indexs}>
                                       <img
                                         width={33}
                                         height={33}
@@ -172,13 +169,24 @@ const TablaSancionados = ({ equipo_id, torneo }) => {
                                         alt="roja"
                                       />
                                     </div>
-                                  </div>
-                                )
+                                  )
+                                    : sancion.tipo === 8 && (
+                                      <div key={indexs}>
+                                        <img
+                                          width={33}
+                                          height={33}
+                                          src={Suspendido}
+                                          alt="roja"
+                                        />
+                                      </div>
+                                    )
                                 
-                                ))}{" "}
-                            </div>
+                                
+                                )
                           );
                         })
+                      }
+                      </div>
                       ) : (
                         <div>-</div>
                       )}
