@@ -27,7 +27,7 @@ const BaseDeDatos = () => {
 
   return (
     <>
-    <Container sx={{mt:3}}>
+    <Container sx={{my:3}}>
     <Box>
         <TableJugadores jugadores={jugadores} setOpen={setOpenDialog} setJugadorSelect={setJugadorSelect} />
     </Box>

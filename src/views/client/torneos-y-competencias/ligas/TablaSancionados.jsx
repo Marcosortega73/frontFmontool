@@ -126,13 +126,13 @@ const TablaSancionados = ({ equipo_id, torneo }) => {
 
                 {fechas.map((fecha, index) => {
                   return (
-                    <StyledTableCell key={index} align="right" sx={{maxWidth:"7px"}}>
-                      {row.sancion.length > 0 ? (
+                    <StyledTableCell key={index} align="center" sx={{}}>
+                      {row.sanciones.length > 0 ? (
                          <div style={{ display: "flex",justifyContent:"center", }}>
-                        { row.sancion.map((sancion, indexs) => {
+                        { row.sanciones.map((sancion, indexs) => {
                           return (
-                             sancion.fecha === fecha?.fecha &&
-                                (sancion.tipo === 3 ? (
+                             sancion.Fixture.num_fecha === fecha?.fecha &&
+                                (sancion.estadistica_id === 3 ? (
                                   <div key={indexs}>
                                     <img
                                       width={33}
@@ -141,7 +141,7 @@ const TablaSancionados = ({ equipo_id, torneo }) => {
                                       alt="roja"
                                     />
                                   </div>
-                                ) : sancion.tipo === 4 ? (
+                                ) : sancion.estadistica_id === 4 ? (
                                   <div key={indexs}>
                                     <img
                                       width={33}
@@ -150,7 +150,7 @@ const TablaSancionados = ({ equipo_id, torneo }) => {
                                       alt="roja"
                                     />
                                   </div>
-                                ) : sancion.tipo === 5 ? (
+                                ) : sancion.estadistica_id === 5 ? (
                                   <div key={indexs}>
                                     <img
                                       width={33}
@@ -160,7 +160,7 @@ const TablaSancionados = ({ equipo_id, torneo }) => {
                                     />
                                   </div>
                                 ) : 
-                                  sancion.tipo === 6 ? (
+                                  sancion.estadistica_id === 6 ? (
                                     <div key={indexs}>
                                       <img
                                         width={33}
@@ -170,7 +170,7 @@ const TablaSancionados = ({ equipo_id, torneo }) => {
                                       />
                                     </div>
                                   )
-                                    : sancion.tipo === 8 && (
+                                    : sancion.estadistica_id === 8 && (
                                       <div key={indexs}>
                                         <img
                                           width={33}

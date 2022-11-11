@@ -1,7 +1,7 @@
 export const MenuItems = [
     {
       title: 'Base de datos',
-      path: '/torneos/base-de-datos',
+      path: '/torneos/centro-de-ojeo',
       cName: 'dropdown-link'
     },
     {

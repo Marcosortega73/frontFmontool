@@ -59,6 +59,7 @@ const BaseTorneosCompetencias = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          pb: 2,
         }}
       >
         <Box component="header">
@@ -92,10 +93,10 @@ const BaseTorneosCompetencias = () => {
               />
               <Tab
                 className="tab-opciones"
-                label="Base de Datos"
+                label="Centro de Ojeo"
                 {...a11yProps(2)}
                 component={Link}
-                to="/torneos/base-de-datos"
+                to="/torneos/centro-de-ojeo"
 
               />
                <Tab

@@ -1,15 +1,20 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar, gridClasses } from "@mui/x-data-grid";
+
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import { styled } from "@mui/material/styles";
+import { alpha, styled } from "@mui/material/styles";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+
+import localeText from "../../../../utils/translate/dataGridToolbar.json";
+
+import "./style/Table.css";
 
 //import icon ver
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
@@ -26,6 +31,42 @@ const StyledBox = styled(Box)(({ theme }) => ({
       minWidth: 100,
       margin: theme.spacing(2),
       marginLeft: 0,
+    },
+  },
+  
+}));
+
+const ODD_OPACITY = 0.2;
+
+const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
+  [`& .${gridClasses.row}.even`]: {
+    backgroundColor: theme.palette.grey[200],
+    "&:hover, &.Mui-hovered": {
+      backgroundColor: alpha(theme.palette.primary.main, ODD_OPACITY),
+      "@media (hover: none)": {
+        backgroundColor: "transparent",
+      },
+    },
+    "&.Mui-selected": {
+      backgroundColor: alpha(
+        theme.palette.primary.main,
+        ODD_OPACITY + theme.palette.action.selectedOpacity
+      ),
+      "&:hover, &.Mui-hovered": {
+        backgroundColor: alpha(
+          theme.palette.primary.main,
+          ODD_OPACITY +
+            theme.palette.action.selectedOpacity +
+            theme.palette.action.hoverOpacity
+        ),
+        // Reset on touch devices, it doesn't add specificity
+        "@media (hover: none)": {
+          backgroundColor: alpha(
+            theme.palette.primary.main,
+            ODD_OPACITY + theme.palette.action.selectedOpacity
+          ),
+        },
+      },
     },
   },
 }));
@@ -92,7 +133,17 @@ SettingsPanel.propTypes = {
   size: PropTypes.number.isRequired,
 };
 
-export default function TableJugadores({ jugadores, setOpen, setJugadorSelect }) {
+const formatter = new Intl.NumberFormat("en-EN", {
+  style: "currency",
+  currency: "EUR",
+  minimumFractionDigits: 2,
+});
+
+export default function TableJugadores({
+  jugadores,
+  setOpen,
+  setJugadorSelect,
+}) {
   const [isAntDesign, setIsAntDesign] = React.useState(false);
   const [type, setType] = React.useState("Commodity");
   const [size, setSize] = React.useState(100);
@@ -103,28 +154,69 @@ export default function TableJugadores({ jugadores, setOpen, setJugadorSelect })
   });
 
   const columns = [
-    { field: "nombre", headerName: "Nombre", minWidth: 200 },
+    {
+      field: "nombre",
+      headerName: "Nombre",
+      minWidth: 200,
+      headerClassName: "headerTableClass",
+    },
     {
       field: "Nacionalidad",
       headerName: "Nacionalidad",
       minWidth: 0,
       valueGetter: (params) => {
-        return params?.value?.nombre
+        return params?.value?.nombre;
       },
+      headerClassName: "headerTableClass",
     },
     {
       field: "Equipo",
       headerName: "Equipo",
-      maxWidth: "300",
       valueGetter: (params) => {
-        return params?.value?.nombre;
+        return params?.value?.nombre_corto;
       },
+      flex: 1,
+      headerClassName: "headerTableClass",
     },
-    { field: "altura", headerName: "Altura" },
-    { field: "peso", headerName: "Peso" },
-    { field: "ca", headerName: "Calidad Actual", minWidth: 0 },
-    { field: "cp", headerName: "Calidad Potencial", minWidth: 0 },
-    { field: "valor", headerName: "Valor", minWidth: 0 },
+    {
+      field: "altura",
+      headerName: "Altura",
+      valueFormatter: ({ value }) => `${value} cm`,
+      headerClassName: "headerTableClass",
+    },
+    {
+      field: "peso",
+      headerName: "Peso",
+
+      valueFormatter: (params) => {
+        return `${params.value} kg`;
+      },
+      headerClassName: "headerTableClass",
+    },
+    {
+      field: "ca",
+      headerName: "CA",
+      minWidth: 0,
+      headerClassName: "headerTableClass",
+      description: "Calidad Actual",
+    },
+    {
+      field: "cp",
+      headerName: "CP",
+      minWidth: 0,
+      headerClassName: "headerTableClass",
+      description: "Calidad Potencial",
+    },
+    {
+      field: "valor",
+      headerName: "Valor",
+      minWidth: 0,
+      //formatear a $
+      valueFormatter: (params) => {
+        return formatter.format(params.value);
+      },
+      headerClassName: "headerTableClass",
+    },
     //actions
     {
       field: "actions",
@@ -133,20 +225,22 @@ export default function TableJugadores({ jugadores, setOpen, setJugadorSelect })
         return (
           <Button
             size="small"
-            onClick={(e) => handleChangeJugadorSelect(params.row,e)}
+            onClick={(e) => handleChangeJugadorSelect(params.row, e)}
           >
             <RemoveRedEyeIcon />
           </Button>
         );
       },
+      headerClassName: "headerTableClass",
+      flex: 0.5,
     },
   ];
 
-  const handleChangeJugadorSelect = (jugador,e) => {
+  const handleChangeJugadorSelect = (jugador, e) => {
     e.preventDefault();
     setJugadorSelect(jugador);
     setOpen(true);
-  }
+  };
 
   const getActiveTheme = () => {
     return isAntDesign ? "ant" : "default";
@@ -187,13 +281,13 @@ export default function TableJugadores({ jugadores, setOpen, setJugadorSelect })
 
   return (
     <StyledBox>
-      <SettingsPanel
+      {/*    <SettingsPanel
         onApply={handleApplyClick}
         size={size}
         type={type}
         theme={getActiveTheme()}
-      />
-      <DataGrid
+      /> */}
+      <StripedDataGrid
         columns={columns}
         rows={jugadores}
         components={{
@@ -202,6 +296,26 @@ export default function TableJugadores({ jugadores, setOpen, setJugadorSelect })
         componentsProps={{
           toolbar: { showQuickFilter: true },
         }}
+        sx={{
+          "& .MuiDataGrid-columnsContainer": {
+            pb: 3,
+          },
+
+          "& .MuiDataGrid-cell": {
+            borderTop: (theme) =>
+              `1px solid ${
+                theme.palette.mode === "dark"
+                  ? theme.palette.primaryDark[600]
+                  : theme.palette.grey[400]
+              }`,
+          },
+
+          backgroundColor: "customTheme.acento200",
+        }}
+        getRowClassName={(params) =>
+          params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+        }
+        localeText={localeText}
         rowThreshold={0}
         {...pagination}
       />

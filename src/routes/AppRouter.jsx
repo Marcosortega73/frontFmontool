@@ -78,7 +78,7 @@ const AppRouter = () => {
           <Route path="verifyMail/:token" element={<ChangeEmail />} />
           {/*NavBar*/}
           <Route path="torneos" element={<BaseTorneosCompetencias />}>
-            <Route path="base-de-datos" element={<BaseDeDatos />} />
+            <Route path="centro-de-ojeo" element={<BaseDeDatos />} />
             <Route path="ligas" element={<Ligas />} />
             <Route path="copas" element={<Copas />} />
             <Route path="managers" element={<ManagersCliente />} />
