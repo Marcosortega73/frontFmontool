@@ -32,6 +32,7 @@ const BaseDeDatos = () => {
         <TableJugadores jugadores={jugadores} setOpen={setOpenDialog} setJugadorSelect={setJugadorSelect} />
     </Box>
 
+
     <DialogJugadorDetails open={openDialog} setOpen={setOpenDialog} jugador={jugadorSelect} /> 
     </Container> 
     </>

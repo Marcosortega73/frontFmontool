@@ -71,6 +71,8 @@ export default function DialogJugadorDetails({ open, setOpen, jugador }) {
 
   console.log("IMAGEN",jugador?.Equipo?.idFmrte);
 
+  const banderaPaisSm=require(`../../../../../../Nations/large/1/alg.png`);
+
   const formatterDolar = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "EUR",

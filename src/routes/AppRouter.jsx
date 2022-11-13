@@ -26,7 +26,6 @@ import Preseleccion from "../views/profile/panel/Preseleccion";
 import Tacticas from "../views/profile/panel/Tacticas";
 import MisTorneos from "../views/profile/panel/MisTorneos";
 
-
 //Generales
 import NotFound from "../views/NotFound.jsx";
 import SitioEnConstruccion from "../views/SitioEnConstruccion.jsx";
@@ -52,12 +51,13 @@ import Copas from "../views/client/torneos-y-competencias/Copas";
 import ManagersCliente from "../views/client/torneos-y-competencias/ManagersCliente";
 import ChangeEmail from "../views/profile/panel/common/ChangeEmail";
 import Fixture from "../views/panelAdmin/navegacion/Fixture";
+import Logout from "../views/auth/Logout";
 
 const AppRouter = () => {
   const { isLoggedIn, user } = useSelector((state) => state.auth);
-  
+
   console.log("USER DEL ROUTER", user);
-  
+
   return (
     <BrowserRouter>
       <Routes>
@@ -91,27 +91,35 @@ const AppRouter = () => {
             element={<SitioEnConstruccion />}
           />
           <Route path="ligas-del-mundo" element={<SitioEnConstruccion />} />
+          <Route path="logout" element={<Logout />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 
-        <Route path="profile" element={
+        <Route
+          path="profile"
+          element={
             isLoggedIn && user && user.rol === "MANAGER" ? (
               <Profile />
-            ) : (user && user.rol === "ADMIN" ?
-              <Navigate to="/panelAdministracion/dashboard" replace={true}/>:
-              ( <Navigate to="/" replace={true}/>) 
+            ) : user && user.rol === "ADMIN" ? (
+              <Navigate to="/panelAdministracion/dashboard" replace={true} />
+            ) : (
+              <Navigate to="/" replace={true} />
             )
-          } >
+          }
+        >
           <Route path="equipo" element={<EquipoProfile />} />
           <Route path="mis-estadisticas" element={<MisEstadisticas />} />
           <Route path="logros" element={<Logros />} />
           <Route path="mis-datos" element={<MisDatos />} />
-          <Route path="pantalla-principal" element={<PantallaPrincipalProfile />} />
+          <Route
+            path="pantalla-principal"
+            element={<PantallaPrincipalProfile />}
+          />
           <Route path="plantilla" element={<Plantilla />} />
           <Route path="preseleccion" element={<Preseleccion />} />
           <Route path="tacticas" element={<Tacticas />} />
           <Route path="mis-torneos" element={<MisTorneos />} />
-          </Route>
+        </Route>
 
         <Route
           path="panelAdministracion"
@@ -134,7 +142,7 @@ const AppRouter = () => {
           <Route path="torneos" element={<Torneos />} />
           <Route path="fixture" element={<Fixture />} />
           <Route path="estadisticas" element={<Estadisticas />} />
-          
+
           <Route path="el-comunitario" element={<ElComunitario />} />
           <Route path="apuestas" element={<Apuestas />} />
           <Route path="ligas-del-mundo" element={<LigasDelMundo />} />

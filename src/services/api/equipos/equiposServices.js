@@ -106,6 +106,24 @@ console.log("LLEGE AL ERROR",error)
 
 }
 
+const getEquiposTorneos = async () => {
+  console.log("LLEGE AL OBTENER getEquiposTorneos")
+try{
+  const data  =  http
+    .get(API_URL+'getEquiposTorneos')
+    .then((response) => {
+          console.log("LLEGE AL LA DATA equipos getEquiposTorneos",response.data)
+          return response.data.clubes;
+    });
+    return data
+  
+}
+catch (error) {
+  console.log("LLEGE AL ERROR",error)
+};
+}
+
+
 
 
 const equiposServices = {
@@ -114,8 +132,8 @@ const equiposServices = {
     deleteEquiposService,
     updateEquiposService,
     getEquiposXnacion,
-    getEquiposSearchService
-
+    getEquiposSearchService,
+    getEquiposTorneos,
 }
 
 export default equiposServices

@@ -19,7 +19,6 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import Icon from "@mui/material/Icon";
-import Banner from "../../../assets/images/banners/RiverPlate.jpg";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -166,6 +165,13 @@ export default function DrawerComponent({ user }) {
       backgroundColor: "#302e29",
     },
   };
+  let banner = ""
+  if(user?.equipo){
+     banner = require(`../../../assets/images/banners/${user.equipo.id}.jpg`)
+  }else{
+    banner = require(`../../../assets/images/banners/portadacofm.png`)
+  }
+
 
   console.log("LOGIN PROFILE", user && user);
 
@@ -211,7 +217,7 @@ export default function DrawerComponent({ user }) {
     }} >
       <CssBaseline />
       <AppBar position="fixed" open={open} sx={{ borderRadius: 3 }}>
-        <Toolbar className sx={{m:0}}  >
+        <Toolbar  sx={{m:0}}  >
           <Img sx={{m:0}} src={Logo} alt="Logo" width={73} height={73} />
 
           <Box  sx={{ flexGrow: 1, display: { xs: "flex", md: "none" },px:0  }}>
@@ -550,7 +556,7 @@ export default function DrawerComponent({ user }) {
             },
           }}
         >
-          <Img src={Banner} alt="logo" />
+          <Img src={banner} alt="logo" />
           <Box>
             <Grid container height={83}>
               <Grid item xs={2}>

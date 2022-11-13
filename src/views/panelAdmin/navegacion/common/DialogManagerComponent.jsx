@@ -21,12 +21,13 @@ import Swal from "sweetalert2";
 
 import userPendingService from "../../../../services/api/auth/userPending";
 import { FormText } from "../../../../components/forms/imputs/FormText";
+import equiposServices from "../../../../services/api/equipos/equiposServices";
 
 export default function DialogManagerComponent({
   open,
   setOpen,
   managerId,
-  equipos,
+
   updateUser,
   userStates,
   setLoadingPending,
@@ -37,6 +38,18 @@ export default function DialogManagerComponent({
 
   const [selectState, setSelectState] = React.useState("");
 
+  const [equipos, setEquipos] = React.useState([]);
+
+  const getEquipos = async () => {
+    const response = await equiposServices.getEquiposTorneos();
+    console.log("response equipos", response);
+    setEquipos(response);
+  };
+  React.useEffect(() => {
+    getEquipos();
+  }, []);
+
+  console.log("equipos dialog", equipos);
   const roles = ["USER", "MANAGER", "ADMIN"];
 
   const {
@@ -68,7 +81,6 @@ export default function DialogManagerComponent({
   }, [equipos, managerId, setValue, open]);
 
   React.useEffect(() => {
-
     setSelectRoleFinal(selectRoleFinal);
 
     if (selectRoleFinal === "ADMIN") {
@@ -102,14 +114,14 @@ export default function DialogManagerComponent({
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
+    console.log("data del formmm", data);
     const { email, rol, state } = data;
 
     //Condicionar datos del form para enviar
     setLoading(true);
 
     if (selectState === 2) {
-      const equipo_id = data.equipo_id.id;
+      const equipo_id = data.equipo_id.equipo_id;
       const dataSend = {
         email,
         equipo_id,
@@ -247,7 +259,6 @@ export default function DialogManagerComponent({
   const handleClose = () => {
     setOpen(false);
   };
-
 
   console.log("SELECT ROLE ", selectState);
 
@@ -402,7 +413,8 @@ export default function DialogManagerComponent({
                             : selectRoleFinal === "USER" &&
                               userStates.map(
                                 (estado, index) =>
-                                  ((estado.nombre === "Pendiente" ) || (estado.nombre === "Rechazado")) && (
+                                  (estado.nombre === "Pendiente" ||
+                                    estado.nombre === "Rechazado") && (
                                     <MenuItem value={estado.id} key={index}>
                                       {estado.nombre}
                                     </MenuItem>
@@ -426,16 +438,19 @@ export default function DialogManagerComponent({
                         loading={loading}
                         options={equipos}
                         getOptionLabel={(option) =>
-                          option.nombre
-                            ? option.nombre
+                          option?.Equipo?.nombre
+                            ? option.Equipo.nombre
                             : "Seleccionar un Equipo"
                         }
                         isOptionEqualToValue={(option, value) =>
                           value === undefined ||
                           value === "" ||
-                          option.id === value.id
+                          option.equipo_id === value.equipo_id
                         }
                         defaultValue=""
+                        getOptionDisabled={(option) =>
+                          option.Equipo.Manager != null
+                        }
                         renderInput={(params) => (
                           <>
                             <div
@@ -459,7 +474,7 @@ export default function DialogManagerComponent({
                         renderTags={(value, getTagProps) =>
                           value.map((option, index) => (
                             <Chip
-                              label={option.nombre}
+                              label={option.Equipo.nombre}
                               {...getTagProps({ index })}
                             />
                           ))

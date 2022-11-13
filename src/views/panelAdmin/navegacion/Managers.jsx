@@ -149,11 +149,7 @@ export default function Managers({ valor }) {
     setUserManager(response.data);
   };
 
-  const getEquipos = async () => {
-    const { clubes } = await equiposServices.getEquipos();
-    setEquipos(clubes);
-    console.log("Holas", clubes);
-  };
+
 
   const handleManagerEdit = async (user) => {
     setManagerId(user);
@@ -187,7 +183,7 @@ export default function Managers({ valor }) {
       getUsersPending();
     }
     getUserAdminService();
-    getEquipos();
+
     getUserStates();
     getUserManagerService();
     getLengthUsersPending();
@@ -315,7 +311,6 @@ export default function Managers({ valor }) {
             />
           </TableContainer>
           <DialogManagerComponent
-            equipos={equipos}
             open={openDialog}
             userStates={userStates}
             setOpen={setOpenDialog}
