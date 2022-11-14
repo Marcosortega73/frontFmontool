@@ -321,7 +321,7 @@ export default function DialogComponentTemporada(props) {
                           width: "50%",
                           height: "50px",
                           borderRadius: "5px",
-                          backgroundColor: "#546e7a",
+                          backgroundColor: "#757575",
                           color: "white",
                           fontSize: "20px",
                           fontWeight: "bold",

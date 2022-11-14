@@ -7,15 +7,25 @@ import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import SaveIcon from "@mui/icons-material/Save";
 import { useSelector } from "react-redux";
-import Chip from '@mui/material/Chip';
+import Chip from "@mui/material/Chip";
 
 //CONSTRUCCION DEL FORM
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { FormText } from "../../../../components/forms/imputs/FormText";
 import { FormSelect } from "../../../../components/forms/imputs/FormSelect";
-import { Container, Grid, Typography, Avatar} from "@mui/material";
+import {
+  Container,
+  Grid,
+  Typography,
+  Avatar,
+  Toolbar,
+  Stack,
+  Divider,
+  TextField,
+  Autocomplete,
+} from "@mui/material";
 import jugadoresServices from "../../../../services/api/jugadores/jugadoresService";
-
+import Swal from "sweetalert2";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -25,7 +35,7 @@ const Item = styled(Paper)(({ theme }) => ({
   borderRadius: "5px",
   textAlign: "center",
   color: theme.palette.text.secondary,
-
+  boxShadow: "-1px 1px 1px 1px rgba(204,165,0,1)",
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -33,17 +43,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function DialogComponentJugadores(props) {
-  const { open, setOpen, setLoading, equipos,jugador,action } = props;
+  const { open, setOpen, setLoading, equipos, jugador, action } = props;
   const { nations } = useSelector((state) => state.regiones);
+  const [loading, setLoadings] = React.useState(false);
 
   console.log("jugador Llegando al hijo", jugador);
   console.log("action", action);
 
-
   const handleClose = () => {
     setOpen(false);
   };
-
 
   const {
     handleSubmit,
@@ -55,7 +64,7 @@ export default function DialogComponentJugadores(props) {
     defaultValues: {
       id: 0,
       nombre: "",
-      nacionalidad:[],
+      nacionalidad: [],
       equipo: 0,
       altura: 0,
       peso: 0,
@@ -65,61 +74,136 @@ export default function DialogComponentJugadores(props) {
     },
   });
 
-
   React.useEffect(() => {
+    setLoadings(false);
     if (jugador) {
-    if (action === "edit") {
-      setValue("id", jugador.id);
-      setValue("nombre", jugador.nombre);
-      setValue("nacionalidad", jugador.nacionalidad);
-      setValue("equipo", jugador.equipo);
-      setValue("altura", jugador.altura);
-      setValue("peso", jugador.peso);
-      setValue("ca", jugador.ca);
-      setValue("cp", jugador.cp);
-      setValue("valor", jugador.valor);
+      if (action === "edit") {
+        setValue("id", jugador.id);
+        setValue("nombre", jugador.nombre);
+        setValue("nacionalidad", jugador.nacionalidad);
+        setValue("equipo", jugador.equipo_id);
+        setValue("altura", jugador.altura);
+        setValue("peso", jugador.peso);
+        setValue("ca", jugador.ca);
+        setValue("cp", jugador.cp);
+        setValue("valor", jugador.valor);
+      } else if (action === "create") {
+        setValue("id", 0);
+        setValue("nombre", "");
+        setValue("nacionalidad", []);
+        setValue("equipo", 0);
+        setValue("altura", 0);
+        setValue("peso", 0);
+        setValue("ca", 0);
+        setValue("cp", 0);
+        setValue("valor", 0);
+      }
     }
-    else if (action === "create") {
-      setValue("id", 0);
-      setValue("nombre", "");
-      setValue("nacionalidad", []);
-      setValue("equipo", 0);
-      setValue("altura", 0);
-      setValue("peso", 0);
-      setValue("ca", 0);
-      setValue("cp", 0);
-      setValue("valor", 0);
-    }
-  }
-
   }, [jugador, setValue, action]);
-    
 
   const onSubmit = (formValue) => {
     console.log(formValue);
-    if(action==="create"){
-      jugadoresServices.createJugadorService(formValue);
+    if (action === "create") {
+      jugadoresServices.createJugadorService(formValue).then((res) => {
+        console.log(res);
+        setLoading(true);
+        Swal.fire({
+          title: "Jugador Creado",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        handleClose();
+      });
+
+    } else if (action === "edit") {
+      jugadoresServices.updateJugadorService(formValue).then((res) => {
+        console.log(res);
+        setLoading(true);
+        Swal.fire({
+          title: "Jugador Actualizado",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        handleClose();
+      });
+      
+      }
+
     }
-   else if(action==="edit"){
-      jugadoresServices.updateJugadorService(formValue);
-    }
-     setOpen(false);  
-     setLoading(true);     
+    setOpen(false);
+    setLoading(true);
   };
 
   return (
     <div>
-    
       <Dialog
         open={open}
         onClose={handleClose}
-        maxWidth="md"
+        maxWidth="xl"
         TransitionComponent={Transition}
+        sx={{
+          ".MuiPaper-elevation24": {
+            backgroundColor: "secondary.main",
+          },
+        }}
       >
-        <Container sx={{ mt:3 }}>
-            {action === "create" || action ==="edit"  ? 
-            (<>
-              <div style={{ display:"flex", flexDirection:"column",alignItems:"center", paddingBottom:"25px"}}>  
+        <Container
+          sx={{ pt: 3, backgroundColor: "primary.main", borderRadius: 5 }}
+        >
+          <Toolbar
+            sx={{
+              backgroundColor: "#757575",
+
+              borderTopLeftRadius: "14px",
+              borderTopRightRadius: "14px",
+            }}
+          >
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1, color: "white", fontWeight: 700 }}
+            >
+              {action === "create"
+                ? "Crear Nuevo Jugador"
+                : "Editar a " + jugador.nombre}
+            </Typography>
+            <Button
+              autoFocus
+              sx={{ color: "white", fontWeight: 700 }}
+              onClick={handleClose}
+            >
+              Cerrar
+            </Button>
+          </Toolbar>
+          {action === "create" || action === "edit" ? (
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Stack
+                direction="row"
+                divider={
+                  <Divider
+                    sx={{
+                      border: "solid 5px #757575",
+                      backgroundColor: "secondary.main",
+                    }}
+                    orientation="vertical"
+                    flexItem
+                  />
+                }
+                spacing={2}
+              >
+                {/* <Item
+                  sx={{
+                    width: "30%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    m: 0,
+                    backgroundColor: "secondary.main",
+                  }}
+                >
+                  <div style={{ display:"flex", flexDirection:"column",alignItems:"center", paddingBottom:"25px"}}>  
                <div style={{marginBottom:"15px"}}> 
                <Avatar></Avatar>
                </div>
@@ -133,274 +217,438 @@ export default function DialogComponentJugadores(props) {
              
                 
                 }}>
-                 {action === "create"?"Nuevo Jugador": "Editar Jugador"}
+                 {action === "create"?"Nuevo equipo": "Editar a "}
                 </Typography>
                </div>
                </div>
-               </>) 
-            
-             : action === "ver"&& <>
-             <div style={{ display:"flex", flexDirection:"column",alignItems:"center", paddingBottom:"25px"}}>  
-              <div style={{marginBottom:"15px"}}> 
-              <Avatar></Avatar>
-              </div>
-              <div>
-                <Typography variant="h5" gutterBottom align="center" sx={{mb:5}}>
-                  Ver {jugador&&jugador.nombre}
-                </Typography>
-              </div>
-              </div>
-              </>
-            }
-        { action === "create" || action === "edit" ? (
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Grid container spacing={3} sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                pl: "25px",
-                pb: "25px",
-                mt:2
-              }}>
-                <Grid  xl={4} lg={4} md={4} xs={6} >
-                  <Item>
-                    <FormText
-                      control={control}
-                      errors={errors}
-                      register={register}
-                      name="id"
-                      rulesBol={true}
-                      text="ID Jugador"
-                      labelText="ID Jugador"
-                      tieneLabel = {true}
-                      type="number"
-                      readOnly={true}
+                </Item> */}
+                <Item sx={{ width: "100%" }}>
+                  <Grid
+                    container
+                    spacing={3}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      pl: "25px",
+                      pb: "25px",
+                      mt: 2,
+                    }}
+                  >
+                    <Grid item xl={4} lg={4} md={6} xs={6}>
+                      <Item>
+                        <FormText
+                          control={control}
+                          errors={errors}
+                          register={register}
+                          name="id"
+                          rulesBol={true}
+                          text="ID Jugador"
+                          labelText="ID Jugador"
+                          tieneLabel={true}
+                          type="number"
+                          readOnly={true}
+                          textColor="#4D4D4D"
+                        />
+                      </Item>
+                    </Grid>
+                    <Grid item xl={4} lg={4} md={6} xs={6}>
+                      <Item>
+                        <FormText
+                          control={control}
+                          errors={errors}
+                          register={register}
+                          name="nombre"
+                          labelText="Nombre"
+                          rulesBol={true}
+                          tieneLabel={true}
+                          text="Nombre"
+                          type="text"
+                          vmodel={jugador && jugador.nombre}
+                          textColor="#4D4D4D"
+                        />
+                      </Item>
+                    </Grid>
+                    <Grid item xl={4} lg={4} md={6} xs={6}>
+                      <Item>
+                        <FormSelect
+                          control={control}
+                          errors={errors}
+                          register={register}
+                          name="nacionalidad"
+                          rulesBol={true}
+                          labelText="Nacionalidad"
+                          text="Nacionalidad"
+                          opcion={nations.nations}
+                          textColor="#4D4D4D"
+                        />
+                      </Item>
+                    </Grid>
 
-                    />
-                  </Item>
-                </Grid>
-                <Grid  xl={4} lg={4} md={4} xs={6}>
-                  <Item>
-                    <FormText
-                      control={control}
-                      errors={errors}
-                      register={register}
-                      name="nombre"
-                      labelText="Nombre"
-                      rulesBol={true}
-                      tieneLabel = {true}
-                      text="Nombre"
-                      type="text"
-                      vmodel={jugador&&jugador.nombre}
-                    />
-                  </Item>
-                </Grid>
-                <Grid  xl={4} lg={4} md={4} xs={6} >
-                  <Item>
-                 
-                    <FormSelect
-                      control={control}
-                      errors={errors}
-                      register={register}
-                      name="nacionalidad"
-                      rulesBol={true}
-                      labelText="Nacionalidad"
-                      text="Nacionalidad"
-                      opcion={nations.nations}
-                    />
-                  </Item>
-                </Grid>
+                    <Grid item xl={4} lg={4} md={6} xs={6}>
+                      <Item>
+                       {/*  <FormSelect
+                          control={control}
+                          errors={errors}
+                          register={register}
+                          name="equipo"
+                          rulesBol={true}
+                          labelText="Equipo"
+                          text="Equipo"
+                          opcion={equipos}
+                          textColor="#4D4D4D"
+                        /> */}
+                        <Controller
+                          name="equipo"
+                          control={control}
+                          render={({ field }) => (
+                            <Autocomplete
+                              {...field}
+                              {...register("equipo")}
+                              loading={loading}
+                              options={equipos}
+                              getOptionLabel={(option) =>
+                                option?.nombre_corto
+                                  ? option.nombre_corto
+                                  : "Seleccionar un Equipo"
+                              }
+                              isOptionEqualToValue={(option, value) =>
+                                value === undefined ||
+                                value === "" ||
+                                option.id === value.id
+                              }
+                              defaultValue=""
+                             /*  getOptionDisabled={(option) =>
+                                option.Equipo.Manager != null
+                              } */
+                              renderInput={(params) => (
+                                <>
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "column",
+                                    }}
+                                  >
+                                    <div style={{ marginBottom: 5 }}>
+                                      <Chip label="Equipos" color="primary" />
+                                    </div>
 
-                <Grid  xl={4} lg={4} md={4} xs={6}>
-                <Item>                
-                    <FormSelect
-                      control={control}
-                      errors={errors}
-                      register={register}
-                      name="equipo"
-                      rulesBol={true}
-                      labelText="Equipo"
-                      text="Equipo"
-                      opcion={equipos}
-                    />
-                  </Item>
-                </Grid>
-                <Grid  xl={4} lg={4} md={4} xs={6} >
-                  <Item>
-                    <FormText
-                      control={control}
-                      errors={errors}
-                      register={register}
-                      name="altura"
-                      tieneLabel = {true}
-                      rulesBol={true}
-                      text="Altura - Cm"
-                      labelText="Altura - Cm"
-                      type="number"
-                    />
-                  </Item>
-                </Grid>
-                <Grid  xl={4} lg={4} md={4} xs={6} >
-                  <Item>               
-                    <FormText
-                      control={control}
-                      errors={errors}
-                      register={register}
-                      name="peso"
-                      tieneLabel = {true}
-                      rulesBol={true}
-                      text="Peso - Kg"
-                      labelText="Peso - Kg"
-                      type="number"
-                    />
-                  </Item>
-                </Grid>
-                <Grid  xl={4} lg={4} md={4} xs={6} >
-                  <Item>
-                    <FormText
-                      control={control}
-                      errors={errors}
-                      tieneLabel = {true}
-                      register={register}
-                      name="ca"
-                      rulesBol={true}
-                      text="Calidad Actual"
-                      labelText="Calidad Actual"
-                      type="number"
-                    />
-                  </Item>
-                </Grid>
-                <Grid  xl={4} lg={4} md={4} xs={6} >
-                  <Item>
-                    <FormText
-                      control={control}
-                      errors={errors}
-                      register={register}
-                      tieneLabel = {true}
-                      name="cp"
-                      rulesBol={true}
-                      text="Calidad Potencial"
-                      labelText="Calidad Potencial"
-                      type="number"
-                    />
-                  </Item>
-                </Grid>
-                <Grid  xl={4} lg={4} md={4} xs={6}>
-                  <Item>
-                    <FormText
-                      control={control}
-                      errors={errors}
-                      register={register}
-                      name="valor"
-                      tieneLabel = {true}
-                      rulesBol={true}
-                      text="Valor - €"
-                      labelText="Valor - €"
-                      type="number"
-                    />
-                  </Item>
-                </Grid>
-          
-              </Grid>
-              <Grid xl={4} lg={4} md={4} xs={6} sx={{mt:2}}>
-                  <Item>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      endIcon={<SaveIcon />}
+                                    <TextField {...params} />
+                                  </div>
+                                </>
+                              )}
+                              onChange={(event, value) => {
+                                event.preventDefault();
+                                field.onChange(value);
+                              }}
+                              renderTags={(value, getTagProps) =>
+                                value.map((option, index) => (
+                                  <Chip
+                                    label={option.Equipo.nombre}
+                                    {...getTagProps({ index })}
+                                  />
+                                ))
+                              }
+                            />
+                          )}
+                        />
+                      </Item>
+                    </Grid>
+                    <Grid item xl={4} lg={4} md={6} xs={6}>
+                      <Item>
+                        <FormText
+                          control={control}
+                          errors={errors}
+                          register={register}
+                          name="altura"
+                          tieneLabel={true}
+                          rulesBol={true}
+                          text="Altura - Cm"
+                          labelText="Altura - Cm"
+                          type="number"
+                          textColor="#4D4D4D"
+                        />
+                      </Item>
+                    </Grid>
+                    <Grid item xl={4} lg={4} md={6} xs={6}>
+                      <Item>
+                        <FormText
+                          control={control}
+                          errors={errors}
+                          register={register}
+                          name="peso"
+                          tieneLabel={true}
+                          rulesBol={true}
+                          text="Peso - Kg"
+                          labelText="Peso - Kg"
+                          type="number"
+                          textColor="#4D4D4D"
+                        />
+                      </Item>
+                    </Grid>
+                    <Grid item xl={4} lg={4} md={6} xs={6}>
+                      <Item>
+                        <FormText
+                          control={control}
+                          errors={errors}
+                          tieneLabel={true}
+                          register={register}
+                          name="ca"
+                          rulesBol={true}
+                          text="Calidad Actual"
+                          labelText="Calidad Actual"
+                          type="number"
+                          textColor="#4D4D4D"
+                        />
+                      </Item>
+                    </Grid>
+                    <Grid item xl={4} lg={4} md={6} xs={6}>
+                      <Item>
+                        <FormText
+                          control={control}
+                          errors={errors}
+                          register={register}
+                          tieneLabel={true}
+                          name="cp"
+                          rulesBol={true}
+                          text="Calidad Potencial"
+                          labelText="Calidad Potencial"
+                          type="number"
+                          textColor="#4D4D4D"
+                        />
+                      </Item>
+                    </Grid>
+                    <Grid item xl={4} lg={4} md={6} xs={6}>
+                      <Item>
+                        <FormText
+                          control={control}
+                          errors={errors}
+                          register={register}
+                          name="valor"
+                          tieneLabel={true}
+                          rulesBol={true}
+                          text="Valor - €"
+                          labelText="Valor - €"
+                          type="number"
+                          textColor="#4D4D4D"
+                        />
+                      </Item>
+                    </Grid>
+                  </Grid>
+                  <Grid item xl={4} lg={4} md={6} xs={6} sx={{ mt: 2 }}>
+                    <Item>
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        endIcon={<SaveIcon />}
+                        sx={{
+                          width: "50%",
+                          height: "50px",
+                          borderRadius: "5px",
+                          backgroundColor: "#757575",
+                          color: "white",
+                          fontSize: "20px",
+                          fontWeight: "bold",
+                          marginTop: "10px",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        Guardar
+                      </Button>
+                    </Item>
+                  </Grid>
+                </Item>
+              </Stack>
+            </form>
+          ) : (
+            action === "ver" && (
+              <>
+                <Stack
+                  direction="row"
+                  divider={
+                    <Divider
                       sx={{
-                        width: "50%",
-                        height: "50px",
-                        borderRadius: "5px",
-                        backgroundColor: "#546e7a",
-                        color: "white",
-                        fontSize: "20px",
-                        fontWeight: "bold",
-                        marginTop: "10px",
-                        marginBottom: "10px",
-
+                        border: "solid 5px #757575",
+                        backgroundColor: "secondary.main",
+                      }}
+                      orientation="vertical"
+                      flexItem
+                    />
+                  }
+                  spacing={2}
+                >
+                  <Item
+                    sx={{
+                      width: "30%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      m: 0,
+                    }}
+                  >
+                    VER JUGADOR
+                  </Item>
+                  <Item sx={{ width: "70%" }}>
+                    <Grid
+                      container
+                      spacing={3}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        pl: "25px",
+                        pb: "25px",
+                        mt: 3,
                       }}
                     >
-                      Guardar
-                    </Button>
-                  </Item>             
-                </Grid>
-            </form>
-           ):( 
-            
-          action === "ver" && (
-              
-              <Grid container spacing={3} sx={{
-                display:"flex", 
-                justifyContent:"center",
-                pl: "25px",
-                pb: "25px",
-              }}>
-                
-                <Grid  xl={4} lg={4} md={4} xs={6}>
-                  <Item>
-                  <Typography variant="h6" gutterBottom sx={{display:"flex", flexDirection:"column", alignItems:"center"}}>
-                      Equipo:
-                    <Chip sx={{mt:1}} color="primary" label={jugador?.equipo} />
-                    </Typography>
-                    </Item>
-                </Grid> 
-                <Grid  xl={4} lg={4} md={4} xs={6}>
-                  <Item >
-                    <Typography variant="h6" gutterBottom sx={{display:"flex", flexDirection:"column", alignItems:"center"}} >
-                      Nacionalidad:
-                    <Chip sx={{mt:1}} color="primary"  label={jugador?.nacionalidad} />
-                    </Typography>
-                    </Item>
-                </Grid>
-                <Grid  xl={4} lg={4} md={4} xs={6}>
-                  <Item>
-                    <Typography variant="h6" gutterBottom sx={{display:"flex", flexDirection:"column", alignItems:"center"}}>
-                      Altura:
-                    <Chip sx={{mt:1}} color="primary" label={jugador?.altura+" cm"} />
-                    </Typography>
-                    </Item>
+                      <Grid item xl={4} lg={4} md={6} xs={6}>
+                        <Item>
+                          <Typography
+                            variant="h6"
+                            gutterBottom
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "center",
+                            }}
+                          >
+                            Equipo:
+                            <Chip
+                              sx={{ mt: 1 }}
+                              color="primary"
+                              label={jugador?.equipo}
+                            />
+                          </Typography>
+                        </Item>
+                      </Grid>
+                      <Grid item xl={4} lg={4} md={6} xs={6}>
+                        <Item>
+                          <Typography
+                            variant="h6"
+                            gutterBottom
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "center",
+                            }}
+                          >
+                            Nacionalidad:
+                            <Chip
+                              sx={{ mt: 1 }}
+                              color="primary"
+                              label={jugador?.nacionalidad}
+                            />
+                          </Typography>
+                        </Item>
+                      </Grid>
+                      <Grid item xl={4} lg={4} md={6} xs={6}>
+                        <Item>
+                          <Typography
+                            variant="h6"
+                            gutterBottom
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "center",
+                            }}
+                          >
+                            Altura:
+                            <Chip
+                              sx={{ mt: 1 }}
+                              color="primary"
+                              label={jugador?.altura + " cm"}
+                            />
+                          </Typography>
+                        </Item>
+                      </Grid>
+                      <Grid item xl={4} lg={4} md={6} xs={6}>
+                        <Item>
+                          <Typography
+                            variant="h6"
+                            gutterBottom
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "center",
+                            }}
+                          >
+                            Peso:
+                            <Chip
+                              sx={{ mt: 1 }}
+                              color="primary"
+                              label={jugador?.peso + " kg"}
+                            />
+                          </Typography>
+                        </Item>
+                      </Grid>
+                      <Grid item xl={4} lg={4} md={6} xs={6}>
+                        <Item>
+                          <Typography
+                            variant="h6"
+                            gutterBottom
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "center",
+                            }}
+                          >
+                            Calidad Actual:
+                            <Chip
+                              sx={{ mt: 1 }}
+                              color="primary"
+                              label={jugador?.ca}
+                            />
+                          </Typography>
+                        </Item>
+                      </Grid>
+                      <Grid item xl={4} lg={4} md={6} xs={6}>
+                        <Item>
+                          <Typography
+                            variant="h6"
+                            gutterBottom
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "center",
+                            }}
+                          >
+                            Calidad Potencial:
+                            <Chip
+                              sx={{ mt: 1 }}
+                              color="primary"
+                              label={jugador?.cp}
+                            />
+                          </Typography>
+                        </Item>
+                      </Grid>
+                      <Grid item xl={4} lg={4} md={6} xs={6}>
+                        <Item>
+                          <Typography
+                            variant="h6"
+                            gutterBottom
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "center",
+                            }}
+                          >
+                            Valor:
+                            <Chip
+                              sx={{ mt: 1 }}
+                              color="primary"
+                              label={"€ " + jugador?.valor}
+                            />
+                          </Typography>
+                        </Item>
+                      </Grid>
                     </Grid>
-                <Grid  xl={4} lg={4} md={4} xs={6}>
-                  <Item>
-                    <Typography variant="h6" gutterBottom sx={{display:"flex", flexDirection:"column", alignItems:"center"}}>
-                      Peso:
-                    <Chip sx={{mt:1}} color="primary" label={jugador?.peso + " kg"} />
-                    </Typography>
-                    </Item>
-                    </Grid>
-                <Grid  xl={4} lg={4} md={4} xs={6}>
-                  <Item>
-                    <Typography variant="h6" gutterBottom sx={{display:"flex", flexDirection:"column", alignItems:"center"}}>
-                      Calidad Actual:
-                    <Chip sx={{mt:1}} color="primary" label={jugador?.ca} />
-                    </Typography>
-                    </Item>
-                    </Grid>
-                <Grid  xl={4} lg={4} md={4} xs={6}>
-                  <Item>
-                    <Typography variant="h6" gutterBottom sx={{display:"flex", flexDirection:"column", alignItems:"center"}}>
-                      Calidad Potencial:
-                    <Chip sx={{mt:1}} color="primary" label={jugador?.cp} />
-                    </Typography>
-                    </Item>
-                    </Grid>
-                <Grid  xl={4} lg={4} md={4} xs={6} >
-                  <Item>
-                    <Typography variant="h6" gutterBottom sx={{display:"flex", flexDirection:"column", alignItems:"center"}}>
-                      Valor:
-                    <Chip sx={{mt:1}} color="primary" label={"€ "+jugador?.valor} />
-                    </Typography>
-                    </Item>
-                    </Grid>
-              </Grid>
-            ) 
-            
+                  </Item>
+                </Stack>
+              </>
+            )
           )}
         </Container>
       </Dialog>
-      
     </div>
   );
 }

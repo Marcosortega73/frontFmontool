@@ -17,6 +17,7 @@ import { Divider, Grid,  TextField, Typography } from "@mui/material";
 //Array con campos del modelo jugadores
 import jugadoresModelData from "../../../../utils/models/jugadoresModel.json";
 import { Box } from "@mui/system";
+import axios from "axios";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -92,42 +93,68 @@ export default function DialogExcel({ openExcel, setOpenExcel }) {
 
     setOpenExcel(false);
   };
+  
+  const handlePlantilla = async () => {
+    //descargar un archivo
+    const url = "http://localhost:3030/api/download/download/jugadores.xlsx";
+    const config = {
+      url,
+      method: "GET",
+      responseType: "blob",
+       headers: {
+      "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    },
+  }
+    try {
+      axios.request(config).then((res) => {
+        console.log("res", res)
+        const url = URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "jugadores.xlsx");
+          
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <div>
       <Dialog open={openExcel} onClose={handleClose}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <DialogTitle>Subir Base de Datos de Jugadores</DialogTitle>
+        <DialogTitle sx={{background:"#757575", color:"#e5e5e5",textAlign:"center"}}>Subir Base de Datos de Jugadores</DialogTitle>
           <DialogContent>
            <Divider />
-              <Typography variant="h6"  sx={{my:3}}>
-                Subir Excel de jugadores para importar a la base de datos de la
-                aplicación. La tabla debe contener los siguientes campos:
-              </Typography>
+           <Typography variant="h6" sx={{ my: 3 }}>
+              Para cargar la base de datos de jugadores, debe subir un archivo
+              excel con los datos de los jugadores. Puede descargar la plantilla
+              para cargar los datos. Una vez cargados los datos, se actualizaran
+              los jugadores.
+            </Typography>
+
 
            <Divider />
     
-                <Grid container spacing={2} sx={{my:3}}>
-
-                {jugadoresModelData.map((item, index) => {
-                  return (
-                      <Grid item key={index} xs={4}>
-                        <Item>
-                          <Typography variant="span" >
-                            {item}
-                          </Typography>
-                        </Item>
-                      </Grid>      
-                  );
-                })}
-                  </Grid>
-              <Divider/>
+           <Grid container spacing={2} sx={{ mb: 3 }}>
+              <Grid item xs={12} md={12} sx={{mt:0}}>
+                <Item >
+                  <Button variant="contained" onClick={handlePlantilla}>
+                    Descargar Plantilla
+                  </Button>
+                </Item>
+              </Grid>
+            </Grid>
+            <Divider sx={{mt:5}} />
             <Box sx={{mt:4, display:"flex", justifyContent:"center"}}>
             <TextField {...register("file", { required: true })} type="file" sx={{m:1}} />
             </Box>
           </DialogContent>
           <DialogActions>
-            <Button type="submit" variant="outlined" >
+            <Button type="submit" variant="contained" color="primary" >
               {" "}
               Enviar{" "}
             </Button>

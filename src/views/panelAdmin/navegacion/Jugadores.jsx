@@ -23,8 +23,9 @@ import { useDispatch } from "react-redux";
 import jugadoresServices from "../../../services/api/jugadores/jugadoresService";
 import equiposServices from "../../../services/api/equipos/equiposServices";
 
+
 import translate from "../../../utils/translate/dataGridToolbar.json";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import {
   Container,
   IconButton,
@@ -114,15 +115,22 @@ export default function Jugadores() {
     setLoading(false);
   };
 
+  const getEquipos = async () => {
+    const response = await equiposServices.getEquiposTorneos();
+    console.log("response equipos", response);
+    setEquipos(response);
+  };
+
+
   React.useEffect(() => {
-    dispatch(getRegiones());
-    /*     getEquipos(); */
-    getJugadores();
-  }, [loading, rowsPerPage, page, filter]); // eslint-disable-line react-hooks/exhaustive-deps
+    dispatch(getRegiones()); 
+    getEquipos(); 
+  }, [loading]); // eslint-disable-line react-hooks/exhaustive-deps
 
   React.useEffect(() => {
     getJugadores();
-  }, [loading])
+  
+  }, [])
 
   
   const handleOpenDialog = () => {
@@ -297,7 +305,7 @@ export default function Jugadores() {
       align: "center",
       headerClassName: "headerClass",
     },
-    {
+/*     {
       field: "actions",
       headerName: "Acciones",
       sortable: false,
@@ -322,9 +330,41 @@ export default function Jugadores() {
           </Stack>
         );
       },
+    }, */
+    {
+      field: "actions",
+      headerName: "Acciones",
+      disableReorder: true,
+      flex: 1,
+      type: 'actions',
+      getActions: (params) => [
+    
+        <GridActionsCellItem
+          icon={ <VisibilityIcon fontSize="small" />}
+          label="Ver Jugador"
+          onClick={()=>{handleJugadorSelect(params.row,"ver")}}
+          showInMenu
+        />,
+        <GridActionsCellItem
+          icon={ <EditIcon fontSize="small" />}
+          label="Editar Jugador"
+          onClick={()=>{handleJugadorSelect(params.row,"edit")}}
+          showInMenu
+        />,
+        <GridActionsCellItem
+          icon={ <DeleteIcon fontSize="small" />}
+          label="Borrar Jugador"
+          onClick={()=>{handleDelete(params.id)}}
+          showInMenu
+        />,
+      ],
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
     },
   ];
 
+  console.log("equipo jugadores", equipos);
   return (
     <>
       <Box sx={{ overflow: "hidden" }}>
@@ -400,12 +440,13 @@ export default function Jugadores() {
                 autoHeight
                 disableSelectionOnClick
                 onPageSizeChange={(newPageSize) => setRowsPerPage(newPageSize)}
-                rowsPerPageOptions={[
+           /*      rowsPerPageOptions={[
                   5,
                   10,
                   20,
                   { value: jugadores.length, label: "Todos" },
-                ]}
+                ]} */
+                
                 pagination
                 localeText={translate}
                 rowHeight={53}
