@@ -28,6 +28,7 @@ import { Box, Container } from "@mui/system";
 
 import Silueta from "../../../../assets/images/persons/silueta.png";
 import TableHabilidades from "./component/TableHabilidades";
+import { RadarChart } from "../../../../components/charts/RadarChart";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -39,8 +40,8 @@ const Img = styled("img")({
 });
 
 const ImgSm = styled("img")({
-  width: "10%",
-  height: "10%",
+  width: "15%",
+  height: "15%",
 });
 
 const ImgLogo = styled("img")({
@@ -52,7 +53,6 @@ const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   color: theme.palette.text.secondary,
   height: 123,
-
 }));
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
@@ -69,9 +69,26 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 export default function DialogJugadorDetails({ open, setOpen, jugador }) {
   console.log("Mirando Jugador en el Cliente Detail", jugador);
 
-  console.log("IMAGEN",jugador?.Equipo?.idFmrte);
+  console.log("IMAGEN", jugador?.Equipo?.idFmrte);
+  let banderaPaisEquipo = "";
+  let banderaPaisJugador = "";
 
-  const banderaPaisSm=require(`../../../../../../Nations/large/1/alg.png`);
+  if (jugador?.Equipo?.Nacionalidad) {
+    let continente = jugador.Equipo?.Nacionalidad.continente_id;
+    let nombrePaisCorto =
+      jugador.Equipo?.Nacionalidad.nombreCorto.toLowerCase();
+
+    banderaPaisEquipo = require(`../../../../assets/images/Nations/large/${continente}/${nombrePaisCorto}.png`);
+  }
+
+  if (jugador?.Nacionalidad) {
+    let continente = jugador.Nacionalidad.continente_id;
+    let nombrePaisCorto = jugador.Nacionalidad.nombreCorto.toLowerCase();
+
+    banderaPaisJugador = require(`../../../../assets/images/Nations/large/${continente}/${nombrePaisCorto}.png`);
+  }
+
+  let escudoEquipo = require(`../../../../assets/images/logos/LogoLocal.png`);
 
   const formatterDolar = new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -259,8 +276,10 @@ export default function DialogJugadorDetails({ open, setOpen, jugador }) {
         </AppBar>
 
         <AppBar position="static">
-          <StyledToolbar sx={{ maxHeight: 200,pt:2.5,backgroundColor:"primary.main" }}>
-            <Grid container spacing={3} sx={{ maxHeight: 200}}>
+          <StyledToolbar
+            sx={{ maxHeight: 200, pt: 2.5, backgroundColor: "primary.main" }}
+          >
+            <Grid container spacing={3} sx={{ maxHeight: 200 }}>
               <Grid item xs={4}>
                 <Item>
                   <Card
@@ -307,12 +326,11 @@ export default function DialogJugadorDetails({ open, setOpen, jugador }) {
                           <strong>Nacionalidad: </strong>
                           <ImgSm
                             sx={{ px: 1 }}
-                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Flag_of_Argentina.svg/1200px-Flag_of_Argentina.svg.png"
+                            src={banderaPaisJugador}
                             alt="Bandera Nacion"
                           />
                           <span>
                             {jugador?.Nacionalidad?.gentilicio?.toUpperCase()}
-                            {jugador?.id}
                           </span>
                         </Typography>
                       </CardContent>
@@ -321,7 +339,7 @@ export default function DialogJugadorDetails({ open, setOpen, jugador }) {
                       component="img"
                       sx={{ width: 151 }}
                       // eslint-disable-next-line no-octal-escape
-                      image={`/public/images/Faces/${jugador?.id}.png`}
+                      image={Silueta}
                       alt="Face Jugador"
                     />
                   </Card>
@@ -362,7 +380,9 @@ export default function DialogJugadorDetails({ open, setOpen, jugador }) {
                           component="div"
                         >
                           <strong>Liga: </strong>
-                          Ligue 1
+                          {jugador?.Equipo?.Torneos.length > 0
+                            ? jugador?.Equipo?.Torneos[0]?.nombre
+                            : "Resto del Mundo"}
                         </Typography>
                         <Typography
                           variant="subtitle2"
@@ -373,7 +393,7 @@ export default function DialogJugadorDetails({ open, setOpen, jugador }) {
                           <strong>Pais: </strong>
                           <ImgSm
                             sx={{ px: 1 }}
-                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/270px-Flag_of_France.svg.png"
+                            src={banderaPaisEquipo}
                             alt="Nacionalidad Equipo"
                           />
                           <span>
@@ -385,8 +405,7 @@ export default function DialogJugadorDetails({ open, setOpen, jugador }) {
                     <CardMedia
                       component="img"
                       sx={{ width: 151 }}
-                      image={`/graphics/logos/${jugador?.Equipo?.Nacionalidad?.nombre}/Clubs/normal/${jugador?.Equipo?.id&&jugador.Equipo.idFmrte}.png`}
-              
+                      image={escudoEquipo}
                       alt="Logo Equipo"
                     />
                   </Card>
@@ -437,30 +456,6 @@ export default function DialogJugadorDetails({ open, setOpen, jugador }) {
                           <strong>Pierna Buena: </strong>
                           Zurda
                         </Typography>
-                        {/*         <Typography
-                          variant="subtitle2"
-                          color="text.secondary"
-                          component="div"
-                          sx={{ display: "flex" }}
-                        >
-                          <strong style={{ paddingRight: "3px" }}>
-                            Altura:{" "}
-                          </strong>
-                          <span>{jugador?.altura + " cm"}</span>
-                        </Typography>
-                        <Typography
-                          variant="subtitle2"
-                          color="text.secondary"
-                          component="div"
-                          sx={{ display: "flex" }}
-                        >
-                          <strong
-                            style={{paddingRight: "3px" }}
-                          >
-                            Peso:{" "}
-                          </strong>
-                          <span>{jugador?.peso + " kg"}</span>
-                        </Typography> */}
                       </CardContent>
                     </Box>
                     <CardContent>
@@ -475,16 +470,38 @@ export default function DialogJugadorDetails({ open, setOpen, jugador }) {
                         <Chip
                           variant="filled"
                           color="secondary"
-                          label={"Calidad Actual: " + jugador?.ca}
+                          label={
+                            <>
+                              Calidad Actual:
+                              <Chip
+                                variant="filled"
+                                color="primary"
+                                label={jugador?.ca}
+                                size="small"
+                                sx={{ ml: 1 }}
+                              />
+                            </>
+                          }
                           size="small"
-                          sx={{ mb: 1 }}
+                          sx={{ mb: 1, p: 1 }}
                         />
                         <Chip
                           variant="filled"
                           color="secondary"
-                          label={"Calidad Potencial: " + jugador?.cp}
+                          label={
+                            <>
+                              Calidad Potencial:
+                              <Chip
+                                variant="filled"
+                                color="primary"
+                                label={jugador?.cp}
+                                size="small"
+                                sx={{ ml: 1 }}
+                              />
+                            </>
+                          }
                           size="small"
-                          sx={{ mb: 1 }}
+                          sx={{ mb: 1, p: 1 }}
                         />
                         <Chip
                           variant="filled"
@@ -506,7 +523,7 @@ export default function DialogJugadorDetails({ open, setOpen, jugador }) {
           sx={{
             width: "100%",
             my: 3,
-            mb:3,
+            mb: 3,
             height: "90%",
           }}
         >
@@ -516,7 +533,7 @@ export default function DialogJugadorDetails({ open, setOpen, jugador }) {
             sx={{
               width: "100%",
               height: "100%",
-              mb:3,
+              mb: 3,
             }}
           >
             <Grid item xs={4}>
@@ -524,25 +541,45 @@ export default function DialogJugadorDetails({ open, setOpen, jugador }) {
                 sx={{
                   width: "100%",
                   height: "100%",
-                  ml:2.4,
+                  ml: 2.4,
                   backgroundColor: "primary.main",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
                 <Card
                   sx={{
                     display: "flex",
+                    bacgroundColor:"red !important",
+                    flexDirection: "column",
                     justifyContent: "space-between",
-                    height: "75%",
-                    p:2,
-                   
+                    alignItems: "center",
+                    height: "93%",
+                    width: "93%",
+                    p: 2,
                   }}
                 >
+                  <CardHeader title="Analisis de Atributos" />
+
                   <CardMedia
-                    component="img"
-                    image={grafico}
                     alt="Grafico Atributos"
-                    sx={{ borderRadius: "10px",}}
-                  />
+                    sx={{
+                      borderRadius: "10px",
+                      height: "auto",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <RadarChart
+                      habilidadesFisicas={habilidadesFisicas}
+                      habilidadesTecnicas={habilidadesTecnicas}
+                      habilidadesMentales={habilidadesMentales}
+                    />
+                  </CardMedia>
                 </Card>
               </Item>
             </Grid>
@@ -552,8 +589,8 @@ export default function DialogJugadorDetails({ open, setOpen, jugador }) {
                   width: "100%",
                   backgroundColor: "primary.main",
                   height: "100%",
-                  mx:2,
-                  mr:2
+                  mx: 2,
+                  mr: 2,
                 }}
               >
                 <Card

@@ -122,6 +122,22 @@ const getJugadoresByEquipoService = async (id) => {
   }
 }
 
+const getStatsJugadoresByEquipoService = async (id) => {
+  try{
+    const response  =  http
+    .get(API_URL+"statsJugadoresByEquipo/"+id)
+    .then((res) => {
+          console.log("LLEGE AL LA DATA GET JUGADOR",res.data)
+          return res.data.players;
+    });
+    return response
+
+  }
+  catch(error){
+    console.log("LLEGE AL ERROR Del DELETE",error)
+  }
+}
+
 const jugadoresServices = {
     getJugadoresService,
     createJugadorService,
@@ -129,7 +145,8 @@ const jugadoresServices = {
     uploadBaseDatosService,
     deleteJugadorService,
     getFilterJugadoresService,
-    getJugadoresByEquipoService
+    getJugadoresByEquipoService,
+    getStatsJugadoresByEquipoService
 
 
 }

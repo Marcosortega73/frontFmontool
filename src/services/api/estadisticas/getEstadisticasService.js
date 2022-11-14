@@ -32,11 +32,27 @@ const getSancionadosByTorneoEquipo = async (data) => {
   }
 
 };
+
+const getEstadisticasByEquipo = async (data) => {
+  console.log("LLEGE AL GET Estadisticas REQ");
+  try {
+    const response = http.get(API_URL + "obtenerEstadisticas/"+data.equipo+`?torneo_id=${data.torneo}`).then((res) => {
+      console.log("LLEGE AL LA DATA GET Estadisitica", res.data);
+      return res.data;
+    });
+    return response;
+  } catch (error) {
+    console.log("LLEGE AL ERROR GET", error);
+  }
+};
+
+
   
 
 const getEstadisticasServices = {
   getEstadisticasByTorneo,
-  getSancionadosByTorneoEquipo
+  getSancionadosByTorneoEquipo,
+  getEstadisticasByEquipo
 
 };
 
