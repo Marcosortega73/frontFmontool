@@ -62,98 +62,6 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const columns = [
-  {
-    field: "idFmrte",
-    headerName: "Id",
-    description: "Id del equipo dentro del Juego",
-    with: 100,
-    headerAlign: "center",
-    align: "center",
-    headerClassName: "headerClass", // <-- Header cell className
-  },
-  {
-    field: "nombre_corto",
-    headerName: "Nombre",
-    minWidth: 200,
-    description: "Nombre del equipo",
-    flex: 1,
-    renderCell: (params) => {
-      return (
-        <Tooltip title={params.row.nombre}>
-          <span>{params.row.nombre_corto}</span>
-        </Tooltip>
-      );
-    },
-    headerAlign: "center",
-    align: "center",
-    headerClassName: "headerClass",
-  },
-  {
-    field: "Nacionalidad",
-    headerName: "Nacionalidad",
-    renderCell: (params) => {
-      return (
-        <Tooltip title={params.row.Nacionalidad.nombre}>
-          <span>{params.row.Nacionalidad.nombre}</span>
-        </Tooltip>
-      );
-    },
-    sortable: true,
-    sortComparator: (v1, v2, param1, param2) => {
-      console.log(v1, v2, param1, param2);
-      return param1.field.localeCompare(param2.value.Nacionalidad.nombre);
-    },
-    description: "Nacionalidad del equipo",
-    headerAlign: "center",
-    align: "center",
-    headerClassName: "headerClass",
-  },
-
-  {
-    field: "Torneos",
-    headerName: "Torneos",
-    renderCell: (params) => {
-      return (
-        <div style={{ padding: 3, display: "flex", flexWrap: "wrap" }}>
-          {params.value.map((torneo) => {
-            return (
-              <>
-                <Chip
-                  label={torneo.nombre}
-                  color="primary"
-                  variant="outlined"
-                  size="small"
-                  sx={{ m: "3px" }}
-                />
-              </>
-            );
-          })}
-        </div>
-      );
-    },
-    flex: 1,
-    grow: 1,
-    description: "Torneos en los que participa el equipo",
-    headerAlign: "center",
-    align: "center",
-    headerClassName: "headerClass",
-  },
-
-  {
-    field: "actions",
-    type: "actions",
-    headerName: "Acciones",
-    disableReorder: true,
-    getActions: (params) => [
-      <GridActionsCellItem icon={<EditNotifications />} label="Edit" />,
-    ],
-    headerAlign: "center",
-    align: "center",
-    headerClassName: "headerClass",
-  },
-];
-
 export default function Equipos() {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("nombre");
@@ -184,6 +92,153 @@ export default function Equipos() {
   });
 
   const [actionSelect, setActionSelect] = React.useState("");
+
+  const columns = [
+    {
+      field: "idFmrte",
+      headerName: "Id",
+      description: "Id del equipo dentro del Juego",
+      with: 100,
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass", // <-- Header cell className
+    },
+    {
+      field: "nombre_corto",
+      headerName: "Nombre",
+      minWidth: 200,
+      description: "Nombre del equipo",
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <Tooltip title={params.row.nombre}>
+            <span>{params.row.nombre_corto}</span>
+          </Tooltip>
+        );
+      },
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
+    },
+    {
+      field: "Nacionalidad",
+      headerName: "Nacionalidad",
+      renderCell: (params) => {
+        return (
+          <Tooltip title={params.row.Nacionalidad.nombre}>
+            <span>{params.row.Nacionalidad.nombre}</span>
+          </Tooltip>
+        );
+      },
+      sortable: true,
+      sortComparator: (v1, v2, param1, param2) => {
+        console.log(v1, v2, param1, param2);
+        return param1.field.localeCompare(param2.value.Nacionalidad.nombre);
+      },
+      description: "Nacionalidad del equipo",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
+    },
+    {
+      field: "Manager",
+      flex: 1,
+      headerName: "Manager",
+      renderCell: (params) => {
+        console.log("paramasmsmamsdmasmdamsd", params);
+        return params.row.Manager != null ? (
+          <Tooltip title={params.row.Manager.nombre}>
+            <span>
+              {params.row.Manager.nombre
+                ? params.row.Manager.nombre
+                : params.row.Manager.email}
+            </span>
+          </Tooltip>
+        ) : (
+          <>
+            <span>Sin Manager</span>
+          </>
+        );
+      },
+      sortable: true,
+      sortComparator: (v1, v2, param1, param2) => {
+        console.log(v1, v2, param1, param2);
+        return param1.field.localeCompare(param2.value.Manager.nombre);
+      },
+      description: "Manager del equipo",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
+    },
+
+    {
+      field: "Torneos",
+      headerName: "Torneos",
+      renderCell: (params) => {
+        return (
+          <div style={{ padding: 3, display: "flex", flexWrap: "wrap" }}>
+            {params.value.length > 0
+              ? params.value.map((torneo, idx) => {
+                  return (
+                    <Chip
+                      key={idx}
+                      label={torneo.nombre}
+                      color="primary"
+                      variant="outlined"
+                      size="small"
+                      sx={{ m: "3px" }}
+                    />
+                  );
+                })
+              : "Resto del mundo"}
+          </div>
+        );
+      },
+      flex: 1,
+      grow: 1,
+      description: "Torneos en los que participa el equipo",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
+    },
+
+    {
+      field: "actions",
+      headerName: "Acciones",
+      disableReorder: true,
+      flex: 1,
+      type: "actions",
+      getActions: (params) => [
+        <GridActionsCellItem
+          icon={<VisibilityIcon fontSize="small" />}
+          label="Ver Jugador"
+          onClick={() => {
+            handleEquipoSelect(params.row, "ver");
+          }}
+          showInMenu
+        />,
+        <GridActionsCellItem
+          icon={<EditIcon fontSize="small" />}
+          label="Editar Jugador"
+          onClick={() => {
+            handleEquipoSelect(params.row, "edit");
+          }}
+          showInMenu
+        />,
+        <GridActionsCellItem
+          icon={<DeleteIcon fontSize="small" />}
+          label="Borrar Jugador"
+          onClick={() => {
+            handleDelete(params.id);
+          }}
+          showInMenu
+        />,
+      ],
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
+    },
+  ];
 
   const getEquipos = async () => {
     const { clubes } = await equiposServices
@@ -217,9 +272,12 @@ export default function Equipos() {
         id: equipo.id,
         nombre: equipo.nombre,
         nombre_corto: equipo?.nombre_corto,
-        nacionalidad: equipo.Nacionalidad.id,
-        //manager: equipo.Manager&&equipo.Manager.nombre,
-        torneo: equipo.Torneo && equipo.Torneo.nombre,
+        nacionalidad: equipo.Nacionalidad,
+        manager:
+          equipo.Manager && equipo.Manager.nombre
+            ? equipo.Manager.nombre
+            : equipo.Manager.email?equipo.Manager.email:"Sin Manager",
+        torneo: equipo.Torneos && equipo.Torneos.nombre,
       });
     } else if (action === "ver") {
       setEquiposSelect({
@@ -227,8 +285,12 @@ export default function Equipos() {
         nombre: equipo.nombre,
         nombre_corto: equipo?.nombre_corto,
         nacionalidad: equipo.Nacionalidad.nombre,
-        // manager: equipo.Manager&&equipo.Manager.nombre,
-        torneo: equipo.Torneo && equipo.Torneo.nombre,
+        manager:
+        equipo.Manager && equipo.Manager.nombre
+          ? equipo.Manager.nombre
+          : equipo.Manager.email?equipo.Manager.email:"Sin Manager",
+
+        torneo: equipo.Torneos && equipo.Torneos.nombre,
       });
     }
 
@@ -320,7 +382,7 @@ export default function Equipos() {
     });
   };
 
-  const handleSortModelChange = React.useCallback((sortModel) => {
+  /*   const handleSortModelChange = React.useCallback((sortModel) => {
     // Here you save the data you need from the sort model
     // and then call the service to get the data
     const sort = sortModel[0];
@@ -329,7 +391,8 @@ export default function Equipos() {
       field: sort.field,
       sort: sort.sort,
     });
-  }, []);
+  }, []); */
+
   console.log("queryOptions", queryOptions);
 
   const handleFilter = (e) => {

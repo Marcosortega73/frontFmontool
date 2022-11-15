@@ -131,7 +131,7 @@ export default function FormAutocomplete({
                 }}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                  getOptionLabel={(option) =>
-                  !selectEquipos? option.nombre :`${option.nombre} - (${option.Nacionalidad?.nombreCorto})`
+                  !selectEquipos? option.nombre :`${option.nombre_corto} - (${option.Nacionalidad?.nombreCorto})`
                 } 
                 options={options}
                 loading={loading}
@@ -140,7 +140,7 @@ export default function FormAutocomplete({
                   <li {...props} key={option.id}>
                     {!selectEquipos
                       ? option.nombre
-                      : `${option.nombre} - (${option.Nacionalidad?.nombreCorto})`}
+                      : `${option.nombre_corto} - (${option.Nacionalidad?.nombreCorto})`}
                   </li>
                 )}
                 groupBy={(option) => option.Nacionalidad?.nombre}

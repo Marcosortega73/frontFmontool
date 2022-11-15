@@ -23,7 +23,6 @@ import { useDispatch } from "react-redux";
 import jugadoresServices from "../../../services/api/jugadores/jugadoresService";
 import equiposServices from "../../../services/api/equipos/equiposServices";
 
-
 import translate from "../../../utils/translate/dataGridToolbar.json";
 import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import {
@@ -95,14 +94,13 @@ export default function Jugadores() {
     setLoading(true);
     console.log("ROWperPage ", rowsPerPage);
     console.log("PAGE ", page);
+    console.log( "filterrrrrrrrrrrrrrrrrrrrrrr", filter);
 
     const players = await jugadoresServices.getFilterJugadoresService(
       page,
       filter,
       rowsPerPage
     );
-
-    
 
     console.log("DATA DEl FILTER", players);
 
@@ -121,18 +119,15 @@ export default function Jugadores() {
     setEquipos(response);
   };
 
-
   React.useEffect(() => {
-    dispatch(getRegiones()); 
-    getEquipos(); 
-  }, [loading]); // eslint-disable-line react-hooks/exhaustive-deps
+    dispatch(getRegiones());
+    getEquipos();
+  }, [loading, page, filter, rowsPerPage]); // eslint-disable-line react-hooks/exhaustive-deps
 
   React.useEffect(() => {
     getJugadores();
-  
-  }, [])
+  }, [loading,page, filter, rowsPerPage]);// eslint-disable-line react-hooks/exhaustive-deps
 
-  
   const handleOpenDialog = () => {
     setOpenDialog(true);
   };
@@ -145,8 +140,8 @@ export default function Jugadores() {
         setJugadorSelect({
           id: jugador.id,
           nombre: jugador.nombre,
-          nacionalidad: jugador.Nacionalidad?.id,
-          equipo: jugador.Equipo?.id,
+          nacionalidad: jugador.Nacionalidad,
+          equipo: jugador.Equipo,
           altura: jugador.altura,
           peso: jugador.peso,
           ca: jugador.ca,
@@ -246,7 +241,7 @@ export default function Jugadores() {
       headerName: "Equipo",
       width: 200,
       valueGetter: (params) => {
-        return params?.value?.nombre;
+        return params?.value?.nombre_corto;
       },
       headerAlign: "center",
       align: "center",
@@ -305,56 +300,35 @@ export default function Jugadores() {
       align: "center",
       headerClassName: "headerClass",
     },
-/*     {
-      field: "actions",
-      headerName: "Acciones",
-      sortable: false,
-      filterable: false,
-      flex: 1,
-      disableClickEventBubbling: true,
-      headerAlign: "center",
-      align: "center",
-      headerClassName: "headerClass",
-      width: 200,
-      renderCell: (params) => {
-        return (
-          <Stack direction="row" spacing={1}>
-            <Tooltip title="Ver Acciones">
-              <ButtonPopperComponent
-                handleDelete={handleDelete}
-                handleJugadorSelect={handleJugadorSelect}
-                row={params?.row}
-                id={params?.id}
-              />
-            </Tooltip>
-          </Stack>
-        );
-      },
-    }, */
     {
       field: "actions",
       headerName: "Acciones",
       disableReorder: true,
       flex: 1,
-      type: 'actions',
+      type: "actions",
       getActions: (params) => [
-    
         <GridActionsCellItem
-          icon={ <VisibilityIcon fontSize="small" />}
+          icon={<VisibilityIcon fontSize="small" />}
           label="Ver Jugador"
-          onClick={()=>{handleJugadorSelect(params.row,"ver")}}
+          onClick={() => {
+            handleJugadorSelect(params.row, "ver");
+          }}
           showInMenu
         />,
         <GridActionsCellItem
-          icon={ <EditIcon fontSize="small" />}
+          icon={<EditIcon fontSize="small" />}
           label="Editar Jugador"
-          onClick={()=>{handleJugadorSelect(params.row,"edit")}}
+          onClick={() => {
+            handleJugadorSelect(params.row, "edit");
+          }}
           showInMenu
         />,
         <GridActionsCellItem
-          icon={ <DeleteIcon fontSize="small" />}
+          icon={<DeleteIcon fontSize="small" />}
           label="Borrar Jugador"
-          onClick={()=>{handleDelete(params.id)}}
+          onClick={() => {
+            handleDelete(params.id);
+          }}
           showInMenu
         />,
       ],
@@ -437,16 +411,11 @@ export default function Jugadores() {
                 className="dataTableGrid tableClasificacion"
                 disableExtendRowFullWidth
                 disableColumnMenu={true}
+                loading={loading}
                 autoHeight
                 disableSelectionOnClick
                 onPageSizeChange={(newPageSize) => setRowsPerPage(newPageSize)}
-           /*      rowsPerPageOptions={[
-                  5,
-                  10,
-                  20,
-                  { value: jugadores.length, label: "Todos" },
-                ]} */
-                
+                rowsPerPageOptions= {[5, 10, 20]}
                 pagination
                 localeText={translate}
                 rowHeight={53}
@@ -459,6 +428,20 @@ export default function Jugadores() {
                     showQuickFilter: true,
                   },
                 }}
+                //obtener valor del search
+                onFilterModelChange={(model) => {
+                  console.log("que onda search",model.quickFilterValues);
+                  if(model.quickFilterValues.length > 0){
+                  setFilter(model.quickFilterValues[0]);
+                  }
+                  else{
+                    setFilter("");
+                  }
+                }}
+                 
+              
+
+
               />
             </TableContainer>
             <Stack spacing={2}>

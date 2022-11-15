@@ -22,7 +22,7 @@ try{
 }
 
 const getFilterJugadoresService = async (pagina,search,cantidadItems) => {
-    console.log("LLEGE AL GET FILTER JUGADORES REQ")
+    console.log("LLEGE AL GET FILTER JUGADORES REQ,searchsearch",search)
 try{
     const response  =  http
       .get(API_URL+"filtros"+`?pagina=${pagina}&search=${search}&cantidadItems=${cantidadItems}`)

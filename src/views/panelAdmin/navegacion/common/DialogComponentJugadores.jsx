@@ -26,6 +26,8 @@ import {
 } from "@mui/material";
 import jugadoresServices from "../../../../services/api/jugadores/jugadoresService";
 import Swal from "sweetalert2";
+import Silueta from "../../../../assets/images/persons/silueta.png";
+import FormAutocomplete from "../../../../components/forms/imputs/FormAutocomplete";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -65,7 +67,7 @@ export default function DialogComponentJugadores(props) {
       id: 0,
       nombre: "",
       nacionalidad: [],
-      equipo: 0,
+      equipo: null,
       altura: 0,
       peso: 0,
       ca: 0,
@@ -81,7 +83,7 @@ export default function DialogComponentJugadores(props) {
         setValue("id", jugador.id);
         setValue("nombre", jugador.nombre);
         setValue("nacionalidad", jugador.nacionalidad);
-        setValue("equipo", jugador.equipo_id);
+        setValue("equipo", jugador.equipo);
         setValue("altura", jugador.altura);
         setValue("peso", jugador.peso);
         setValue("ca", jugador.ca);
@@ -115,7 +117,6 @@ export default function DialogComponentJugadores(props) {
         });
         handleClose();
       });
-
     } else if (action === "edit") {
       jugadoresServices.updateJugadorService(formValue).then((res) => {
         console.log(res);
@@ -128,14 +129,8 @@ export default function DialogComponentJugadores(props) {
         });
         handleClose();
       });
-      
-      }
-
     }
-    setOpen(false);
-    setLoading(true);
   };
-
   return (
     <div>
       <Dialog
@@ -167,7 +162,9 @@ export default function DialogComponentJugadores(props) {
             >
               {action === "create"
                 ? "Crear Nuevo Jugador"
-                : "Editar a " + jugador.nombre}
+                : action === "edit"
+                ? "Editar a " + jugador?.nombre
+                : "Ver a " + jugador.nombre}
             </Typography>
             <Button
               autoFocus
@@ -193,35 +190,6 @@ export default function DialogComponentJugadores(props) {
                 }
                 spacing={2}
               >
-                {/* <Item
-                  sx={{
-                    width: "30%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    m: 0,
-                    backgroundColor: "secondary.main",
-                  }}
-                >
-                  <div style={{ display:"flex", flexDirection:"column",alignItems:"center", paddingBottom:"25px"}}>  
-               <div style={{marginBottom:"15px"}}> 
-               <Avatar></Avatar>
-               </div>
-               <div style={{
-                border:"solid 2px #1A2027",
-                borderRadius:"5px",
-                padding:"10px",
-
-              }}>
-                <Typography variant="h5"  align="center" sx={{
-             
-                
-                }}>
-                 {action === "create"?"Nuevo equipo": "Editar a "}
-                </Typography>
-               </div>
-               </div>
-                </Item> */}
                 <Item sx={{ width: "100%" }}>
                   <Grid
                     container
@@ -271,86 +239,37 @@ export default function DialogComponentJugadores(props) {
                     </Grid>
                     <Grid item xl={4} lg={4} md={6} xs={6}>
                       <Item>
-                        <FormSelect
+                  
+
+                        <FormAutocomplete
                           control={control}
                           errors={errors}
+                          tieneLabel={true}
                           register={register}
                           name="nacionalidad"
                           rulesBol={true}
+                          textColor="#4D4D4D"
                           labelText="Nacionalidad"
                           text="Nacionalidad"
-                          opcion={nations.nations}
-                          textColor="#4D4D4D"
+                          opciones={nations?.nations}
                         />
                       </Item>
                     </Grid>
 
                     <Grid item xl={4} lg={4} md={6} xs={6}>
                       <Item>
-                       {/*  <FormSelect
+                        <FormAutocomplete
                           control={control}
                           errors={errors}
                           register={register}
                           name="equipo"
                           rulesBol={true}
-                          labelText="Equipo"
                           text="Equipo"
-                          opcion={equipos}
-                          textColor="#4D4D4D"
-                        /> */}
-                        <Controller
-                          name="equipo"
-                          control={control}
-                          render={({ field }) => (
-                            <Autocomplete
-                              {...field}
-                              {...register("equipo")}
-                              loading={loading}
-                              options={equipos}
-                              getOptionLabel={(option) =>
-                                option?.nombre_corto
-                                  ? option.nombre_corto
-                                  : "Seleccionar un Equipo"
-                              }
-                              isOptionEqualToValue={(option, value) =>
-                                value === undefined ||
-                                value === "" ||
-                                option.id === value.id
-                              }
-                              defaultValue=""
-                             /*  getOptionDisabled={(option) =>
-                                option.Equipo.Manager != null
-                              } */
-                              renderInput={(params) => (
-                                <>
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      flexDirection: "column",
-                                    }}
-                                  >
-                                    <div style={{ marginBottom: 5 }}>
-                                      <Chip label="Equipos" color="primary" />
-                                    </div>
-
-                                    <TextField {...params} />
-                                  </div>
-                                </>
-                              )}
-                              onChange={(event, value) => {
-                                event.preventDefault();
-                                field.onChange(value);
-                              }}
-                              renderTags={(value, getTagProps) =>
-                                value.map((option, index) => (
-                                  <Chip
-                                    label={option.Equipo.nombre}
-                                    {...getTagProps({ index })}
-                                  />
-                                ))
-                              }
-                            />
-                          )}
+                          opciones={equipos}
+                          selectEquipos={true}
+                          tieneLabel={true}
+                          labelText="Equipo"
+                          textColor="primary.main"
                         />
                       </Item>
                     </Grid>
@@ -480,16 +399,35 @@ export default function DialogComponentJugadores(props) {
                 >
                   <Item
                     sx={{
-                      width: "30%",
+                      width: "15%",
                       display: "flex",
+                      flexDirection: "column",
                       alignItems: "center",
                       justifyContent: "center",
                       m: 0,
+                      background: "#e5e5e5",
+                      mb: 3,
                     }}
                   >
-                    VER JUGADOR
+                    <img src={Silueta} width="123px" alt="jugador" />
+                    <Typography
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                      variant="h6"
+                    >
+                      {jugador?.nombre}
+                    </Typography>
                   </Item>
-                  <Item sx={{ width: "70%" }}>
+                  <Item
+                    sx={{
+                      width: "85%",
+                      background: "#e5e5e5",
+                      mb: "1.5rem !important",
+                    }}
+                  >
                     <Grid
                       container
                       spacing={3}
