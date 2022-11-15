@@ -121,7 +121,7 @@ export default function DialogManagerComponent({
     setLoading(true);
 
     if (selectState === 2) {
-      const equipo_id = data.equipo_id.equipo_id;
+      const equipo_id = data.equipo_id.id;
       const dataSend = {
         email,
         equipo_id,
@@ -323,12 +323,13 @@ export default function DialogManagerComponent({
                   text="Email"
                   name="email"
                   variant="outlined"
-                  color="secondary"
+                  color="#757575"
                   control={control}
                   register={register}
                   errors={errors}
                   rulesBol={true}
                   readOnly={true}
+                  textColor="primary.main"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -438,18 +439,18 @@ export default function DialogManagerComponent({
                         loading={loading}
                         options={equipos}
                         getOptionLabel={(option) =>
-                          option?.Equipo?.nombre
-                            ? option.Equipo.nombre
+                          option?.nombre
+                            ? option.nombre
                             : "Seleccionar un Equipo"
                         }
                         isOptionEqualToValue={(option, value) =>
                           value === undefined ||
                           value === "" ||
-                          option.equipo_id === value.equipo_id
+                          option.id === value.equipo_id
                         }
                         defaultValue=""
                         getOptionDisabled={(option) =>
-                          option.Equipo.Manager != null
+                          option?.Manager != null
                         }
                         renderInput={(params) => (
                           <>

@@ -14,8 +14,6 @@ function sleep(delay = 0) {
   });
 }
 
-
-
 export default function FormAutocomplete({
   type,
   control,
@@ -51,19 +49,19 @@ export default function FormAutocomplete({
   const [checkSelected, setCheckSelected] = React.useState(null);
 
   const StyledPopper = styled(Popper)(({ theme }) => ({
-    '& .MuiAutocomplete-groupLabel': {
+    "& .MuiAutocomplete-groupLabel": {
       backgroundColor: theme.palette.primary.main,
       color: theme.palette.common.white,
     },
-  }))
+  }));
   const handleChange = (value) => {
     console.log("value", value);
-   
+
     if (value) {
-      setCheckSelected(value.length)
+      setCheckSelected(value.length);
     }
     console.log("count", checkSelected);
-  }
+  };
 
   React.useEffect(() => {
     let active = true;
@@ -117,7 +115,9 @@ export default function FormAutocomplete({
                 id="asynchronous-demo"
                 value={value}
                 color="secondary"
-                getOptionDisabled={(option) => checkSelected >= limitTagsSelect && true}
+                getOptionDisabled={(option) =>
+                  checkSelected >= limitTagsSelect && true
+                }
                 PopperComponent={StyledPopper}
                 open={open}
                 multiple={!!multiple}
@@ -130,12 +130,18 @@ export default function FormAutocomplete({
                   setOpen(false);
                 }}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
-                 getOptionLabel={(option) =>
-                  !selectEquipos? option.nombre :`${option.nombre_corto} - (${option.Nacionalidad?.nombreCorto})`
-                } 
+                getOptionLabel={(option) =>
+                  !selectEquipos
+                    ? option.nombre
+                      ? option.nombre
+                      : "Seleccionar " + text
+                    : option
+                    ? `${option.nombre_corto} - (${option.Nacionalidad?.nombreCorto})`
+                    : "Seleccionar " + text
+                }
                 options={options}
                 loading={loading}
-                disableCloseOnSelect = {multiple}
+                disableCloseOnSelect={multiple}
                 renderOption={(props, option) => (
                   <li {...props} key={option.id}>
                     {!selectEquipos

@@ -149,9 +149,10 @@ export default function Equipos() {
         return params.row.Manager != null ? (
           <Tooltip title={params.row.Manager.nombre}>
             <span>
-              {params.row.Manager.nombre
+              {params.row.Manager?.nombre
                 ? params.row.Manager.nombre
-                : params.row.Manager.email}
+                : params.row.Manager?.email?
+                params.row.Manager.email:""}
             </span>
           </Tooltip>
         ) : (
@@ -177,7 +178,7 @@ export default function Equipos() {
       renderCell: (params) => {
         return (
           <div style={{ padding: 3, display: "flex", flexWrap: "wrap" }}>
-            {params.value.length > 0
+            {params.value?.length > 0
               ? params.value.map((torneo, idx) => {
                   return (
                     <Chip
@@ -276,7 +277,7 @@ export default function Equipos() {
         manager:
           equipo.Manager && equipo.Manager.nombre
             ? equipo.Manager.nombre
-            : equipo.Manager.email?equipo.Manager.email:"Sin Manager",
+            : equipo.Manager?.email?equipo.Manager.email:"Sin Manager",
         torneo: equipo.Torneos && equipo.Torneos.nombre,
       });
     } else if (action === "ver") {
@@ -288,7 +289,7 @@ export default function Equipos() {
         manager:
         equipo.Manager && equipo.Manager.nombre
           ? equipo.Manager.nombre
-          : equipo.Manager.email?equipo.Manager.email:"Sin Manager",
+          : equipo.Manager?.email?equipo.Manager.email:"Sin Manager",
 
         torneo: equipo.Torneos && equipo.Torneos.nombre,
       });

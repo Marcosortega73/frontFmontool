@@ -71,6 +71,7 @@ export default function DialogComponentEquipos(props) {
     defaultValues: {
       id: 0,
       nombre: "",
+      nombre_corto: "",
       nacionalidad: 0,
       manager: 0,
       torneo: 0,
@@ -81,6 +82,7 @@ export default function DialogComponentEquipos(props) {
     if (action === "edit") {
       setValue("id", equipo.id);
       setValue("nombre", equipo.nombre);
+      setValue("nombre_corto", equipo.nombre_corto);
       setValue("nacionalidad", equipo.nacionalidad);
       setValue("manager", equipo?.manager);
       setValue("torneo", equipo?.torneo);
@@ -188,6 +190,21 @@ export default function DialogComponentEquipos(props) {
                           text="Nombre"
                           type="text"
                           vmodel={equipo && equipo.nombre}
+                          textColor="#4D4D4D"
+                          tieneLabel={true}
+                        />
+                      </Item>
+                    </Grid>
+                    <Grid item xl={6} lg={6} md={6} xs={12}>
+                      <Item>
+                        <FormText
+                          control={control}
+                          errors={errors}
+                          register={register}
+                          name="nombre_corto"
+                          rulesBol={true}
+                          text="Nombre Corto"
+                          labelText="Nombre Corto"
                           textColor="#4D4D4D"
                           tieneLabel={true}
                         />
@@ -373,7 +390,7 @@ export default function DialogComponentEquipos(props) {
                           }}
                         >
                           Torneo:
-                          {equipo?.Torneos.length > 0 ? (
+                          {equipo?.Torneos?.length > 0 ? (
                             equipo.Torneos.map((torneo) => (
                               <Chip
                                 sx={{ mt: 1 }}

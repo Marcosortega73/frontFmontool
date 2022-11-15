@@ -251,6 +251,7 @@ export default function DialogComponentJugadores(props) {
                           textColor="#4D4D4D"
                           labelText="Nacionalidad"
                           text="Nacionalidad"
+                          selectEquipos={false}
                           opciones={nations?.nations}
                         />
                       </Item>

@@ -46,13 +46,28 @@ const getEstadisticasByEquipo = async (data) => {
   }
 };
 
+const getAllEstadisticas = async () => {
+  console.log("LLEGE AL GET Estadisticas REQ");
+  try {
+    const response = http.get(API_URL + "obtenerEstadisticas").then((res) => {
+      console.log("LLEGE AL LA DATA GET Estadisitica", res.data);
+      return res.data;
+    });
+    return response;
+  } catch (error) {
+    console.log("LLEGE AL ERROR GET", error);
+  }
+};
+
+
 
   
 
 const getEstadisticasServices = {
   getEstadisticasByTorneo,
   getSancionadosByTorneoEquipo,
-  getEstadisticasByEquipo
+  getEstadisticasByEquipo,
+  getAllEstadisticas
 
 };
 
