@@ -17,6 +17,7 @@ import { Img } from "../../../styles-components/Layout";
 
 import logo from "../../../assets/images/entherprise/logo.png";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const drawerWidth = "50%";
 const drawerHeight = "100vh";
@@ -32,6 +33,10 @@ const pages = [
 function Navbar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const { isLoggedIn, user } = useSelector((state) => state.auth);
+
+  console.log("user nabbar", user);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -127,7 +132,50 @@ function Navbar(props) {
               </Link>
             ))}
           </Box>
-          <Box
+          {
+            user?.rol === "MANAGER" ||user?.rol ===  "ADMIN" ? (
+            <Box
+            sx={{
+              display: { xs: "none", md: "flex" },
+              justifyContent: "flex-end",
+            }}
+          >
+            <Link to={user?.rol === "MANAGER"?"/profile":user?.rol === "ADMIN"&&'/panelAdministracion/dashboard'}>
+              <Button
+                variant="contained"
+                sx={{
+                  my: 2,
+                  backgroundColor: "#343338",
+                  mr: 2,
+                  color: "white",
+                  display: "block",
+                  letterSpacing: 1,
+                  "&:hover": {
+                    color: "#1e2024 !important",
+                    backgroundColor: "#e5e5e5",
+                  },
+                }}
+              >
+                {
+                  user?.rol === "MANAGER" ? "Mi Perfil" : user?.rol === "ADMIN" && "Panel Administración"}
+              </Button>
+            </Link>
+            <Link to="/logout">
+              <Button
+                variant="contained"
+                color="secondary"
+                sx={{
+                  my: 2,
+                  display: "block",
+                  fontWeight: "bold",
+                  letterSpacing: 1,
+                }}
+              >
+                Log Out
+              </Button>
+            </Link>
+          </Box>):(
+            <Box
             sx={{
               display: { xs: "none", md: "flex" },
               justifyContent: "flex-end",
@@ -166,7 +214,8 @@ function Navbar(props) {
                 Registrarse
               </Button>
             </Link>
-          </Box>
+          </Box>)
+          }
         </Toolbar>
       </AppBar>
       <Box component="nav" sx={{ backgroundColor: "customTheme.primary700" }}>

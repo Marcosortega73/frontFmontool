@@ -44,6 +44,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import WebIcon from "@mui/icons-material/Web";
 import { styled, useTheme } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 
@@ -54,6 +55,8 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { BootstrapTooltip } from "../../styles-components/BootstrapTooltip";
+
+import Logo from "../../assets/images/entherprise/logo.png";
 
 const drawerWidth = 240;
 let activeStyle = {
@@ -194,7 +197,6 @@ export default function PanelAdministracion({ data, dataSecond }) {
   };
 
   const handleDrawerOpen = () => {
-
     setOpen(true);
   };
 
@@ -204,9 +206,7 @@ export default function PanelAdministracion({ data, dataSecond }) {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-    
   };
-
 
   return (
     <>
@@ -222,163 +222,74 @@ export default function PanelAdministracion({ data, dataSecond }) {
         }}
       >
         <CssBaseline />
-        <AppBar position="fixed" open={open} sx={{ borderRadius: 3 }}>
-          <Toolbar sx={{ m: 0, display:"flex" , justifyContent:"space-between"}}>
-          <Box  sx={{ flexGrow: 1, display: { xs: "flex", md: "none" },px:0  }}>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
+        <AppBar position="fixed" open={open} sx={{ pl: 0 }}>
+          <Toolbar
+            sx={{
+              m: 0,
+              display: "flex",
+              justifyContent: "space-between",
+              px: "0px !important",
+              height: "85px",
+            }}
+          >
+            <Box
+              sx={{ flexGrow: 1, display: { xs: "flex", md: "none" }, px: 0 }}
             >
-              {pages.map((page, index) => (
-                <MenuItem key={index} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: "block", md: "none" },
+                }}
+              >
+                {pages.map((page, index) => (
+                  <MenuItem key={index} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{page}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
             {/*Todo: menu principal, verificar si es necesario */}
-            <Typography variant="h6" noWrap component="div">
-              Panel de Administracion
-            </Typography>
+            {!open ? (
+              <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                <Avatar
+                  sx={{ width: 73, height: 73 }}
+                  alt="Remy Sharp"
+                  src={Logo}
+                />
+                <Typography variant="h6" noWrap component="div" sx={{ ml: 1 }}>
+                  Panel de Administracion
+                </Typography>
+              </Box>
+            ) : (
+              <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                <Typography
+                  variant="h6"
+                  noWrap
+                  component="div"
+                  sx={{ ml: 1.5 }}
+                >
+                  Panel de Administracion
+                </Typography>
+              </Box>
+            )}
             <div>
               <Grid container>
-                {!isLoggedIn ? (
-                  <>
-                    <Grid>
-                      <Link to="/login" sx={{ textDecoration: "none" }}>
-                        <Button
-                          sx={{
-                            backgroundColor: "#1e2024",
-                            color: "#b0bec5",
-                            borderRadius: "5px",
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                            padding: "10px",
-                            margin: "0",
-                            marginRight: "10px",
-                            border: "2px solid #b0bec5",
-
-                            "&:hover": {
-                              backgroundColor: "#cca500",
-                              color: "#1e2024",
-                              boxShadow:
-                                "-2px -2px 14px 1px rgba(245, 245, 245, 0.75)",
-                            },
-                          }}
-                        >
-                          Login
-                        </Button>
-                      </Link>
-                    </Grid>
-
-                    <Grid item sx={{ height: "50%" }}>
-                      <Link to="/register">
-                        <Button
-                          sx={{
-                            backgroundColor: "#b0bec5",
-                            color: "#1e2024",
-                            borderRadius: "5px",
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                            padding: "10px",
-                            margin: "0",
-                            marginRight: "10px",
-                            border: "2px solid #1e2024",
-
-                            "&:hover": {
-                              backgroundColor: "#cca500",
-                              color: "#1e2024",
-                              boxShadow:
-                                "-2px -2px 14px 1px rgba(245, 245, 245, 0.75)",
-                              border: "2px solid #b0bec5",
-                            },
-                          }}
-                        >
-                          Sign Up
-                        </Button>
-                      </Link>
-                    </Grid>
-                  </>
-                ) : (
-                  <>
-                    <Grid item>
-                      <Link to="/panelAdministracion">
-                        <Button
-                          sx={{
-                            backgroundColor: "#b0bec5",
-                            color: "#1e2024",
-                            borderRadius: "5px",
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                            padding: "10px",
-                            margin: "0",
-                            marginRight: "10px",
-                            border: "2px solid #1e2024",
-                            "&:hover": {
-                              backgroundColor: "#cca500",
-                              color: "#1e2024",
-                              boxShadow:
-                                "-2px -2px 14px 1px rgba(245, 245, 245, 0.75)",
-                              border: "2px solid #b0bec5",
-                            },
-                          }}
-                        >
-                          <ModeEditOutlineIcon />
-                        </Button>
-                      </Link>
-                    </Grid>
-                    <Grid item>
-                      <Link to="/profile">
-                        <Button
-                          sx={{
-                            backgroundColor: "#b0bec5",
-                            color: "#1e2024",
-                            borderRadius: "5px",
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                            padding: "10px",
-                            margin: "0",
-                            marginRight: "10px",
-                            border: "2px solid #1e2024",
-                            "&:hover": {
-                              backgroundColor: "#cca500",
-                              color: "#1e2024",
-                              boxShadow:
-                                "-2px -2px 14px 1px rgba(245, 245, 245, 0.75)",
-                              border: "2px solid #b0bec5",
-                            },
-                          }}
-                        >
-                          <Avatar
-                            sx={{
-                              bgcolor: "#1e2024",
-                              color: "white",
-                              width: 24,
-                              height: 24,
-                            }}
-                          >
-                            P
-                          </Avatar>
-                        </Button>
-                      </Link>
-                    </Grid>
-                    <Grid>
+                <Grid item>
+                  <Link to="/inicio">
+                    <Tooltip title="Ir al sitio web">
                       <Button
-                        onClick={handleLogout}
                         sx={{
                           backgroundColor: "#b0bec5",
                           color: "#1e2024",
@@ -398,239 +309,265 @@ export default function PanelAdministracion({ data, dataSecond }) {
                           },
                         }}
                       >
-                        <ExitToAppIcon />
+                        <WebIcon />
                       </Button>
-                    </Grid>
-                  </>
-                )}
+                    </Tooltip>
+                  </Link>
+                </Grid>
+                <Grid>
+                  <Tooltip title="Cerrar sesión">
+                    <Button
+                      onClick={handleLogout}
+                      sx={{
+                        backgroundColor: "#b0bec5",
+                        color: "#1e2024",
+                        borderRadius: "5px",
+                        fontSize: "14px",
+                        fontWeight: "bold",
+                        padding: "10px",
+                        margin: "0",
+                        marginRight: "10px",
+                        border: "2px solid #1e2024",
+                        "&:hover": {
+                          backgroundColor: "#cca500",
+                          color: "#1e2024",
+                          boxShadow:
+                            "-2px -2px 14px 1px rgba(245, 245, 245, 0.75)",
+                          border: "2px solid #b0bec5",
+                        },
+                      }}
+                    >
+                      <ExitToAppIcon />
+                    </Button>
+                  </Tooltip>
+                </Grid>
               </Grid>
             </div>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <Button
-            sx={{ width: "100%" }}
-            color="secondary"
-            onClick={handleDrawerClose}
-          >
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <>
-                <Typography
-                  variant="h7"
-                  color="white"
-                  sx={{ display: "flex", flexDirection: "column", pr: 1 }}
-                >
-                  {user?.nombre && user.apellido
-                    ? user.nombre + " " + user.apellido
-                    : "Ingrese su nombre"}
-
-                  <span style={{ fontSize: "13px" }}>
-                    {user?.estado
-                      ? user.estado.nombre === "En paro"
-                        ? "Manager en paro"
-                        : user?.equipo
-                        ? "Manager de " + user.equipo.nombre
-                        : "Ingrese su equipo"
-                      : "Sin Asignar"}
-                  </span>
-                </Typography>
-
-                <ChevronLeftIcon />
-              </>
-            )}
-          </Button>
-        </DrawerHeader>
-
-        <Divider />
-
-        <List>
-          <ListItem
-            sx={{
-              display: "flex",
-              justifyContent: "end",
-              p: 0,
-              m: 0,
-              "&:hover": "red",
-            }}
-          >
+          <DrawerHeader>
             <Button
-              onClick={handleDrawerOpen}
+              sx={{ width: "100%" }}
+              color="secondary"
+              onClick={handleDrawerClose}
+            >
+              {open && (
+                <>
+                  <Box sx={{ display: "flex" }}>
+                    <Avatar
+                      sx={{ width: 73, height: 73 }}
+                      alt="Remy Sharp"
+                      src={Logo}
+                    />
+                  </Box>
+                  <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                    <ChevronLeftIcon />
+                  </Box>
+                </>
+              )}
+            </Button>
+          </DrawerHeader>
+
+          <Divider />
+
+          <List sx={{mt:1}}>
+            <ListItem
               sx={{
-                "&:hover": {
-                  backgroundColor: "secondary.light",
-                  borderColor: "secondary.light",
-                  boxShadow: "none",
-                  "& .MuiSvgIcon-root": {
-                    color: "secondary.main",
-                  },
-                },
+                display: "flex",
+                justifyContent: "end",
+                p: 0,
+                m: 0,
+                "&:hover": "red",
               }}
             >
-              <ChevronRightIcon
-                color="secondary"
-                aria-label="open drawer"
+              <Button
                 onClick={handleDrawerOpen}
-                edge="start"
                 sx={{
-                  ...(open && { display: "none" }),
-                  m: 0,
-                  p: 0,
+                  "&:hover": {
+                    backgroundColor: "secondary.light",
+                    borderColor: "secondary.light",
+                    boxShadow: "none",
+                    "& .MuiSvgIcon-root": {
+                      color: "secondary.main",
+                    },
+                  },
                 }}
               >
-                <MenuIcon />
-              </ChevronRightIcon>
-            </Button>
-          </ListItem>
-
-          {Panel.map((text, index) => (
-            <BootstrapTooltip title={text.name} placement="right" key={index}>
-              <ListItem disablePadding sx={{ display: "flex",
-               "&:hover": {
-                backgroundColor: "secondary.light",
-                borderColor: "secondary.light",
-                boxShadow: "none",
-                "& .MuiListItemIcon-root .material-icons": {
-                  color: "secondary.contrastText",
-                },
-            
-              },
-            }}>
-                <NavLink
-                  style={({ isActive }) => (isActive ? activeStyle : undefined)}
-                  to={text.path}
+                <ChevronRightIcon
+                  color="secondary"
+                  aria-label="open drawer"
+                  onClick={handleDrawerOpen}
+                  edge="start"
+                  sx={{
+                    ...(open && { display: "none" }),
+                    m: 0,
+                    p: 0,
+                  }}
                 >
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                   
-                    }}
+                  <MenuIcon />
+                </ChevronRightIcon>
+              </Button>
+            </ListItem>
+
+            {Panel.map((text, index) => (
+              <BootstrapTooltip title={text.name} placement="right" key={index}>
+                <ListItem
+                  disablePadding
+                  sx={{
+                    display: "flex",
+                    "&:hover": {
+                      backgroundColor: "secondary.light",
+                      borderColor: "secondary.light",
+                      boxShadow: "none",
+                      "& .MuiListItemIcon-root .material-icons": {
+                        color: "secondary.contrastText",
+                      },
+                    },
+                  }}
+                >
+                  <NavLink
+                    style={({ isActive }) =>
+                      isActive ? activeStyle : undefined
+                    }
+                    to={text.path}
                   >
-                    <ListItemIcon
+                    <ListItemButton
                       sx={{
-                        minWidth: 0,
-                        mr: open ? 1.5 : "auto",
-                        justifyContent: "center",
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
                       }}
                     >
-                      <Icon color="secondary">{text.icon}</Icon>
-                    </ListItemIcon>
-                  </ListItemButton>
-                </NavLink>
-                {text.menu ? (
-                  <Accordion
-                    sx={{
-                      p: 0,
-                      width: "100%",
-                      m: 0,
-                      borderRadius: 0,
-                      border: "none",
-                      display: open ? "flex" : "none",
-                      flexDirection: "column",
-                      backgroundColor: "#1e2024",
-                      boxShadow: "none",
-                   
-                    }}
-                    disableGutters
-                  >
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon color="secondary" />}
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 1.5 : "auto",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Icon color="secondary">{text.icon}</Icon>
+                      </ListItemIcon>
+                    </ListItemButton>
+                  </NavLink>
+                  {text.menu ? (
+                    <Accordion
                       sx={{
                         p: 0,
-                        width: "173px",
+                        width: "100%",
                         m: 0,
+                        borderRadius: 0,
+                        border: "none",
+                        display: open ? "flex" : "none",
+                        flexDirection: "column",
                         backgroundColor: "#1e2024",
                         boxShadow: "none",
-                       
                       }}
+                      disableGutters
                     >
-                      <ListItemText
-                        primary={text.name}
-                        sx={{ opacity: open ? 1 : 0, color: "white" }}
-                      >
-                        {text.name}
-                      </ListItemText>
-                    </AccordionSummary>
-                    <AccordionDetails sx={{ p: 0, width: "173px", m: 0 ,    "&:hover": {
-                          backgroundColor: "secondary.light",
-                          borderColor: "secondary.light",
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon color="secondary" />}
+                        sx={{
+                          p: 0,
+                          width: "173px",
+                          m: 0,
+                          backgroundColor: "#1e2024",
                           boxShadow: "none",
-                          "& .MuiListItemIcon-root .material-icons": {
-                            color: "secondary.contrastText",
-                          },
-                      
-                        },}}>
-                      {text.menu.map((menu, idx) => (
-                        <NavLink
-                          style={({ isActive }) =>
-                            isActive ? activeStyle : undefined
-                          }
-                          key={idx + 1}
-                          to={menu.path}
-                          color="inherit"
+                        }}
+                      >
+                        <ListItemText
+                          primary={text.name}
+                          sx={{ opacity: open ? 1 : 0, color: "white" }}
                         >
-                          <ListItemButton
-                            sx={{
-                              minHeight: 48,
-                              justifyContent: open ? "initial" : "center",
-                              px: 1,
-                            }}
+                          {text.name}
+                        </ListItemText>
+                      </AccordionSummary>
+                      <AccordionDetails
+                        sx={{
+                          p: 0,
+                          width: "173px",
+                          m: 0,
+                          "&:hover": {
+                            backgroundColor: "secondary.light",
+                            borderColor: "secondary.light",
+                            boxShadow: "none",
+                            "& .MuiListItemIcon-root .material-icons": {
+                              color: "secondary.contrastText",
+                            },
+                          },
+                        }}
+                      >
+                        {text.menu.map((menu, idx) => (
+                          <NavLink
+                            style={({ isActive }) =>
+                              isActive ? activeStyle : undefined
+                            }
+                            key={idx + 1}
+                            to={menu.path}
+                            color="inherit"
                           >
-                            <ListItemIcon
+                            <ListItemButton
                               sx={{
-                                minWidth: 0,
-                                mr: open ? 3 : "auto",
-                                justifyContent: "center",
+                                minHeight: 48,
+                                justifyContent: open ? "initial" : "center",
+                                px: 1,
                               }}
                             >
-                              <Icon color="secondary">{menu.icon}</Icon>
-                            </ListItemIcon>
-                            <ListItemText
-                              primary={menu.name}
-                              sx={{ opacity: open ? 1 : 0, color: "white" }}
-                            />
-                          </ListItemButton>
-                        </NavLink>
-                      ))}
-                    </AccordionDetails>
-                  </Accordion>
-                ) : (
-                  <>
-                    <NavLink
-                      style={({ isActive }) =>
-                        isActive ? activeStyle : undefined
-                      }
-                      to={text.path}
-                    >
-                      <ListItemText
-                        primary={text.name}
-                        sx={{ opacity: open ? 1 : 0, color: "white" }}
-                      />
-                    </NavLink>
-                  </>
-                )}
-              </ListItem>
-            </BootstrapTooltip>
-          ))}
-        </List>
-        <Divider />
-      </Drawer>
+                              <ListItemIcon
+                                sx={{
+                                  minWidth: 0,
+                                  mr: open ? 3 : "auto",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                <Icon color="secondary">{menu.icon}</Icon>
+                              </ListItemIcon>
+                              <ListItemText
+                                primary={menu.name}
+                                sx={{ opacity: open ? 1 : 0, color: "white" }}
+                              />
+                            </ListItemButton>
+                          </NavLink>
+                        ))}
+                      </AccordionDetails>
+                    </Accordion>
+                  ) : (
+                    <>
+                      <NavLink
+                        style={({ isActive }) =>
+                          isActive ? activeStyle : undefined
+                        }
+                        to={text.path}
+                      >
+                        <ListItemText
+                          primary={text.name}
+                          sx={{ opacity: open ? 1 : 0, color: "white" }}
+                        />
+                      </NavLink>
+                    </>
+                  )}
+                </ListItem>
+              </BootstrapTooltip>
+            ))}
+          </List>
+          <Divider />
+        </Drawer>
         <Box
           component="main"
-          sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
+          sx={{
+            flexGrow: 1,
+            bgcolor: "background.default",
+            m: 3,
+            backgroundColor: "#292c31",
+          }}
         >
           <Toolbar />
           <Box
             sx={{
-              backgroundColor: "primary.main",
+              backgroundColor: "#292c31",
               height: "90vh",
-             
             }}
           >
-            <Outlet context={{ anchorElNav }}/>
+            <Outlet context={{ anchorElNav }} />
           </Box>
         </Box>
       </Box>

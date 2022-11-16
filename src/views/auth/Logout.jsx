@@ -12,6 +12,7 @@ const Logout = () => {
       .unwrap()
       .then(() => {
         navigate("/inicio",{ replace: true });
+        window.location.reload();
       })
       .catch((e) => {
         console.log("Error",e);
