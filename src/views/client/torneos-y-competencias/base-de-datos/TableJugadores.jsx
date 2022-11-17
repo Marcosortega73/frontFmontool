@@ -143,6 +143,8 @@ export default function TableJugadores({
   jugadores,
   setOpen,
   setJugadorSelect,
+  loading,
+  setLoading,
 }) {
   const [isAntDesign, setIsAntDesign] = React.useState(false);
   const [type, setType] = React.useState("Commodity");
@@ -290,6 +292,7 @@ export default function TableJugadores({
       <StripedDataGrid
         columns={columns}
         rows={jugadores}
+        loading={loading}
         components={{
           Toolbar: GridToolbar,
         }}

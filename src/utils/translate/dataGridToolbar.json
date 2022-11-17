@@ -23,6 +23,11 @@
                 "columnMenuShowColumns": "Mostrar Columnas",
                 "columnMenuFilter": "Filtrar",
                 "columnMenuHideColumn": "Ocultar",
+                 "columnsPanelShowAllButton": "Mostrar todo",
+                "columnsPanelHideAllButton": "Ocultar todo",
+                "columnsPanelDragIconLabel": "Reordenar Columna",
+                "columnsPanelTextFieldPlaceholder": "Titulo de Columna",
+                "columnsPanelTextFieldLabel": "Buscar Columna",
                 "columnMenuUnsort": "Desordenar",
                 "columnMenuSortAsc": "Ordenar Ascendente",
                 "columnMenuSortDesc": "Ordenar Descendente",
@@ -39,6 +44,10 @@
                 "toolbarColumnsLabel": "Mostrar columnas",
                 "toolbarColumnsTooltipHide": "Ocultar columnas",
                 "toolbarExport": "Exportar",
+                "toolbarExportCSV": "Descargar como CSV",
+                "toolbarExportPDF": "Exportar como PDF",
+                "toolbarExportPrint": "Imprimir",
+                "toolbarExportExcel": "Exportar como Excel",
                 "toolbarQuickFilterPlaceholder": "Buscar",
                 "footerTotalRows ": "Total Filas",
                 "paginationRowsPerPage": "Filas por página:",
@@ -46,7 +55,7 @@
                 "MuiTablePagination": {
                     "labelRowsPerPage": "Filas por página:"
                 }
-
+                
 
 
              

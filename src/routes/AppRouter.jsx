@@ -46,7 +46,7 @@ import LigasDelMundo from "../views/panelAdmin/navegacion/LigasDelMundo";
 import Profile from "../views/profile/Profile";
 import BaseDeDatos from "../views/client/torneos-y-competencias/base-de-datos/BaseDeDatos";
 import BaseTorneosCompetencias from "../views/client/torneos-y-competencias/BaseTorneosCompetencias";
-import Ligas from "../views/client/torneos-y-competencias/Ligas";
+import Ligas from "../views/client/torneos-y-competencias//ligas/Ligas";
 import Copas from "../views/client/torneos-y-competencias/Copas";
 import ManagersCliente from "../views/client/torneos-y-competencias/ManagersCliente";
 import ChangeEmail from "../views/profile/panel/common/ChangeEmail";

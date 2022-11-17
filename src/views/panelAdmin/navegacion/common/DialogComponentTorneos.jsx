@@ -147,8 +147,8 @@ export default function DialogComponentTorneos(props) {
     console.log("TORNEO ID GET NACION", torneoCreated?.id);
     const data = {
       nacion_id: selectNation,
-      season_id: torneoCreated?.season_id
-     };
+      season_id: torneoCreated?.season_id,
+    };
 
     const clubes = await equiposServices.getEquiposXnacion(data);
 
@@ -190,11 +190,12 @@ export default function DialogComponentTorneos(props) {
     getEquiposSelect();
   }, [selectEquipos]);
 
-/*   React.useEffect(() => {
+  /*   React.useEffect(() => {
     getEquipos();
   }, [searchClub]); */
 
   const handleClose = () => {
+    reset();
     setOpen(false);
   };
 
@@ -284,7 +285,7 @@ export default function DialogComponentTorneos(props) {
           handleNext();
           return;
         } else {
-          console.log("CRENADO EQUIPO",formValue)
+          console.log("CRENADO EQUIPO", formValue);
           await torneosServices
             .createTorneosService(formValue)
             .then((res) => {
@@ -314,6 +315,8 @@ export default function DialogComponentTorneos(props) {
     } else {
       await torneosServices.updateTorneosService(formValue);
     }
+
+    handleClose();
   };
 
   const handleNext = () => {

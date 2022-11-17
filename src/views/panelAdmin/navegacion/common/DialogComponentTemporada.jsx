@@ -9,8 +9,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import { useSelector } from "react-redux";
 import Chip from "@mui/material/Chip";
 
-import EventIcon from '@mui/icons-material/Event';
-
+import EventIcon from "@mui/icons-material/Event";
 
 //CONSTRUCCION DEL FORM
 import { useForm } from "react-hook-form";
@@ -23,6 +22,9 @@ import {
   Toolbar,
   Stack,
   Divider,
+  Switch,
+  FormGroup,
+  FormControlLabel,
 } from "@mui/material";
 import Swal from "sweetalert2";
 import FormDate from "../../../../components/forms/imputs/FormDate";
@@ -43,15 +45,23 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function DialogComponentTemporada(props) {
-  const { open, setOpen, action } = props;
+  const { open, setOpen, action, setLoadingTemp } = props;
 
   const { nations, continents } = useSelector((state) => state.regiones);
-  
 
   console.log("CONTIENENTES==>", continents);
   console.log("action", action);
 
   const handleClose = () => {
+    setValue("nombre", "");
+    setValue("fecha_inicio", "");
+    setValue("fecha_fin", "");
+    setValue("equipo_campeon_id", null);
+    setValue("manager_campeon_id", null);
+    setValue("equipo_mvp_id", null);
+    setValue("jugador_mvp_id", null);
+    setValue("jugador_goleador_id", null);
+    setValue("jugador_asistente_id", null);
     setOpen(false);
   };
 
@@ -63,7 +73,6 @@ export default function DialogComponentTemporada(props) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-
       nombre: "",
       fecha_inicio: "",
       fecha_fin: "",
@@ -72,10 +81,9 @@ export default function DialogComponentTemporada(props) {
       equipo_mvp_id: null,
       jugador_mvp_id: null,
       jugador_goleador_id: null,
-      jugador_asistente_id: null
+      jugador_asistente_id: null,
     },
   });
-
 
   const onSubmit = async (formValue) => {
     console.log(formValue);
@@ -89,11 +97,13 @@ export default function DialogComponentTemporada(props) {
           if (res.status === 200) {
             console.log("entro if 2");
             Swal.fire({
-              title: "Torneo Creado",
+              title: "Temporada Creada correctamente",
               icon: "success",
-              timer: 1000,
+              timer: 1500,
               showConfirmButton: false,
             });
+            handleClose();
+            setLoadingTemp(true);
             setOpen(false);
           }
         })
@@ -137,7 +147,9 @@ export default function DialogComponentTemporada(props) {
                   component="div"
                   sx={{ flexGrow: 1, color: "white", fontWeight: 700 }}
                 >
-                  {action === "create" ? "Crear Nueva Temporada" : "Editar Temporada"}
+                  {action === "create"
+                    ? "Crear Nueva Temporada"
+                    : "Editar Temporada"}
                 </Typography>
                 <Button
                   autoFocus
@@ -194,15 +206,13 @@ export default function DialogComponentTemporada(props) {
                           alignItems: "center",
                         }}
                       >
-               
-                        <Grid item  xs={12}>
+                        <Grid item xs={12}>
                           <Item>
                             <FormText
                               control={control}
                               errors={errors}
                               register={register}
                               name="nombre"
-
                               tieneLabel={true}
                               textColor="primary.main"
                               rulesBol={true}
@@ -246,97 +256,44 @@ export default function DialogComponentTemporada(props) {
                             />
                           </Item>
                         </Grid>
-                        
-                        {/* <Grid item xs={6}>
-                          <Item>
-                            <FormSelect
-                              control={control}
-                              errors={errors}
-                              register={register}
-                              name="region_id"
-                              rulesBol={true}
-                              opcion={continents}
-                              text="Región"
-                            />
+                        <Grid item xs={6}>
+                          <Item
+                            sx={{ display: "flex", justifyContent: "center" }}
+                          >
+                            <FormGroup>
+                              <FormControlLabel
+                                control={<Switch defaultChecked />}
+                                label="Label"
+                              />
+                            </FormGroup>
                           </Item>
                         </Grid>
-
-                        <Grid item xs={4}>
-                          <Item>
-                            <FormText
-                              control={control}
-                              errors={errors}
-                              register={register}
-                              name="total_de_equipos"
-                              tieneLabel={true}
-                              textColor="primary.main"
-                              rulesBol={true}
-                              text="Total de Equipos"
-                              labelText="Total de Equipos"
-                              type="number"
-                            />
-                          </Item>
-                        </Grid>
-                        <Grid item xs={4}>
-                          <Item>
-                            <FormText
-                              control={control}
-                              errors={errors}
-                              tieneLabel={true}
-                              register={register}
-                              name="total_grupos"
-                              textColor="primary.main"
-                              rulesBol={true}
-                              text="Total de Grupos"
-                              labelText="Total de Grupos"
-                              type="number"
-                            />
-                          </Item>
-                        </Grid>
-                        <Grid item xs={4}>
-                          <Item>
-                            <FormText
-                              control={control}
-                              errors={errors}
-                              tieneLabel={true}
-                              register={register}
-                              name="total_equipos_grupos"
-                              textColor="primary.main"
-                              rulesBol={true}
-                              text="Total de equipos por grupo"
-                              labelText="Total de Grupos"
-                              type="number"
-                            />
-                          </Item>
-                        </Grid>*/}
-                      </Grid> 
-                       <Grid item xl={4} lg={4} md={4} xs={6} sx={{ mt: 2 }}>
-                    <Item>
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        endIcon={<SaveIcon />}
-                        sx={{
-                          width: "50%",
-                          height: "50px",
-                          borderRadius: "5px",
-                          backgroundColor: "#757575",
-                          color: "white",
-                          fontSize: "20px",
-                          fontWeight: "bold",
-                          marginTop: "10px",
-                          marginBottom: "10px",
-                        }}
-                      >
-                        Guardar
-                      </Button>
-                    </Item>
-                  </Grid>
+                      </Grid>
+                      <Grid item xl={4} lg={4} md={4} xs={6} sx={{ mt: 2 }}>
+                        <Item>
+                          <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            endIcon={<SaveIcon />}
+                            sx={{
+                              width: "50%",
+                              height: "50px",
+                              borderRadius: "5px",
+                              backgroundColor: "#757575",
+                              color: "white",
+                              fontSize: "20px",
+                              fontWeight: "bold",
+                              marginTop: "10px",
+                              marginBottom: "10px",
+                            }}
+                          >
+                            Guardar
+                          </Button>
+                        </Item>
+                      </Grid>
                     </Item>
                   </Stack>
-
-                 
                 </form>
               </Item>
             </>

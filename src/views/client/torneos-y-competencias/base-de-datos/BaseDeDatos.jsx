@@ -11,14 +11,18 @@ const BaseDeDatos = () => {
 
     const [openDialog, setOpenDialog] = React.useState(false)
     const [jugadorSelect, setJugadorSelect] = React.useState({})
+    const [loading, setLoading] = React.useState(false)
 
    const getJugadores = async () => {
+        setLoading(true)
         const response = await jugadoresServices.getJugadoresService()
         setJugadores(response)
+        setLoading(false)
     }
     
     React.useEffect(() => {
         getJugadores()
+
     }
     , [])
 
@@ -29,11 +33,11 @@ const BaseDeDatos = () => {
     <>
     <Container sx={{my:3}}>
     <Box>
-        <TableJugadores jugadores={jugadores} setOpen={setOpenDialog} setJugadorSelect={setJugadorSelect} />
+        <TableJugadores setLoading={setLoading} loading={loading} jugadores={jugadores} setOpen={setOpenDialog} setJugadorSelect={setJugadorSelect} />
     </Box>
 
 
-    <DialogJugadorDetails open={openDialog} setOpen={setOpenDialog} jugador={jugadorSelect} /> 
+    <DialogJugadorDetails open={openDialog}  setOpen={setOpenDialog} jugador={jugadorSelect} /> 
     </Container> 
     </>
   )
