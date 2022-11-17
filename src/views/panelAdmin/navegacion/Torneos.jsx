@@ -20,9 +20,13 @@ import DialogComponentTemporada from "./common/DialogComponentTemporada";
 import { useDispatch, useSelector } from "react-redux";
 import { getTorneos } from "../../../redux/torneoSlice";
 import { EditNotifications } from "@mui/icons-material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 //importar translate
 import translate from "../../../utils/translate/dataGridToolbar.json";
+import seasonsServices from "../../../services/api/seasons/seasonsService";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#f5f5f5",
@@ -126,6 +130,90 @@ export default function Torneos() {
       headerClassName: "headerClass",
     },
   ];
+  const columnsTemporada = [
+    {
+      field: "nombre",
+      headerName: "Nombre",
+      minWidth: 200,
+      description: "Nombre de la temporada",
+      flex:1,
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
+    },
+    {
+      field: "fecha_inicio",
+      headerName: "Fecha Inicio",
+      width: 200,
+      type: "date",
+      valueFormatter: (params) => {
+        return new Date(params.value).toLocaleDateString();
+      },
+      description: "Fecha de Inicio de la Temporada",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
+    },
+    {
+      field: "fecha_fin",
+      headerName: "Fecha Fin",
+      minWidth: 200,
+      type: "date",
+      valueFormatter: (params) => {
+        return new Date(params.value).toLocaleDateString();
+      },
+      description: "Fecha de Fin de la Temporada",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
+    },
+    {
+      field: "estado",
+      headerName: "Estado",
+      width: 100,
+      description: "Estado de la Temporada",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
+    },
+    {
+      field: "actions",
+      type: "actions",
+      headerName: "Acciones",
+      disableReorder: true,
+      
+      getActions: (params) => [
+        <GridActionsCellItem
+          icon={<VisibilityIcon fontSize="small" />}
+          label="Ver Jugador"
+     /*      onClick={() => {
+            handleJugadorSelect(params.row, "ver");
+          }} */
+          showInMenu
+        />,
+        <GridActionsCellItem
+          icon={<EditIcon fontSize="small" />}
+          label="Editar Jugador"
+     /*      onClick={() => {
+            handleJugadorSelect(params.row, "edit");
+          }} */
+          showInMenu
+        />,
+        <GridActionsCellItem
+          icon={<DeleteIcon fontSize="small" />}
+          label="Borrar Jugador"
+      /*     onClick={() => {
+            handleDelete(params.id);
+          }} */
+          showInMenu
+        />,
+      ],
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
+    },
+
+  ];
 
   const dispatch = useDispatch();
 
@@ -134,10 +222,22 @@ export default function Torneos() {
   const [action, setAction] = React.useState(null);
   const [torneosData, setTorneosData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
+  const [loadingTemp, setLoadingTemp] = React.useState(false);
+  const [temporadas, setTemporadas] = React.useState([]);
 
   const [pageSize, setPageSize] = React.useState(5);
 
   const { torneos } = useSelector((state) => state.torneos);
+
+  const getTemporadas = async () => {
+  
+    const res = await seasonsServices.getSeasonsService();
+    console.log("res", res);
+    if(res?.status === 200) {
+      setTemporadas(res.seasons);
+    }
+    setLoadingTemp(false);
+  };
 
   const handleDialogTemporada = () => {
     setOpenDialogTemp(true);
@@ -151,17 +251,22 @@ export default function Torneos() {
   React.useEffect(() => {
     setLoading(true);
     dispatch(getTorneos());
+    getTemporadas();
     setLoading(false);
-  }, [dispatch, openDialog]);
+  }, [dispatch, openDialog,loading]);
+
+  React.useEffect(() => {
+    getTemporadas();
+  }, [loadingTemp]);
 
   React.useEffect(() => {
     setLoading(true);
     setTorneosData(torneos);
     setLoading(false);
-  }, [torneos, openDialog]);
+  }, [torneos, openDialog,loading]);
 
   console.log("torneos aqui", torneos);
-
+  console.log("temporadas", temporadas);
   return (
     <>
       <Box sx={{ overflow: "hidden" }}>
@@ -189,12 +294,12 @@ export default function Torneos() {
                 component="div"
                 sx={{ flexGrow: 1, pr: 3, textAlign: "start", fontWeight: 700 }}
               >
-                Torneos
+                Temporadas
               </Typography>
               <Box>
                 <Tooltip title="Agregar Temporada">
                   <Button
-                    sx={{ mr: 2 }}
+
                     variant="contained"
                     onClick={handleDialogTemporada}
                     endIcon={<AddCircleIcon />}
@@ -202,6 +307,62 @@ export default function Torneos() {
                     Crear temporada
                   </Button>
                 </Tooltip>
+              </Box>
+            </div>
+          </Toolbar>
+          <TableContainer>
+            <DataGrid
+              rows={temporadas}
+              columns={columnsTemporada}
+              loading={loadingTemp}
+              pageSize={pageSize}
+              disableColumnFilter
+              disableColumnSelector
+              disableDensitySelector
+              disableExtendRowFullWidth
+              autoHeight
+              disableSelectionOnClick
+              onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+              rowsPerPageOptions={[5, 10, 20]}
+              components={{ Toolbar: GridToolbar }}
+              componentsProps={{
+                toolbar: {
+                  showQuickFilter: true,
+                },
+              }}
+              localeText={translate}
+              labelRowsPerPage={"Filas por pagina"}
+              className="tableClasificacion"
+              rowHeight={53}
+              headerHeight={43}
+            />
+          </TableContainer>
+          <Toolbar
+            variant="dense"
+            sx={{
+              backgroundColor: "secondary.main",
+              px: 0,
+              borderTopLeftRadius: 5,
+              borderTopRightRadius: 5,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+                height: "100%",
+                px: 32,
+              }}
+            >
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ flexGrow: 1, pr: 3, textAlign: "start", fontWeight: 700 }}
+              >
+                Torneos
+              </Typography>
+              <Box>
                 <Tooltip title="Agregar torneo">
                   <Button
                     variant="contained"
@@ -252,6 +413,7 @@ export default function Torneos() {
           open={openDialogTemp}
           setOpen={setOpenDialogTemp}
           action={action}
+          setLoadingTemp={setLoadingTemp}
         />
       </Box>
     </>

@@ -3,21 +3,22 @@ import React from "react";
 //icons
 
 import { useDispatch, useSelector } from "react-redux";
-import { getTorneos } from "../../../redux/torneoSlice";
+import { getTorneos } from "../../../../redux/torneoSlice";
 
 //TABS
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { Img } from "../../../styles-components/Layout";
-import { styled } from "@mui/material/styles";
-import TableLigasClasificacionComponent from "./base-de-datos/component/TableLigasClasificacionComponent";
-import FixtureComponent from "./base-de-datos/component/FixtureComponent";
-import { getFixture } from "../../../redux/fixtureSlice";
 
-import IconLiga from "../../../assets/images/iconos/liga.png";
-import EstadisticasComponent from "./ligas/EstadisticasComponent";
-import SancionesLesionesComponent from "./ligas/SancionesLesionesComponent";
+import { styled } from "@mui/material/styles";
+import TableLigasClasificacionComponent from "../base-de-datos/component/TableLigasClasificacionComponent";
+import FixtureComponent from "../base-de-datos/component/FixtureComponent";
+import { getFixture } from "../../../../redux/fixtureSlice";
+
+import IconLiga from "../../../../assets/images/iconos/liga.png";
+import EstadisticasComponent from "./EstadisticasComponent";
+import SancionesLesionesComponent from "./SancionesLesionesComponent";
+import { Img } from "../../../../styles-components/Layout";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
