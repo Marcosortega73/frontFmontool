@@ -1,0 +1,10 @@
+.headerImage{
+    background-image: url("../../../../../public/images/cuerpoTecnico.jpeg") !important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin: 0;
+    opacity: 0.7;
+    height: 100vh;
+
+
+}

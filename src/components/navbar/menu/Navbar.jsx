@@ -27,7 +27,8 @@ const pages = [
   { title: "Torneos y Competencias", href: "/torneos/ligas" },
   { title: "El Comunitario", href: "/el-comunitario" },
   { title: "Apuestas", href: "/apuestas" },
-  { title: "Conviertete en Manager", href: "/convierte-en-manager" },
+  { title: "Conviertete en Manager", href: "/conviertete-en-manager" },
+  { title: "Conviertete en Colaborador", href: "/conviertete-en-colaborador" },
 ];
 
 function Navbar(props) {

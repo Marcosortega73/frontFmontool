@@ -52,6 +52,7 @@ import ManagersCliente from "../views/client/torneos-y-competencias/ManagersClie
 import ChangeEmail from "../views/profile/panel/common/ChangeEmail";
 import Fixture from "../views/panelAdmin/navegacion/Fixture";
 import Logout from "../views/auth/Logout";
+import ContactoColaborador from "../views/client/contacto/ContactoColaborador";
 
 const AppRouter = () => {
   const { isLoggedIn, user } = useSelector((state) => state.auth);
@@ -90,6 +91,11 @@ const AppRouter = () => {
             path="conviertete-en-manager"
             element={<SitioEnConstruccion />}
           />
+           <Route
+            path="conviertete-en-colaborador"
+            element={<ContactoColaborador />}
+          />
+
           <Route path="ligas-del-mundo" element={<SitioEnConstruccion />} />
           <Route path="logout" element={<Logout />} />
           <Route path="*" element={<NotFound />} />
