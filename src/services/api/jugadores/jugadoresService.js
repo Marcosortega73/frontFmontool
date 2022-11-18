@@ -138,6 +138,10 @@ const getStatsJugadoresByEquipoService = async (id) => {
   }
 }
 
+
+
+
+
 const jugadoresServices = {
     getJugadoresService,
     createJugadorService,
@@ -146,7 +150,8 @@ const jugadoresServices = {
     deleteJugadorService,
     getFilterJugadoresService,
     getJugadoresByEquipoService,
-    getStatsJugadoresByEquipoService
+    getStatsJugadoresByEquipoService,
+    
 
 
 }

@@ -2,6 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import { useDemoData } from "@mui/x-data-grid-generator";
+import FileDownloadDoneIcon from '@mui/icons-material/FileDownloadDone';
 import {
   Button,
   Container,
@@ -24,9 +25,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
+import "./styles/Torneos.css";
+
 //importar translate
 import translate from "../../../utils/translate/dataGridToolbar.json";
 import seasonsServices from "../../../services/api/seasons/seasonsService";
+import DialogEstadisticaTemporada from "./common/DialogEstadisticasTemporada";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#f5f5f5",
@@ -132,11 +136,20 @@ export default function Torneos() {
   ];
   const columnsTemporada = [
     {
+      field: "id",
+      headerName: "ID",
+      width: 100,
+      description: "ID de la Temporada",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "headerClass",
+    },
+    {
       field: "nombre",
       headerName: "Nombre",
       minWidth: 200,
       description: "Nombre de la temporada",
-      flex:1,
+      flex: 1,
       headerAlign: "center",
       align: "center",
       headerClassName: "headerClass",
@@ -181,59 +194,56 @@ export default function Torneos() {
       type: "actions",
       headerName: "Acciones",
       disableReorder: true,
-      
+
       getActions: (params) => [
-        <GridActionsCellItem
-          icon={<VisibilityIcon fontSize="small" />}
-          label="Ver Jugador"
-     /*      onClick={() => {
-            handleJugadorSelect(params.row, "ver");
-          }} */
-          showInMenu
-        />,
+
+        params.row?.Torneos?.length
+        > 0 
+        ?
+        (
         <GridActionsCellItem
           icon={<EditIcon fontSize="small" />}
-          label="Editar Jugador"
-     /*      onClick={() => {
-            handleJugadorSelect(params.row, "edit");
-          }} */
-          showInMenu
-        />,
-        <GridActionsCellItem
-          icon={<DeleteIcon fontSize="small" />}
-          label="Borrar Jugador"
-      /*     onClick={() => {
-            handleDelete(params.id);
-          }} */
-          showInMenu
-        />,
+          label="Agregar Estadisticas"
+          onClick={() => {
+            handleEstadisticas(params.row);
+          }}
+        />
+        ):(
+          <GridActionsCellItem
+          icon={<FileDownloadDoneIcon fontSize="small" />}
+          label="Ver Estadisticas"
+          disabled={true}
+        />
+        )
+        
       ],
       headerAlign: "center",
       align: "center",
       headerClassName: "headerClass",
     },
-
   ];
 
   const dispatch = useDispatch();
 
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openDialogTemp, setOpenDialogTemp] = React.useState(false);
+  const [openDialogEstadistica, setOpenDialogEstadistica] =
+    React.useState(false);
   const [action, setAction] = React.useState(null);
   const [torneosData, setTorneosData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [loadingTemp, setLoadingTemp] = React.useState(false);
   const [temporadas, setTemporadas] = React.useState([]);
+  const [season, setSeason] = React.useState(null);
 
   const [pageSize, setPageSize] = React.useState(5);
 
   const { torneos } = useSelector((state) => state.torneos);
 
   const getTemporadas = async () => {
-  
     const res = await seasonsServices.getSeasonsService();
     console.log("res", res);
-    if(res?.status === 200) {
+    if (res?.status === 200) {
       setTemporadas(res.seasons);
     }
     setLoadingTemp(false);
@@ -248,12 +258,17 @@ export default function Torneos() {
     setOpenDialog(!openDialog);
   };
 
+  const handleEstadisticas = (row) => {
+    console.log("row", row);
+    setSeason(row.id);
+    setOpenDialogEstadistica(true);
+  };
+
   React.useEffect(() => {
     setLoading(true);
+    setLoadingTemp(true);
     dispatch(getTorneos());
-    getTemporadas();
-    setLoading(false);
-  }, [dispatch, openDialog,loading]);
+  }, [dispatch, openDialog]);
 
   React.useEffect(() => {
     getTemporadas();
@@ -262,8 +277,10 @@ export default function Torneos() {
   React.useEffect(() => {
     setLoading(true);
     setTorneosData(torneos);
-    setLoading(false);
-  }, [torneos, openDialog,loading]);
+    if (torneos.length > 0) {
+      setLoading(false);
+    }
+  }, [torneos, openDialog, loading]);
 
   console.log("torneos aqui", torneos);
   console.log("temporadas", temporadas);
@@ -299,7 +316,6 @@ export default function Torneos() {
               <Box>
                 <Tooltip title="Agregar Temporada">
                   <Button
-
                     variant="contained"
                     onClick={handleDialogTemporada}
                     endIcon={<AddCircleIcon />}
@@ -335,6 +351,11 @@ export default function Torneos() {
               className="tableClasificacion"
               rowHeight={53}
               headerHeight={43}
+              getRowClassName={(params) => {
+                if (params.row.estado === "Actual") {
+                  return "rowActual";
+                }
+              }}
             />
           </TableContainer>
           <Toolbar
@@ -414,6 +435,13 @@ export default function Torneos() {
           setOpen={setOpenDialogTemp}
           action={action}
           setLoadingTemp={setLoadingTemp}
+        />
+        <DialogEstadisticaTemporada
+          open={openDialogEstadistica}
+          setOpen={setOpenDialogEstadistica}
+          action={action}
+          setLoadingTemp={setLoadingTemp}
+          season_id={season}
         />
       </Box>
     </>

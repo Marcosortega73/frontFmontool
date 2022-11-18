@@ -123,6 +123,26 @@ catch (error) {
 };
 }
 
+const getEquiposBySeason = async (id) => {
+  console.log("LLEGE AL OBTENER getEquiposBySeason")
+try{
+  const data  =  http
+    .get(API_URL+'getEquiposBySeason/'+id)
+    .then((response) => {
+
+          console.log("LLEGE AL LA DATA equipos getEquiposBySeason",response.data)
+          return response.data;
+    });
+    return data
+
+}
+catch (error) {
+  console.log("LLEGE AL ERROR",error)
+};
+}
+
+
+
 
 
 
@@ -134,6 +154,7 @@ const equiposServices = {
     getEquiposXnacion,
     getEquiposSearchService,
     getEquiposTorneos,
+    getEquiposBySeason
 }
 
 export default equiposServices

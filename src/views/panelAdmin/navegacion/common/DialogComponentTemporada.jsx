@@ -46,10 +46,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function DialogComponentTemporada(props) {
   const { open, setOpen, action, setLoadingTemp } = props;
+  const [switchState, setSwitchState] = React.useState(false);
 
-  const { nations, continents } = useSelector((state) => state.regiones);
-
-  console.log("CONTIENENTES==>", continents);
   console.log("action", action);
 
   const handleClose = () => {
@@ -82,22 +80,59 @@ export default function DialogComponentTemporada(props) {
       jugador_mvp_id: null,
       jugador_goleador_id: null,
       jugador_asistente_id: null,
+      estado: false,
     },
   });
 
   const onSubmit = async (formValue) => {
     console.log(formValue);
     console.log(action);
+
     if (action === "create") {
       console.log("entro if");
-      await seasonsServices
+      if (formValue.estado) {
+        Swal.fire({
+          title: "¿Estas seguro?",
+          text: "La temporada se creara como actual y se desactivara la temporada actual",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Si, crear!",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            await seasonsServices
+              .createSeasonService(formValue)
+              .then((res) => {
+                console.log("res", res);
+                if (res.status === 200) {
+                  console.log("entro if 2");
+                  Swal.fire({
+                    title: "Temporada Creada correctamente",
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false,
+                  });
+                  handleClose();
+                  setLoadingTemp(true);
+                  setOpen(false);
+                }
+              })
+              .catch((err) => {
+                console.log("err", err);
+              });
+          }
+        });
+      }
+      else{
+        await seasonsServices
         .createSeasonService(formValue)
         .then((res) => {
           console.log("res", res);
           if (res.status === 200) {
             console.log("entro if 2");
             Swal.fire({
-              title: "Temporada Creada correctamente",
+              title: "Temporada Creada correctamente,queda en estado en espera",
               icon: "success",
               timer: 1500,
               showConfirmButton: false,
@@ -110,6 +145,7 @@ export default function DialogComponentTemporada(props) {
         .catch((err) => {
           console.log("err", err);
         });
+      }
     } else {
       await seasonsServices.updateSeasonService(formValue);
     }
@@ -256,14 +292,32 @@ export default function DialogComponentTemporada(props) {
                             />
                           </Item>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={8}>
                           <Item
                             sx={{ display: "flex", justifyContent: "center" }}
                           >
                             <FormGroup>
+                              <Typography
+                                variant="h6"
+                                sx={{ color: "primary.main" }}
+                              >
+                                ¿ Desea crear esta temporada como actual?
+                              </Typography>
                               <FormControlLabel
-                                control={<Switch defaultChecked />}
-                                label="Label"
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                }}
+                                control={
+                                  <Switch
+                                    size="large"
+                                    onChange={(e) => {
+                                      setSwitchState(e.target.checked);
+                                      setValue("estado", e.target.checked);
+                                    }}
+                                  />
+                                }
+                                label={switchState ? "Si" : "No"}
                               />
                             </FormGroup>
                           </Item>
