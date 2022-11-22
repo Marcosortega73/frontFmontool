@@ -1,0 +1,52 @@
+
+
+[
+
+    {
+        "name": "Escritorio",
+        "path": "dashboard",
+        "icon": "dashboard"
+    },
+    
+    {
+        "name": "Equipos",
+        "path": "equipos",
+        "icon": "shield"
+    },
+    {
+        "name": "Jugadores",
+        "path": "jugadores",
+        "icon": "groups"
+    },
+    {
+        "name": "Torneos",
+        "path": "torneos",
+        "icon": "emoji_events",
+        "menu": [
+            {
+                "name": "Torneos",
+                "path": "torneos",
+                "icon": "emoji_events"
+            },
+        
+            {
+                "name": "Partidos",
+                "path": "partidos",
+                "icon": "scoreboard"
+            },
+            {
+                "name": "Estadisticas",
+                "path": "estadisticas",
+                "icon": "data_thresholding"
+            }
+         
+        ]
+    },
+    {
+        "name": "Usuarios",
+        "path": "usuarios",
+        "icon": "admin_panel_settings"
+    }
+ 
+
+]

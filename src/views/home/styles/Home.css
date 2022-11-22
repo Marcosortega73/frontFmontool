@@ -1,0 +1,54 @@
+@import url();
+.bgImageContainer{
+    background-image: url("../../../../public/images/home-bg.jpg");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    width: 100%;
+    opacity: 0.9;
+}
+.bgImage{
+    display: block;
+}
+
+@media screen and (min-width: 768px){
+    .logoFm{
+        height: 1000vh !important;
+    }
+    
+}
+@media screen and (max-width: 480px){
+    .logoFm{
+        height: 100vh;
+    }
+}
+    
+@media screen and (max-width: 320px){
+    .logoFm{
+        height: 100vh;
+    }
+}
+
+.box{
+    background-color: #34333891;
+    z-index: 500000;
+    border-radius: 5px;
+}
+
+.boxArrow{
+    background-color: #cca500;
+    z-index: 500000;
+    width: 73px;
+    height: 73px;
+
+
+}
+
+.bgImage{
+    background-image: url( "../../../assets/images/generales/fondoCancha.jpg") !important;
+}

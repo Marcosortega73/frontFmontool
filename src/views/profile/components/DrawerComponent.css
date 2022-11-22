@@ -1,0 +1,14 @@
+a{
+    color:#424242
+}
+a:focus{
+    color:red
+}
+
+#root > div > main{
+    padding: 0;
+}
+#root > div > main > div.MuiBox-root.css-1acvwwy > img{
+    margin: 0;
+    width: 100%;
+}

@@ -1,0 +1,46 @@
+import { Container } from '@mui/material'
+import { Box } from '@mui/system'
+import React from 'react'
+import jugadoresServices from '../../../../services/api/jugadores/jugadoresService'
+import DialogJugadorDetails from './DialogJugadorDetails'
+import FIlterComponentBaseDatos from './FIlterComponentBaseDatos'
+import TableJugadores from './TableJugadores'
+
+const BaseDeDatos = () => {
+    const [jugadores , setJugadores] = React.useState([])
+
+    const [openDialog, setOpenDialog] = React.useState(false)
+    const [jugadorSelect, setJugadorSelect] = React.useState({})
+    const [loading, setLoading] = React.useState(false)
+
+   const getJugadores = async () => {
+        setLoading(true)
+        const response = await jugadoresServices.getJugadoresService()
+        setJugadores(response)
+        setLoading(false)
+    }
+    
+    React.useEffect(() => {
+        getJugadores()
+
+    }
+    , [])
+
+    console.log("Mirando Jugadores en el Cliente",jugadores)
+
+
+  return (
+    <>
+    <Container sx={{my:3}}>
+    <Box>
+        <TableJugadores setLoading={setLoading} loading={loading} jugadores={jugadores} setOpen={setOpenDialog} setJugadorSelect={setJugadorSelect} />
+    </Box>
+
+
+    <DialogJugadorDetails open={openDialog}  setOpen={setOpenDialog} jugador={jugadorSelect} /> 
+    </Container> 
+    </>
+  )
+}
+
+export default BaseDeDatos

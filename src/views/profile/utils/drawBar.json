@@ -1,0 +1,44 @@
+
+[
+
+    {
+        "name": "Pantallla Principal",
+        "path": "pantalla-principal",
+        "icon": "home"
+    },
+    {
+        "name": "Equipo",
+        "path": "equipo",
+        "icon": "groups",
+        "menu": [
+            {
+                "name": "Plantilla",
+                "path": "plantilla",
+                "icon": "reduce_capacity"
+            },
+            {
+                "name": "Tácticas",
+                "path": "tacticas",
+                "icon": "sports_soccer"
+            },
+            {
+                "name": "Mis Estadisticas",
+                "path": "mis-estadisticas",
+                "icon": "query_stats"
+            },
+            {
+                "name": "Mis Torneos",
+                "path": "mis-torneos",
+                "icon": "data_thresholding"
+            }
+         
+        ]
+    },
+    {
+        "name": "Preselección",
+        "path": "preseleccion",
+        "icon": "folder_special"
+    }
+ 
+
+]

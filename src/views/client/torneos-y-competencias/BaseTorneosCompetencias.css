@@ -1,0 +1,12 @@
+
+.appTabsGroup{
+    border-radius: 5px !important;
+    
+}
+
+.tab-opciones{
+    color :  white !important;
+}
+.tab-opciones.Mui-selected{
+    color : #cca500
+}

@@ -1,0 +1,40 @@
+
+[
+
+    {
+        "name": "Dashboard",
+        "path": "dashboard",
+        "icon": "icon-folder"
+    },
+    {
+        "name": "Jugadores",
+        "path": "jugadores",
+        "icon": "icon-folder"
+    },
+    {
+        "name": "Managers",
+        "path": "managers",
+        "icon": "icon-folder"
+    },
+    {
+        "name": "Equipos",
+        "path": "equipos",
+        "icon": "icon-folder"
+    },
+    {
+        "name": "Partidos",
+        "path": "partidos",
+        "icon": "icon-folder"
+    },
+    {
+        "name": "Estadisticas",
+        "path": "estadisticas",
+        "icon": "icon-folder"
+    },
+    {
+        "name": "Torneos",
+        "path": "torneos",
+        "icon": "icon-folder"
+    }
+
+]

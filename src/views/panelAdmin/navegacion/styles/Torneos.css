@@ -1,0 +1,7 @@
+.rowActual{
+    background-color: rgba(0, 128, 0, 0.116) !important;
+}
+
+.rowActual:hover{
+    background-color: rgba(0, 128, 0, 0.274) !important;
+}

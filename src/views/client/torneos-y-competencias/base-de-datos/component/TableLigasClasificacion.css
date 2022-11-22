@@ -1,0 +1,21 @@
+.headerClass{
+    background-color: #757575;
+    color: #fff;
+    ;
+}
+.headerClass:hover{
+    background-color: #837e7e;;
+    color: #fff;;
+}
+
+.tableClasificacion{
+border: none !important;
+ border-radius: 5px !important;
+ z-index: 500;
+ background-color:#E5E5E5;
+ color: #121417 !important;
+    margin-top: 1.1%;
+margin-bottom: 1.1%;
+margin-left: 1.1%;
+ width: 98%;
+}
