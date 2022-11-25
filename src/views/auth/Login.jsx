@@ -23,6 +23,7 @@ import "./auth.css";
 import { Img } from "../../styles-components/Layout";
 import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
+import { FormCheck } from "../../components/forms/imputs/FormCheck";
 
 const Login = (props) => {
   const navigate = useNavigate();
@@ -74,6 +75,7 @@ const Login = (props) => {
   return (
     <>
       <Toolbar />
+      <Toolbar />
       <Container
         fixed
         sx={{
@@ -89,9 +91,9 @@ const Login = (props) => {
         <Box
           elevation={4}
           sx={{
-            bgcolor: "#546e7a40 ",
-            height: "80%",
-            width: "50%",
+            bgcolor: "rgba(30, 32, 36, 0.95) ",
+            height: "95%",
+            width: "65%",
             borderRadius: "15px",
             boxShadow: "1px 2px 5px 3px rgba(0,0,0,0.75)",
             display: "flex",
@@ -102,7 +104,10 @@ const Login = (props) => {
           }}
         >
           <div style={{ marginTop: 7 }}>
-            <Chip label="Vuelta a los Entrenamientos" color="primary" />
+            <Chip sx={{
+              fontSize: "1.5rem",
+              p:3
+            }} label="Vuelta a los Entrenamientos" color="primary" />
           </div>
           <CardContent
             sx={{
@@ -131,6 +136,7 @@ const Login = (props) => {
                       control={control}
                       errors={errors}
                       register={register}
+                      tieneLabel={true}
                       name="email"
                       rulesBol={true}
                       variant="outlined"
@@ -145,6 +151,7 @@ const Login = (props) => {
                       control={control}
                       errors={errors}
                       register={register}
+                      tieneLabel={true}
                       name="password"
                       rulesBol="true"
                       variant="outlined"

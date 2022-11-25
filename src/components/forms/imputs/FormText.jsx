@@ -79,7 +79,10 @@ export const FormText = ({
             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                 borderColor: "#cca500 !important",
                 },
-              
+              //color de errors 
+              "&.Mui-error .MuiOutlinedInput-notchedOutline": {
+                borderColor: "red !important",
+                },
 
             }}
             InputProps={

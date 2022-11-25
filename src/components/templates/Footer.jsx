@@ -4,10 +4,91 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
-import { Paper, styled } from "@mui/material";
+import { Button, Icon, List, Paper, styled } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Divider from "@mui/material/Divider";
+import InboxIcon from "@mui/icons-material/Inbox";
+import DraftsIcon from "@mui/icons-material/Drafts";
+
+import DiscordIcon from "../../assets/images/iconos/discord.png";
+import FacebookIcon from "../../assets/images/iconos/facebook.png";
+import TwitterIcon from "../../assets/images/iconos/twitter.png";
+import YouTubeIcon from "../../assets/images/iconos/youtube.png";
+import TwitchIcon from "../../assets/images/iconos/twitch.png";
+import InstagramIcon from "../../assets/images/iconos/instagram.png";
 
 import Logo from "../../assets/images/entherprise/logo.png";
+import ModalFooterAtribuciones from "./ModalFooterAtribuciones";
+import { Stack } from "@mui/system";
+import PoliticasPrivacidad from "../politicas/PoliticasPrivacidad";
+import TerminosCondiciones from "../politicas/TerminosCondiciones";
+const pages = [
+  { title: "Home", href: "/" },
+  { title: "Torneos y Competencias", href: "/torneos/ligas" },
+  { title: "El Comunitario", href: "/el-comunitario" },
+  { title: "Apuestas", href: "/apuestas" },
+  { title: "Conviertete en Manager", href: "/conviertete-en-manager" },
+  { title: "Conviertete en Colaborador", href: "/conviertete-en-colaborador" },
+];
+const iconFooter = (icon) => {
+  switch (icon) {
+    case "Instagram":
+      return (
+        <img width="24px" height="24px" src={InstagramIcon} alt="Instagram" />
+      );
+
+    case "YouTube":
+      return <img width="24px" height="24px" src={YouTubeIcon} alt="Youtube" />;
+    case "Twitter":
+      return <img width="24px" height="24px" src={TwitterIcon} alt="Twitter" />;
+    case "Facebook":
+      return (
+        <img width="24px" height="24px" src={FacebookIcon} alt="Facebook" />
+      );
+    case "Discord":
+      return <img width="24px" height="24px" src={DiscordIcon} alt="Discord" />;
+    case "Twitch":
+      return <img width="24px" height="24px" src={TwitchIcon} alt="Twitch" />;
+    default:
+      return <img width="24px" height="24px" src={DraftsIcon} alt="Discord" />;
+  }
+};
+const redes = [
+  {
+    title: "Facebook",
+    href: "https://www.facebook.com/CompeticionesOnline",
+    icon: iconFooter("Facebook"),
+  },
+  {
+    title: "Instagram",
+    href: "https://www.instagram.com/competicionesonline/",
+    icon: iconFooter("Instagram"),
+  },
+  {
+    title: "Twitter",
+    href: "https://twitter.com/CompeticionesOn",
+    icon: iconFooter("Twitter"),
+  },
+  {
+    title: "Youtube",
+    href: "https://www.youtube.com/channel/UC0JgjZw6V7i6YR8Ee7z6X1g",
+    icon: iconFooter("YouTube"),
+  },
+  {
+    title: "Discord",
+    href: "https://discord.gg/2Z5Y4Y2",
+    icon: iconFooter("Discord"),
+  },
+  {
+    title: "Twitch",
+    href: "https://www.twitch.tv/competicionesonline",
+    icon: iconFooter("Twitch"),
+  },
+];
 
 function Copyright() {
   return (
@@ -37,10 +118,15 @@ const Item = styled(Paper)(({ theme }) => ({
   boxShadow: "none",
 }));
 
+
+
 export default function Footer() {
+  const [open, setOpen] = React.useState(false);
+  const [openCondiciones, setOpenCondiciones] = React.useState(false);
+  const [openPrivacidad, setOpenPrivacidad] = React.useState(false);
   return (
-    <Box sx={{ flexGrow: 1, backgroundColor: "customTheme.primary700",mt:5 }}>
-      <Grid container zeroMinWidth={true} sx={{p:3}}>
+    <Box sx={{ flexGrow: 1, backgroundColor: "customTheme.primary700", mt: 5 }}>
+      <Grid container zeroMinWidth={true} sx={{ p: 3 }}>
         <Grid xs={12} md={5} lg={4}>
           <Item
             sx={{
@@ -56,63 +142,89 @@ export default function Footer() {
           </Item>
         </Grid>
         <Grid container xs={12} md={7} lg={8} spacing={2}>
-          <Grid xs={6} lg={3}>
+          <Grid xs={6} lg={4}>
             <Item>
               <Box
                 id="category-a"
-                sx={{ fontSize: "12px", textTransform: "uppercase" }}
+                sx={{
+                  fontSize: "15px",
+                  textTransform: "uppercase",
+                  textAlign: "center",
+                }}
               >
-                Category A
+                Menu
               </Box>
               <Box
-                component="ul"
-                aria-labelledby="category-a"
-                sx={{ pl: 2, listStyle: "none" }}
+              
+                sx={{ listStyle: "none" }}
               >
-                <li>Link 1.2</li>
-                <li>Link 1.3</li>
+                 <List sx={{ display: "flex", justifyContent: "center" }}>
+                 <Box>
+                {pages.map((page, idx) => (
+                  <ListItem key={idx} disablePadding>
+                    <Link
+                      to={page.href}
+                      color="inherit"
+                      underline="hover"
+                      sx={{ fontSize: "15px", cursor: "pointer" }}
+                    >
+                       <ListItemButton
+                          sx={{
+                            p: 0,
+                            display: "flex",
+                            justifyContent: "space-around",
+                          }}
+                        >
+                          <ListItemText primary={page.title} />
+                        </ListItemButton>
+                      
+                    </Link>
+                    </ListItem>
+                ))}
+                </Box>
+                </List>
               </Box>
             </Item>
           </Grid>
-          <Grid xs={6} lg={3}>
-            <Item>
-              <Box
-                id="category-b"
-                sx={{ fontSize: "12px", textTransform: "uppercase" }}
-              >
-                Category B
-              </Box>
-              <Box
-                component="ul"
-                aria-labelledby="category-b"
-                sx={{ pl: 2, listStyle: "none" }}
-              >
-                <li>Link 2.1</li>
-                <li>Link 2.2</li>
-                <li>Link 2.3</li>
-              </Box>
-            </Item>
-          </Grid>
-          <Grid xs={6} lg={3}>
+
+          <Grid xs={6} lg={4}>
             <Item>
               <Box
                 id="category-c"
                 sx={{ fontSize: "12px", textTransform: "uppercase" }}
               >
-                Category C
+                Redes Sociales
               </Box>
-              <Box
-                component="ul"
-                aria-labelledby="category-c"
-                sx={{ pl: 2, listStyle: "none" }}
-              >
-                <li>Link 3.1</li>
-                <li>Link 3.2</li>
-                <li>Link 3.3</li>
-              </Box>
+              <List sx={{ display: "flex", justifyContent: "center" }}>
+                <Box>
+                  {redes.map((page, idx) => (
+                    <ListItem key={idx} disablePadding>
+                      <Link
+                        to={page.href}
+                        color="inherit"
+                        underline="hover"
+                        sx={{ fontSize: "15px", cursor: "pointer" }}
+                      >
+                        <ListItemButton
+                          sx={{
+                            p: 0,
+                            display: "flex",
+                            justifyContent: "space-around",
+                          }}
+                        >
+                          <ListItemIcon sx={{ minWidth: "37px !important" }}>
+                            {page.icon}
+                          </ListItemIcon>
+                          <ListItemText primary={page.title} />
+                        </ListItemButton>
+                      </Link>
+                    </ListItem>
+                  ))}
+                </Box>
+              </List>
             </Item>
           </Grid>
-          <Grid xs={6} lg={3}>
+          <Grid xs={6} lg={4}>
             <Item>
               <Box
                 id="category-d"
@@ -120,48 +232,60 @@ export default function Footer() {
               >
                 Atribuciones
               </Box>
-              <Box
-                component="ul"
-                aria-labelledby="category-d"
-                sx={{ pl: 2, listStyle: "none",color:"#e5e5e5" }}
-              >
-                <li>
-                  <a href="https://www.flaticon.es/" title="iconos">
-                    Iconos creados por Flat Icons - Flaticon
-                  </a>
-                </li>
-                <li><a href="https://www.flaticon.es/iconos-gratis/firma" title="firma iconos">Firma iconos creados por smalllikeart - Flaticon</a></li>
-                <li><a href="https://www.flaticon.es/iconos-gratis/tarjeta-roja" title="tarjeta roja iconos">Tarjeta roja iconos creados por Freepik - Flaticon</a></li>
-                <li><a href="https://www.flaticon.es/iconos-gratis/deportes-y-competicion" title="deportes y competición iconos">Deportes y competición iconos creados por Marz Gallery - Flaticon</a></li>
-                <li><a href="https://www.flaticon.es/iconos-gratis/deportes-y-competicion" title="deportes y competición iconos">Deportes y competición iconos creados por Marz Gallery - Flaticon</a></li>
-                <li><a href="https://www.flaticon.es/iconos-gratis/prohibido" title="prohibido iconos">Prohibido iconos creados por Bartama Graphic - Flaticon</a></li>
+              <Box sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+                mt:3
+              }}>
+               
+                <Button variant="contained" color="secondary"
+                onClick={
+                  () => setOpen(true)
+                }>
+                  Ver Atribuciones
+                </Button>
               </Box>
             </Item>
           </Grid>
         </Grid>
-        {/* <Grid
-          xs={12}
-          container
-          justifyContent="space-between"
-          alignItems="center"
-          flexDirection={{ xs: "column", sm: "row" }}
-          sx={{ fontSize: "12px" }}
-        >
-          <Grid sx={{ order: { xs: 2, sm: 1 } }}>
-            <Item>© Copyright</Item>
-          </Grid>
-          <Grid container columnSpacing={1} sx={{ order: { xs: 1, sm: 2 } }}>
-            <Grid>
-              <Item>Link A</Item>
-            </Grid>
-            <Grid>
-              <Item>Link B</Item>
-            </Grid>
-            <Grid>
-              <Item>Link C</Item>
-            </Grid>
-          </Grid>
-        </Grid> */}
+        <Grid xs={12}>
+          <Item
+            sx={{
+              backgroundColor: "customTheme.primary700",
+              mt:3
+            }}
+          >
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              {/* menu con terminos y condiciones y privacidad */}
+              <Stack direction="row" spacing={2}
+                divider={<Divider orientation="vertical" flexItem color="#e5e5e5"/>}
+              >
+                <Button
+                  variant="text"
+                  color="secondary"
+                  sx={{ fontSize: "12px" }}
+                  onClick={() => setOpenCondiciones(true)}
+                >
+                  Terminos y condiciones
+                </Button>
+                <Button
+                  variant="text"
+                  color="secondary"
+                  sx={{ fontSize: "12px" }}
+                  onClick={() => setOpenPrivacidad(true)}
+                >
+                  Política de privacidad
+                </Button>
+
+              </Stack>
+
+                  
+            </Box>
+          </Item>
+        </Grid>
+          
       </Grid>
 
       <Box
@@ -187,6 +311,10 @@ export default function Footer() {
           <Copyright />
         </Box>
       </Box>
+
+      <ModalFooterAtribuciones open={open} setOpen={setOpen} />
+      <PoliticasPrivacidad open={openPrivacidad} setOpen={setOpenPrivacidad} />
+      <TerminosCondiciones open={openCondiciones} setOpen={setOpenCondiciones} />
     </Box>
   );
 }

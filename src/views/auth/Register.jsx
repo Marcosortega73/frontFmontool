@@ -22,7 +22,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import backgroundLogin from "../../assets/images/generales/login-bg.jpg";
 import logo from "../../assets/images/entherprise/logoSuperliga.png";
-import Chip from '@mui/material/Chip';
+import Chip from "@mui/material/Chip";
 import { Img } from "../../styles-components/Layout";
 import "./auth.css";
 //DATA
@@ -38,11 +38,9 @@ const Register = ({ data }) => {
   const [backDrop, setBackDrop] = useState(false);
   const navigate = useNavigate();
 
-//   const [severityAlert, setSeverityAlert] = useState("");
-//   const [messageAlert, setMessageAlert] = useState("");
-//   const [titleAlert, setTitleAlert] = useState("");
-
-
+  //   const [severityAlert, setSeverityAlert] = useState("");
+  //   const [messageAlert, setMessageAlert] = useState("");
+  //   const [titleAlert, setTitleAlert] = useState("");
 
   const {
     handleSubmit,
@@ -53,7 +51,7 @@ const Register = ({ data }) => {
     defaultValues: {
       email: "",
       password: "",
-      checkbox: false,
+      check: false,
     },
   });
 
@@ -61,11 +59,11 @@ const Register = ({ data }) => {
     setLoading(true);
 
     setOpenSnackAlert({
-        open: false,
-        message: "",
-        severity: "",
-    })
-    
+      open: false,
+      message: "",
+      severity: "",
+    });
+
     console.log(data);
     setBackDrop(true);
     //POST DE REGISTER
@@ -75,42 +73,37 @@ const Register = ({ data }) => {
         setBackDrop(false);
 
         if (res.status === 200) {
-
-        Swal.fire({
+          Swal.fire({
             title: "Usuario registrado correctamente",
             text: "Quedara sujeto a aprovacion por parte de un administrador, cuando se confirme le enviaremos un correo",
             icon: "success",
             confirmButtonText: "Aceptar",
-        }).then((result) => {
+          }).then((result) => {
             if (result.value) {
-                navigate("/");
+              navigate("/");
+            }
+          });
+        } else {
+          console.log("RESSS", res);
+          Swal.fire({
+            title: "Error",
+            text: "El usuario no se pudo registrar",
+            icon: "error",
+            confirmButtonText: "Aceptar",
+          });
+          navigate("/register");
+        }
 
-            }
-        }
-        )
-        }
-        else{
-          console.log("RESSS",res)
-            Swal.fire({
-                title: "Error",
-                text: "El usuario no se pudo registrar",
-                icon: "error",
-                confirmButtonText: "Aceptar",
-            }
-            ) 
-            navigate("/register");
-         }
-            
-         setLoading(false);    
+        setLoading(false);
       })
-      .catch((err ) => {
+      .catch((err) => {
         console.log("EERROR en el servidor", err);
         setBackDrop(false);
         setOpenSnackAlert({
-            message: "Error al registrar usuario",
-            severity: "error",
-           })
-           navigate("/register");
+          message: "Error al registrar usuario",
+          severity: "error",
+        });
+        navigate("/register");
         setLoading(false);
       });
   };
@@ -118,134 +111,160 @@ const Register = ({ data }) => {
   //simulando una espera
 
   return (
-    <>  
-    <Toolbar />
-         <Container
-          fixed
+    <>
+      <Toolbar />
+      <Toolbar />
+      <Container
+        fixed
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          backgroundImage: `url(${backgroundLogin})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center center",
+          backgroundRepeat: "no-repeat",
+        }}
+        className="container-login"
+      >
+        <Box
+          elevation={4}
           sx={{
+            bgcolor: "rgba(30, 32, 36, 0.95) ",
+            height: "95%",
+            width: "65%",
+            borderRadius: "15px",
+            boxShadow: "1px 2px 5px 3px rgba(0,0,0,0.75)",
             display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
             justifyContent: "space-between",
-            backgroundImage: `url(${backgroundLogin})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center center",
-            backgroundRepeat: "no-repeat",
+            border: "1px solid #ccc",
           }}
-          className="container-login"
         >
-          <Box
-            elevation={4}
+          <div style={{ marginTop: 7 }}>
+            <Chip sx={{
+              fontSize: "1.5rem",
+              p:3
+            }} label="Convierte en Manager" color="primary" />
+          </div>
+          <CardContent
             sx={{
-              bgcolor: "#75757597 ",
-              height: "80%",
-              width: "50%",
-              borderRadius: "15px",
-              boxShadow: "1px 2px 5px 3px rgba(0,0,0,0.75)",
+              height: "100%",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              justifyContent: "space-between",
-              border: "1px solid #ccc",
+              justifyContent: "space-around",
             }}
           >
-            <div style={{marginTop:7}}>
-            <Chip  label="Convierte en Manager" color="primary"  />      
-            </div>
-            <CardContent sx={{height:"100%",   display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "space-around", }}>
-              <FormControl>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <Grid
-                    container
-                    rowSpacing={4}
-                    columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-
-                      
-                    }}
-                  >
-                    <Grid xs={12} sx={{mb:"20px"}}>
-                    
-                   
-                      <FormText
-                        control={control}
-                        errors={errors}
-                        register={register}
-                        name="email"
-                        rulesBol={true}
-                        variant="outlined"
-                        labelText="Ingrese su email"
-                        type="email"
-                        text="Email:"
-                      
-                      />
-                    </Grid>
-                    <Grid xs={12} sx={{mb:"20px"}}>
-                      <FormText
-                        type="password"
-                        control={control}
-                        errors={errors}
-                        register={register}
-                        name="password"
-                        rulesBol="true"
-                        variant="outlined"
-                        labelText="Ingrese su Password"
-                        color="#212121"
-                        text="Password:"
-                      />
-                    </Grid>
-                    <Grid >
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        disabled={loading}
-                        sx={{
-                          width: "100%",
-                          height: "50px",
-                          borderRadius: "15px",
-                          backgroundColor: "#212121",
+            <FormControl>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <Grid
+                  container
+                  rowSpacing={4}
+                  columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Grid xs={12} sx={{ mb: "20px" }}>
+                    <FormText
+                      control={control}
+                      errors={errors}
+                      register={register}
+                      name="email"
+                      tieneLabel={true}
+                      rulesBol={true}
+                      variant="outlined"
+                      labelText="Ingrese su email"
+                      type="email"
+                      text="Email:"
+                    />
+                  </Grid>
+                  <Grid xs={12} sx={{ mb: "20px" }}>
+                    <FormText
+                      type="password"
+                      control={control}
+                      errors={errors}
+                      register={register}
+                      tieneLabel={true}
+                      name="password"
+                      rulesBol="true"
+                      variant="outlined"
+                      labelText="Ingrese su Password"
+                      color="#212121"
+                      text="Password:"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sx={{ mb: "20px" }}>
+                    <FormCheck
+                      control={control}
+                      errors={errors}
+                      register={register}
+                      name="check"
+                      rulesBol="true"
+                      variant="outlined"
+                      labelText="Recordar"
+                      color="#212121"
+                      text="He leído y acepto los términos y condiciones y la política de privacidad"
+                    />
+                  </Grid>
+                  <Grid>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      disabled={loading}
+                      sx={{
+                        width: "100%",
+                        height: "50px",
+                        borderRadius: "15px",
+                        backgroundColor: "#212121",
+                        boxShadow: "1px 2px 5px 3px rgba(0,0,0,0.75)",
+                        border: "1px solid #ccc",
+                        marginTop: "10px",
+                        marginBottom: "10px",
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                        color: "#fff",
+                        textTransform: "uppercase",
+                        letterSpacing: "1px",
+                        cursor: "pointer",
+                        "&:hover": {
+                          backgroundColor: "#cca500",
                           boxShadow: "1px 2px 5px 3px rgba(0,0,0,0.75)",
                           border: "1px solid #ccc",
-                          marginTop: "10px",
-                          marginBottom: "10px",
-                          fontSize: "20px",
-                          fontWeight: "bold",
                           color: "#fff",
-                          textTransform: "uppercase",
-                          letterSpacing: "1px",
                           cursor: "pointer",
-                          "&:hover": {
-                            backgroundColor: "#cca500",
-                            boxShadow: "1px 2px 5px 3px rgba(0,0,0,0.75)",
-                            border: "1px solid #ccc",
-                            color: "#fff",
-                            cursor: "pointer",
-                          },
-                        }}
-                      >
-                        {loading ? "Cargando..." : "Enviar"}
-                      </Button>
-                    </Grid>
+                        },
+                      }}
+                    >
+                      {loading ? "Cargando..." : "Enviar"}
+                    </Button>
                   </Grid>
-                </form>
+                </Grid>
+              </form>
             </FormControl>
           </CardContent>
         </Box>
-        <Box sx={{width:"100%",height:"100%", display:"flex",flexDirection:"column", justifyContent:"end", alignItems:"end"}}>
-              <div>
-              <Img src={logo} alt="logo" />
-              </div>
-          </Box>
+        <Box
+          sx={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "end",
+            alignItems: "end",
+          }}
+        >
+          <div>
+            <Img src={logo} alt="logo" />
+          </div>
+        </Box>
         <BackDropComponent open={backDrop} />
-        {openSnackAlert.open && 
-        <SnackBarComponent options={openSnackAlert}/>
-        }
+        {openSnackAlert.open && <SnackBarComponent options={openSnackAlert} />}
       </Container>
     </>
   );
