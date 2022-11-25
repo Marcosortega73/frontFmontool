@@ -74,11 +74,6 @@ export default function SancionesLesionesComponent({ equipos,torneo }) {
       {equipos.map((equipo, index) => {
         return (
           <TabPanel key={index} value={value} index={index}>
-            <div className="row">
-              <div className="col-12">
-                <h3 className="text-center">{equipo?.nombre}</h3>
-              </div>
-            </div>
             <TablaSancionados equipo_id={equipo?.id} torneo={torneo} />
           </TabPanel>
         );

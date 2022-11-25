@@ -145,7 +145,6 @@ export default function Equipos() {
       flex: 1,
       headerName: "Manager",
       renderCell: (params) => {
-        console.log("paramasmsmamsdmasmdamsd", params);
         return params.row.Manager != null ? (
           <Tooltip title={params.row.Manager.nombre}>
             <span>

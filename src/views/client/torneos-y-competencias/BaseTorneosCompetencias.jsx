@@ -84,13 +84,13 @@ const BaseTorneosCompetencias = () => {
                 component={Link}
                 to="/torneos/ligas"
               />
-              <Tab
+            {/*   <Tab
                 className="tab-opciones"
                 label="Copas"
                 {...a11yProps(1)}
                 component={Link}
                 to="/torneos/copas"
-              />
+              /> */}
               <Tab
                 className="tab-opciones"
                 label="Centro de Ojeo"

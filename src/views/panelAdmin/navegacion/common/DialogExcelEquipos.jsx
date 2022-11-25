@@ -44,11 +44,11 @@ export default function DialogExcel({
   };
 
   const onSubmit = async (formValue) => {
-    console.log(formValue.equipo[0]);
+    console.log("formValue",formValue);
 
     let formData = new FormData();
 
-    formData.append("equipo", formValue.equipo[0]);
+    formData.append("equipo", formValue.file[0]);
 
     console.log(formData);
 

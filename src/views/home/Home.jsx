@@ -3,8 +3,10 @@ import {
   Box,
   Button,
   Container,
+  Divider,
   Grow,
   IconButton,
+  Stack,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -23,13 +25,16 @@ import ImageFM from "../../assets/images/entherprise/FM23.jpg";
 import LogoFM from "../../assets/images/entherprise/FM23-Light.png";
 import SectionLigaComponets from "./components/SectionLigaComponets";
 import IconArrow from "../../assets/images/iconos/arrow-down.png";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import YouTubeIcon from "@mui/icons-material/YouTube";
+import FacebookIcon from "../../assets/images/iconos/facebookBg.png";
+import TwitterIcon from "../../assets/images/iconos/twitterBg.png";
+import InstagramIcon from "../../assets/images/iconos/instagramBg.png";
+import YouTubeIcon from "../../assets/images/iconos/youtubeBg.png";
+import TwitchIcon from "../../assets/images/iconos/twitchBg.png";
+import DiscordIcon from "../../assets/images/iconos/discordBg.png";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getTorneos } from "../../redux/torneoSlice";
+import { Link } from "react-router-dom";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#34333891",
@@ -256,11 +261,13 @@ const Home = () => {
                 height: "100%",
                 width: "100%",
                 backgroundColor: "rgba(0,0,0,0.4)",
+              
+                paddingBotton:"7%"
               }}
             >
               <img
-                width={273}
-                height={273}
+                maxWidth={273}
+                maxHeight={273}
                 src={IconSuperLiga}
                 alt="superliga"
               />
@@ -288,6 +295,7 @@ const Home = () => {
                 supera a managers de todo el mundo y lleva a tu equipo a la
                 cima.
               </Typography>
+              <Link to="/register">
               <Button
                 variant="contained"
                 color="secondary"
@@ -296,6 +304,7 @@ const Home = () => {
                 <span style={{ marginRight: "13px" }}>Inscríbete</span>
                 <img w src={IconContrato} alt="contrato" />
               </Button>
+              </Link>
 
               <Box sx={{ mt: 3 }}>
                 <Typography variant="h6" sx={{ color: "#fff" }}>
@@ -318,25 +327,49 @@ const Home = () => {
         sx={{ backgroundColor: "#34333891 !important", px: 3, my: 1 }}
       >
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          <Grid item xs={12} md={6}>
-            <Typography variant="h5" sx={{ color: "#e5e5e5" }}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-evenly",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              variant="h3"
+              sx={{ color: "#e5e5e5", textAlign: "center" }}
+            >
               Unite a la comunidad
             </Typography>
-            <Typography variant="body1" sx={{ color: "#e5e5e5" }}>
+            <Typography
+              variant="body1"
+              sx={{
+                color: "#e5e5e5",
+                fontSize: "1.5rem",
+                letterSpacing: "3px",
+                textAlign: "center",
+              }}
+            >
               Registrate y forma parte de la comunidad de Competiciones Online
               FM, donde podras interactuar con otros managers de todo el mundo,
               compartir tus experiencias, y mucho mas y convertirte en el mejor
-              manager de la comunidad.
+              manager de la comunidad. Sumate a la comunidad y conviertete en el
+              mejor manager del mundo.
             </Typography>
 
-            <Button
-              variant="contained"
-              color="secondary"
-              sx={{ mt: 2, fontSize: 20 }}
-            >
-              <span style={{ marginRight: "13px" }}>Inscríbete</span>
-              <img w src={IconContrato} alt="contrato" />
-            </Button>
+            <Link to="/register">
+              <Button
+                variant="contained"
+                color="secondary"
+                sx={{ mt: 2, fontSize: 20 }}
+              >
+                <span style={{ marginRight: "13px" }}>Inscríbete</span>
+                <img w src={IconContrato} alt="contrato" />
+              </Button>
+            </Link>
           </Grid>
           <Grid item xs={12} md={6}>
             {/* widget de discord */}
@@ -352,25 +385,128 @@ const Home = () => {
           </Grid>
         </Grid>
       </Box>
-      <Box component="aside" sx={{ backgroundColor: "#34333891 !important" }}>
-        <Box sx={{ px: 3, my: 1 }}>
+      <Box
+        component="aside"
+        sx={{
+          opacity: 0.9,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        className="redesClass"
+      >
+        <Box
+          sx={{
+            px: 3,
+            mt: 1,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <Grid
             container
             rowSpacing={1}
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            <Grid item xs={12}>
-              <Typography variant="h5" sx={{ color: "#e5e5e5" }}>
-                Seguinos en nuestras redes sociales
-              </Typography>
-              <Typography variant="body1" sx={{ color: "#e5e5e5" }}>
-                Seguinos en nuestras redes sociales para estar al tanto de las
-                ultimas novedades de Competiciones Online FM. Donde podras
-                interactuar con otros managers de todo el mundo, compartir tus
-                experiencias, y mucho mas
-              </Typography>
+            <Grid
+              item
+              xs={12}
+              sx={{
+                display: "flex",
 
-              <Box
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                variant="h1"
+                sx={{
+                  color: "#fff",
+                  fontWeight: "bold",
+                  textShadow: "0px 0px 10px #cca500",
+                }}
+              >
+                Seguinos
+              </Typography>
+              <Stack
+                direction="row"
+                spacing={2}
+                sx={{ mt: 2 }}
+                divider={
+                  <Divider
+                    orientation="vertical"
+                    flexItem
+                    sx={{
+                      backgroundColor: "secondary.main",
+                      width: "3px",
+                      borderRadius: "3px",
+                    }}
+                  />
+                }
+              >
+                <a
+                  href="https://www.facebook.com/groups/937814986626220"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img
+                    width={73}
+                    heigth={73}
+                    src={FacebookIcon}
+                    alt="facebook"
+                  />
+                </a>
+                <a
+                  remplace={true}
+                  href="https://www.instagram.com/competicionesonline/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img
+                    width={73}
+                    heigth={73}
+                    src={InstagramIcon}
+                    alt="instagram"
+                  />
+                </a>
+                <a
+                  href="https://twitter.com/CompeticionesFM"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img width={73} heigth={73} src={TwitterIcon} alt="twitter" />
+                </a>
+
+                <a
+                  href="https://www.youtube.com/@competicionesonlinefm1043"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img width={73} heigth={73} src={YouTubeIcon} alt="youtube" />
+                </a>
+                <a
+                  href="https://www.twitch.tv/competicionesonlinefm"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img width={73} heigth={73} src={TwitchIcon} alt="twitch" />
+                </a>
+                <a
+                  href="https://discord.gg/Vpb4mqdn"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img width={73} heigth={73} src={DiscordIcon} alt="discord" />
+                </a>
+              </Stack>
+              {/*     <Box
                 sx={{
                   display: "flex",
                   justifyContent: "center",
@@ -410,7 +546,8 @@ const Home = () => {
                 >
                   <YouTubeIcon  />
                 </IconButton>
-              </Box>
+           
+              </Box> */}
             </Grid>
           </Grid>
         </Box>

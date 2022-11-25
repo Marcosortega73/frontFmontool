@@ -54,6 +54,8 @@ export default function SectionLigaComponets({ torneos }) {
       <Tabs
         orientation="vertical"
         variant="scrollable"
+        scrollButtons
+        allowScrollButtonsMobile
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"

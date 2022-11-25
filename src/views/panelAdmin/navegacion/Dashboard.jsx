@@ -216,7 +216,7 @@ export default function Dashboard() {
               </Box>
             </Item>
           </Grid>
-          <Grid xs={12} md={8}>
+          <Grid xs={12} md={12}>
             <Item sx={{backgroundColor:"customTheme.acento500"}}>
               <ManagersDashboard />
               <Divider />

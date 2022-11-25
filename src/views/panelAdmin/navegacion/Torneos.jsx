@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import { useDemoData } from "@mui/x-data-grid-generator";
-import FileDownloadDoneIcon from '@mui/icons-material/FileDownloadDone';
+import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
 import {
   Button,
   Container,
@@ -118,9 +118,10 @@ export default function Torneos() {
       headerAlign: "center",
       align: "center",
       headerClassName: "headerClass",
+      flex: 1,
     },
 
-    {
+    /*     {
       field: "actions",
       type: "actions",
       headerName: "Acciones",
@@ -132,7 +133,7 @@ export default function Torneos() {
       headerAlign: "center",
       align: "center",
       headerClassName: "headerClass",
-    },
+    }, */
   ];
   const columnsTemporada = [
     {
@@ -196,26 +197,21 @@ export default function Torneos() {
       disableReorder: true,
 
       getActions: (params) => [
-
-        params.row?.Torneos?.length
-        > 0 
-        ?
-        (
-        <GridActionsCellItem
-          icon={<EditIcon fontSize="small" />}
-          label="Agregar Estadisticas"
-          onClick={() => {
-            handleEstadisticas(params.row);
-          }}
-        />
-        ):(
+        params.row?.Torneos?.length > 0 ? (
           <GridActionsCellItem
-          icon={<FileDownloadDoneIcon fontSize="small" />}
-          label="Ver Estadisticas"
-          disabled={true}
-        />
-        )
-        
+            icon={<EditIcon fontSize="small" />}
+            label="Agregar Estadisticas"
+            onClick={() => {
+              handleEstadisticas(params.row);
+            }}
+          />
+        ) : (
+          <GridActionsCellItem
+            icon={<FileDownloadDoneIcon fontSize="small" />}
+            label="Ver Estadisticas"
+            disabled={true}
+          />
+        ),
       ],
       headerAlign: "center",
       align: "center",

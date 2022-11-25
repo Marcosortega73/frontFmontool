@@ -1,5 +1,6 @@
 import { Box, Button, Grid, Toolbar, Typography } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
 import FixtureComponent from "../../client/torneos-y-competencias/base-de-datos/component/FixtureComponent";
 import TableLigasClasificacionComponent from "../../client/torneos-y-competencias/base-de-datos/component/TableLigasClasificacionComponent";
 import TableLigasClasificacionComponentSmall from "../../client/torneos-y-competencias/base-de-datos/component/TableLigasClasificacionComponentSmall";
@@ -17,16 +18,7 @@ const ContenedorLigas = ({ torneo }) => {
   return (
     <Box  sx={{ width: "100%", height: "100%",display:"flex",justifyContent:"center" }}>
       <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography
-            variant="h6"
-            color="customTheme.acento200"
-            component="div"
-            align="center"
-          >
-            {torneo?.nombre} - {torneo?.Season.nombre}
-          </Typography>
-        </Grid>
+    
         <Grid item xs={12} md={6}>
           <Box
             sx={{
@@ -68,9 +60,11 @@ const ContenedorLigas = ({ torneo }) => {
           md={12}
           sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}
         >
+          <Link to='/torneos/ligas' >
           <Button variant="contained" color="secondary">
             Ver detalles
           </Button>
+          </Link>
         </Grid>
       </Grid>
     </Box>

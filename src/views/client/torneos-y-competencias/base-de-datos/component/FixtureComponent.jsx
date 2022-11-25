@@ -16,6 +16,9 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
+import LogoLocal from "../../../../../assets/images/logos/LogoLocal.png"
+import LogoVisitante from "../../../../../assets/images/logos/LogoVisitante.png"
+
 
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -147,9 +150,9 @@ const FixtureComponent = ({ liga }) => {
                             </>
                           )}
                           <img
-                            width="33"
-                            height="37"
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_H3XbnPRAO1IzoLDdEAhDfAQ9NP7ebk_DBzbF6_2oRzAPXSrNW1cmyJvM2qLYgz08N2M&usqp=CAU"
+                            width="37"
+                            height="43"
+                            src={LogoVisitante}
                             alt="logo"
                           />
                         </ListItemAvatar>
@@ -157,9 +160,9 @@ const FixtureComponent = ({ liga }) => {
                     >
                       <ListItemAvatar aria-label="local">
                         <img
-                          width="33"
-                          height="37"
-                          src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/CA_river_plate_logo.svg/1200px-CA_river_plate_logo.svg.png"
+                          width="43"
+                          height="43"
+                          src={LogoLocal}
                           alt="logo"
                         />
                       </ListItemAvatar>

@@ -69,19 +69,19 @@ export default function PoliticasPrivacidad({ open, setOpen }) {
         </BootstrapDialogTitle>
         <DialogContent dividers>
           <div>
-            <div class="row text-index-content-header">
-              <div class="text-index-date">
-                <div class="text-index-date-label">Última actualización</div>
-                <div class="text-index-date-value"> Noviembre 2022</div>
+            <div className="row text-index-content-header">
+              <div className="text-index-date">
+                <div className="text-index-date-label">Última actualización</div>
+                <div className="text-index-date-value"> Noviembre 2022</div>
               </div>
             </div>
             <div
               data-ssid="937"
-              class="text-index-item component component--type--text-index-item"
+              className="text-index-item component component--type--text-index-item"
             >
-              <h3 class="text-index-item-title"> Introducción</h3>
-              <div class="text-index-item-summary">
-                <div class="clearfix text-formatted field field--name-field-text-index-item-summary field--type-text-long field--label-hidden field__item">
+              <h3 className="text-index-item-title"> Introducción</h3>
+              <div className="text-index-item-summary">
+                <div className="clearfix text-formatted field field--name-field-text-index-item-summary field--type-text-long field--label-hidden field__item">
                   <p>
                     Competiciones Online FM, sus subsidiarias y afiliadas se comprometen a proteger
                     la privacidad y la seguridad de sus datos personales. Competicones Online FM
@@ -130,14 +130,14 @@ export default function PoliticasPrivacidad({ open, setOpen }) {
             </div>
             <div
               data-ssid="923"
-              class="text-index-item component component--type--text-index-item"
+              className="text-index-item component component--type--text-index-item"
             >
-              <h3 class="text-index-item-title">
+              <h3 className="text-index-item-title">
                 {" "}
                 1.Información que recopilamos y recibimos
               </h3>
-              <div class="text-index-item-summary">
-                <div class="clearfix text-formatted field field--name-field-text-index-item-summary field--type-text-long field--label-hidden field__item">
+              <div className="text-index-item-summary">
+                <div className="clearfix text-formatted field field--name-field-text-index-item-summary field--type-text-long field--label-hidden field__item">
                   <p>
                     Recopilamos datos personales sobre Usted y los dispositivos
                     que utiliza para acceder a nuestros Productos e interactuar
@@ -304,8 +304,8 @@ export default function PoliticasPrivacidad({ open, setOpen }) {
                   <p>&nbsp;</p>
                 </div>
               </div>
-              <div class="text-index-item-content" >
-                <div class="clearfix text-formatted field field--name-field-text-index-item-content field--type-text-long field--label-hidden field__item">
+              <div className="text-index-item-content" >
+                <div className="clearfix text-formatted field field--name-field-text-index-item-content field--type-text-long field--label-hidden field__item">
                   <p>
                     Recopilamos datos personales sobre Usted y los dispositivos
                     que utiliza para acceder a nuestros Productos e interactuar
@@ -548,14 +548,14 @@ export default function PoliticasPrivacidad({ open, setOpen }) {
             </div>
             <div
               data-ssid="924"
-              class="text-index-item component component--type--text-index-item"
+              className="text-index-item component component--type--text-index-item"
             >
-              <h3 class="text-index-item-title">
+              <h3 className="text-index-item-title">
                 {" "}
                 2. Cómo usamos la información recopilada
               </h3>
-              <div class="text-index-item-summary">
-                <div class="clearfix text-formatted field field--name-field-text-index-item-summary field--type-text-long field--label-hidden field__item">
+              <div className="text-index-item-summary">
+                <div className="clearfix text-formatted field field--name-field-text-index-item-summary field--type-text-long field--label-hidden field__item">
                   <p>
                     Podemos usar la información que recopilamos de las
                     siguientes formas:&nbsp;
@@ -707,8 +707,8 @@ export default function PoliticasPrivacidad({ open, setOpen }) {
                   </p>
                 </div>
               </div>
-              <div class="text-index-item-content" >
-                <div class="clearfix text-formatted field field--name-field-text-index-item-content field--type-text-long field--label-hidden field__item">
+              <div className="text-index-item-content" >
+                <div className="clearfix text-formatted field field--name-field-text-index-item-content field--type-text-long field--label-hidden field__item">
                   <p>
                     Usamos los datos personales que recopilamos para los
                     propósitos siguientes:&nbsp;&nbsp;

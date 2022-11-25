@@ -97,7 +97,9 @@ const CarouselAsistenciasComponent = ({ torneo }) => {
                       src={IconPodio}
                       alt="icono podio"
                     />
-                   <Chip size="small" sx={{ml:1}} label={asistente.asistencias} />
+                   <Chip size="small" sx={{ml:1}} label={
+                      idx + 1
+                   } />
                   </Button>
                   </Tooltip>
 

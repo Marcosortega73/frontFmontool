@@ -60,7 +60,7 @@ const iconFooter = (icon) => {
 const redes = [
   {
     title: "Facebook",
-    href: "https://www.facebook.com/CompeticionesOnline",
+    href: "https://www.facebook.com/groups/937814986626220",
     icon: iconFooter("Facebook"),
   },
   {
@@ -70,22 +70,22 @@ const redes = [
   },
   {
     title: "Twitter",
-    href: "https://twitter.com/CompeticionesOn",
+    href: "https://twitter.com/CompeticionesFM",
     icon: iconFooter("Twitter"),
   },
   {
     title: "Youtube",
-    href: "https://www.youtube.com/channel/UC0JgjZw6V7i6YR8Ee7z6X1g",
+    href: "https://www.youtube.com/@competicionesonlinefm1043",
     icon: iconFooter("YouTube"),
   },
   {
     title: "Discord",
-    href: "https://discord.gg/2Z5Y4Y2",
+    href: "https://discord.gg/Vpb4mqdn",
     icon: iconFooter("Discord"),
   },
   {
     title: "Twitch",
-    href: "https://www.twitch.tv/competicionesonline",
+    href: "https://www.twitch.tv/competicionesonlinefm",
     icon: iconFooter("Twitch"),
   },
 ];
@@ -118,14 +118,12 @@ const Item = styled(Paper)(({ theme }) => ({
   boxShadow: "none",
 }));
 
-
-
 export default function Footer() {
   const [open, setOpen] = React.useState(false);
   const [openCondiciones, setOpenCondiciones] = React.useState(false);
   const [openPrivacidad, setOpenPrivacidad] = React.useState(false);
   return (
-    <Box sx={{ flexGrow: 1, backgroundColor: "customTheme.primary700", mt: 5 }}>
+    <Box sx={{ flexGrow: 1, backgroundColor: "customTheme.primary700" }}>
       <Grid container zeroMinWidth={true} sx={{ p: 3 }}>
         <Grid xs={12} md={5} lg={4}>
           <Item
@@ -154,34 +152,30 @@ export default function Footer() {
               >
                 Menu
               </Box>
-              <Box
-              
-                sx={{ listStyle: "none" }}
-              >
-                 <List sx={{ display: "flex", justifyContent: "center" }}>
-                 <Box>
-                {pages.map((page, idx) => (
-                  <ListItem key={idx} disablePadding>
-                    <Link
-                      to={page.href}
-                      color="inherit"
-                      underline="hover"
-                      sx={{ fontSize: "15px", cursor: "pointer" }}
-                    >
-                       <ListItemButton
-                          sx={{
-                            p: 0,
-                            display: "flex",
-                            justifyContent: "space-around",
-                          }}
+              <Box sx={{ listStyle: "none" }}>
+                <List sx={{ display: "flex", justifyContent: "center" }}>
+                  <Box>
+                    {pages.map((page, idx) => (
+                      <ListItem key={idx} disablePadding>
+                        <Link
+                          to={page.href}
+                          color="inherit"
+                          underline="hover"
+                          sx={{ fontSize: "15px", cursor: "pointer" }}
                         >
-                          <ListItemText primary={page.title} />
-                        </ListItemButton>
-                      
-                    </Link>
-                    </ListItem>
-                ))}
-                </Box>
+                          <ListItemButton
+                            sx={{
+                              p: 0,
+                              display: "flex",
+                              justifyContent: "space-around",
+                            }}
+                          >
+                            <ListItemText primary={page.title} />
+                          </ListItemButton>
+                        </Link>
+                      </ListItem>
+                    ))}
+                  </Box>
                 </List>
               </Box>
             </Item>
@@ -200,9 +194,11 @@ export default function Footer() {
                   {redes.map((page, idx) => (
                     <ListItem key={idx} disablePadding>
                       <Link
-                        to={page.href}
+                        href={page.href}
                         color="inherit"
                         underline="hover"
+                        target="_blank"
+                        rel="noreferrer"
                         sx={{ fontSize: "15px", cursor: "pointer" }}
                       >
                         <ListItemButton
@@ -232,18 +228,20 @@ export default function Footer() {
               >
                 Atribuciones
               </Box>
-              <Box sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-                mt:3
-              }}>
-               
-                <Button variant="contained" color="secondary"
-                onClick={
-                  () => setOpen(true)
-                }>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100%",
+                  mt: 3,
+                }}
+              >
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => setOpen(true)}
+                >
                   Ver Atribuciones
                 </Button>
               </Box>
@@ -254,13 +252,17 @@ export default function Footer() {
           <Item
             sx={{
               backgroundColor: "customTheme.primary700",
-              mt:3
+              mt: 3,
             }}
           >
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               {/* menu con terminos y condiciones y privacidad */}
-              <Stack direction="row" spacing={2}
-                divider={<Divider orientation="vertical" flexItem color="#e5e5e5"/>}
+              <Stack
+                direction="row"
+                spacing={2}
+                divider={
+                  <Divider orientation="vertical" flexItem color="#e5e5e5" />
+                }
               >
                 <Button
                   variant="text"
@@ -278,14 +280,10 @@ export default function Footer() {
                 >
                   Política de privacidad
                 </Button>
-
               </Stack>
-
-                  
             </Box>
           </Item>
         </Grid>
-          
       </Grid>
 
       <Box
@@ -314,7 +312,10 @@ export default function Footer() {
 
       <ModalFooterAtribuciones open={open} setOpen={setOpen} />
       <PoliticasPrivacidad open={openPrivacidad} setOpen={setOpenPrivacidad} />
-      <TerminosCondiciones open={openCondiciones} setOpen={setOpenCondiciones} />
+      <TerminosCondiciones
+        open={openCondiciones}
+        setOpen={setOpenCondiciones}
+      />
     </Box>
   );
 }

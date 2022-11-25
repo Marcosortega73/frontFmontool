@@ -118,6 +118,18 @@ export default function DialogComponentTorneos(props) {
     }
   };
 
+  const clear = () => {
+    setFixture([]);
+    setSorteo(false);
+    setFixtureCompleto([]);
+    setEquipos([]);
+    setSelectEquipos([]);
+    setSearchClub("");
+    setSelected(null);
+    setSelectNation(null);
+    setNationsByRegion([]);
+  }
+
   const getTiposTorneos = async () => {
     const res = await torneosServices.getTiposTorneosService();
     console.log("res", res);
@@ -176,7 +188,7 @@ export default function DialogComponentTorneos(props) {
   React.useEffect(() => {
     getTemporadas();
     getTiposTorneos();
-  }, []);
+  }, [open]);
 
   React.useEffect(() => {
     getNacionalidadxRegion();
@@ -195,7 +207,9 @@ export default function DialogComponentTorneos(props) {
   }, [searchClub]); */
 
   const handleClose = () => {
-    reset();
+    setDefaultValues(reset(defaultValues));
+    setActiveStep(0);
+    clear();
     setOpen(false);
   };
 
@@ -248,8 +262,7 @@ export default function DialogComponentTorneos(props) {
                   container: "swal-overlay",
                 },
               });
-
-              setOpen(false);
+              handleClose();
             } else {
               Swal.fire({
                 title: "Error!",
@@ -316,7 +329,7 @@ export default function DialogComponentTorneos(props) {
       await torneosServices.updateTorneosService(formValue);
     }
 
-    handleClose();
+   
   };
 
   const handleNext = () => {
@@ -352,11 +365,7 @@ export default function DialogComponentTorneos(props) {
   };
 
   const handleBack = () => {
-    /*    setActiveStep((prevActiveStep) =>
-      prevActiveStep > 0 ? prevActiveStep - 1 : (prevActiveStep = 0)
-    ); */
-    setActiveStep(0);
-    //reset(defaultValues);
+    setActiveStep(0)
     setDefaultValues(reset(defaultValues));
     setOpen(false);
   };
@@ -1036,7 +1045,7 @@ export default function DialogComponentTorneos(props) {
                                             </Paper>
 
                                             <Item>
-                                              <Item sx={{ display: "flex" }}>
+                                            {/*   <Item sx={{ display: "flex" }}>
                                                 <Grid item xs={6}>
                                                   <strong>Fecha desde:</strong>
                                                   <FormDate
@@ -1049,7 +1058,7 @@ export default function DialogComponentTorneos(props) {
                                                     rulesBol={true}
                                                     text="Fecha desde"
                                                     type="date"
-                                                    /*  readOnly={readOnlyProfile} */
+                                                      readOnly={readOnlyProfile} 
                                                   />
                                                 </Grid>
                                                 <Divider
@@ -1068,10 +1077,10 @@ export default function DialogComponentTorneos(props) {
                                                     rulesBol={true}
                                                     text="Fecha desde"
                                                     type="date"
-                                                    /*  readOnly={readOnlyProfile} */
+                                                      readOnly={readOnlyProfile} 
                                                   />
                                                 </Grid>
-                                              </Item>
+                                              </Item> */}
                                               <Button
                                                 variant="contained"
                                                 onClick={handleFixture}

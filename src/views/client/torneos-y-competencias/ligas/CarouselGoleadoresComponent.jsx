@@ -96,14 +96,16 @@ const CarouselGoleadoresComponent = ({ torneo }) => {
                       src={IconPodio}
                       alt="icono podio"
                     />
-                   <Chip size="small" sx={{ml:1}} label={goleador.goles} />
+                   <Chip size="small" sx={{ml:1}} label={
+                      idx+1
+                   } />
                   </Button>
                   </Tooltip>
 
                   <Tooltip title="Goles">
                   <Button size="">
                   <SportsSoccerIcon />
-                  <Chip size="small" sx={{ml:1}} label={goleador.goles} />
+                  <Chip size="small" sx={{ml:1}} label={goleador.asistencias} />
                   </Button>
                   </Tooltip>
                 </CardActions>
