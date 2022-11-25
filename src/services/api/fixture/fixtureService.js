@@ -108,6 +108,22 @@ const deleteFixtureService = async (id) => {
   }
 };
 
+const resetPartido = async (id) => {
+  console.log("LLEGE A RESET Partido REQ", id);
+  try {
+    const response = http
+      .put(API_URL + "resetPartido/" + id)
+      .then((res) => {
+        console.log("Ejecutando el reset partido", res.data);
+
+        return res.data;
+      });
+    return response;
+  } catch (error) {
+    console.log("LLEGE AL ERROR Del RESET", error);
+  }
+};
+
 const FixtureServices = {
   getFixtureService,
   createFixtureService,
@@ -116,6 +132,7 @@ const FixtureServices = {
   confirmFixtureService,
   getFixtureByTorneo,
   getFilterFixtureService,
+  resetPartido
 };
 
 export default FixtureServices;

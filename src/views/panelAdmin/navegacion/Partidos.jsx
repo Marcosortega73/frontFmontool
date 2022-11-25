@@ -21,6 +21,7 @@ import FixtureServices from "../../../services/api/fixture/fixtureService";
 import { useSnackbar } from "notistack";
 import DialogComponentEstadisticas from "./common/DialogComponentEstadisticas";
 import translate from "../../../utils/translate/dataGridToolbar.json";
+import Swal from "sweetalert2";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#f5f5f5",
@@ -153,12 +154,13 @@ export default function Partidos() {
       flex: 1,
       type: 'actions',
       getActions: (params) => [
-    
+        
         <GridActionsCellItem
           icon={ <RunCircleIcon fontSize="small" />}
           label="Agregar Estadisticas"
           onClick={()=>{handleStats(params.row)}}
           showInMenu
+          disabled={params.row.estado === "Terminado" ? false : true}
         />,
         <GridActionsCellItem
           icon={ <DeleteIcon fontSize="small" />}
@@ -182,6 +184,32 @@ const handleStats = (item) => {
 
 const handleDelete = (id) => {
     console.log("delete",id)
+    Swal.fire({
+      title: "¿Estas seguro?",
+      text: "No podras revertir esta accion",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, eliminar!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        FixtureServices.resetPartido(id).then((response) => {
+          if (response.status === 200) {
+            enqueueSnackbar("Partido eliminado correctamente", {
+              variant: "success",
+            });
+            getPartidos();
+            
+          }
+        });
+      }
+    }
+    )
+
+
+    
 }
 
   const { enqueueSnackbar } = useSnackbar();

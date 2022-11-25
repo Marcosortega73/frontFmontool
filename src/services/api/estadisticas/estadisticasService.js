@@ -106,6 +106,20 @@ const cargarAsistenciasService = async (data) => {
   }
 };
 
+const deleteEstadistica = async (id) => {
+  console.log("LLEGE AL DELETE Estadisitica REQ", id);
+  try {
+    const response = http.delete(API_URL + "eliminarEstadisticas/" + id).then((res) => {
+      console.log("LLEGE AL LA DATA DELETE Estadisitica", res);
+      return res;
+    });
+    return response;
+  } catch (error) {
+    console.log("LLEGE AL ERROR DELETE", error);
+  }
+};
+
+
 
 
 
@@ -119,6 +133,7 @@ const estadisticasServices = {
   cargarMvpService,
   cargarGoleadoresService,
   cargarAsistenciasService,
+  deleteEstadistica,
 };
 
 export default estadisticasServices;

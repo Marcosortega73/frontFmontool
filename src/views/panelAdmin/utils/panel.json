@@ -30,11 +30,6 @@
             },
         
             {
-                "name": "Fixture",
-                "path": "fixture",
-                "icon": "event"
-            },
-            {
                 "name": "Partidos",
                 "path": "partidos",
                 "icon": "scoreboard"

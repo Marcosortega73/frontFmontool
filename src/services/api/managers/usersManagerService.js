@@ -24,7 +24,7 @@ try{
 
 const getManagers = async () => {
   try{
-
+    console.log("DATA MANAGERS que ondaaa")
     const data  =  await http
       .get(API_URL + "/getManagers")
       .then((response) => {

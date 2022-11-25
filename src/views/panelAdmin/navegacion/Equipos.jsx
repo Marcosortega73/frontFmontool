@@ -212,7 +212,7 @@ export default function Equipos() {
       getActions: (params) => [
         <GridActionsCellItem
           icon={<VisibilityIcon fontSize="small" />}
-          label="Ver Jugador"
+          label="Ver Equipo"
           onClick={() => {
             handleEquipoSelect(params.row, "ver");
           }}
@@ -220,7 +220,7 @@ export default function Equipos() {
         />,
         <GridActionsCellItem
           icon={<EditIcon fontSize="small" />}
-          label="Editar Jugador"
+          label="Editar Equipo"
           onClick={() => {
             handleEquipoSelect(params.row, "edit");
           }}
@@ -228,7 +228,7 @@ export default function Equipos() {
         />,
         <GridActionsCellItem
           icon={<DeleteIcon fontSize="small" />}
-          label="Borrar Jugador"
+          label="Borrar Equipo"
           onClick={() => {
             handleDelete(params.id);
           }}
