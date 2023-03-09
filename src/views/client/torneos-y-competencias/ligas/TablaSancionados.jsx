@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -14,6 +14,7 @@ import TarjetaAmarilla from "../../../../assets/images/iconos/tarjeta_amarilla.p
 import LesionNaranja from "../../../../assets/images/iconos/lesion_naranja.png";
 import LesionRoja from "../../../../assets/images/iconos/lesion_roja.png";
 import Suspendido from "../../../../assets/images/iconos/prohibido.png";
+import { CircularProgress, LinearProgress } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -24,7 +25,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     fontSize: 14,
   },
   border: "1px solid #e5e5e5",
-  
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -36,7 +36,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
   border: "5px solid #ffff",
-
 }));
 
 const TablaSancionados = ({ equipo_id, torneo }) => {
@@ -75,6 +74,7 @@ const TablaSancionados = ({ equipo_id, torneo }) => {
   };
 
   React.useEffect(() => {
+    setLoading(true);
     getSancionados();
   }, [equipo_id, torneo]);
 
@@ -84,120 +84,125 @@ const TablaSancionados = ({ equipo_id, torneo }) => {
     }
   }, [cantfechas]);
 
-  console.log("SANCIONADOS", sancionados);
-  console.log("FECHAS", fechas);
-  console.log("cantidad de fechas", cantfechas);
-
-  /*  const columns = [
-    { field: "nombre", headerName: "Nombre", flex: 1 },
-    
-  ]; */
-
-  console.log("equipo_idequipo_id", equipo_id);
-  console.log("fechas", fechas);
   return (
     <Paper style={{ width: "100%" }}>
-      <TableContainer sx={{ maxHeight: 573 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-            <StyledTableCell sx={{width:"7px"}}>N°</StyledTableCell>
-              <StyledTableCell sx={{width:"50%"}}>Nombre</StyledTableCell>
-              {/* columna dinamicas de acuerdo a las fechas*/}
-              {fechas.map((fecha, index) => {
-                return (
-                  <StyledTableCell key={index} align="center">
-                    {fecha?.fecha}
-                  </StyledTableCell>
-                );
-              })}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {sancionados.map((row, idx) => (
-              <StyledTableRow key={row.idx}>
-                 <StyledTableCell component="th" scope="row" align="left">
-                  {idx+1}
-                </StyledTableCell>
-                <StyledTableCell component="th" scope="row" align="left">
-                  {row.nombre}
-                </StyledTableCell>
+      {loading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "173px",
+          }}
+        >
+          <CircularProgress color="secondary" />
+        </div>
+      ) : (
+        <TableContainer sx={{ maxHeight: 573 }}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell sx={{ width: "7px" }}>N°</StyledTableCell>
+                <StyledTableCell sx={{ width: "50%" }}>Nombre</StyledTableCell>
                 {/* columna dinamicas de acuerdo a las fechas*/}
-
                 {fechas.map((fecha, index) => {
                   return (
-                    <StyledTableCell key={index} align="center" sx={{}}>
-                      {row.sanciones.length > 0 ? (
-                         <div style={{ display: "flex",justifyContent:"center", }}>
-                        { row.sanciones.map((sancion, indexs) => {
-                          return (
-                             sancion.Fixture.num_fecha === fecha?.fecha &&
-                                (sancion.estadistica_id === 3 ? (
-                                  <div key={indexs}>
-                                    <img
-                                      width={33}
-                                      height={33}
-                                      src={TarjetaRoja}
-                                      alt="roja"
-                                    />
-                                  </div>
-                                ) : sancion.estadistica_id === 4 ? (
-                                  <div key={indexs}>
-                                    <img
-                                      width={33}
-                                      height={33}
-                                      src={TarjetaAmarilla}
-                                      alt="roja"
-                                    />
-                                  </div>
-                                ) : sancion.estadistica_id === 5 ? (
-                                  <div key={indexs}>
-                                    <img
-                                      width={33}
-                                      height={33}
-                                      src={LesionNaranja}
-                                      alt="roja"
-                                    />
-                                  </div>
-                                ) : 
-                                  sancion.estadistica_id === 6 ? (
-                                    <div key={indexs}>
-                                      <img
-                                        width={33}
-                                        height={33}
-                                        src={LesionRoja}
-                                        alt="roja"
-                                      />
-                                    </div>
-                                  )
-                                    : sancion.estadistica_id === 8 && (
-                                      <div key={indexs}>
-                                        <img
-                                          width={33}
-                                          height={33}
-                                          src={Suspendido}
-                                          alt="roja"
-                                        />
-                                      </div>
-                                    )
-                                
-                                
-                                )
-                          );
-                        })
-                      }
-                      </div>
-                      ) : (
-                        <div>-</div>
-                      )}
+                    <StyledTableCell key={index} align="center">
+                      {fecha?.fecha}
                     </StyledTableCell>
                   );
                 })}
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {sancionados.map((row, idx) => (
+                <StyledTableRow key={idx}>
+                  <StyledTableCell component="th" scope="row" align="left">
+                    {idx + 1}
+                  </StyledTableCell>
+                  <StyledTableCell component="th" scope="row" align="left">
+                    {row.nombre}
+                  </StyledTableCell>
+                  {/* columna dinamicas de acuerdo a las fechas*/}
+
+                  {fechas.map((fecha, index) => {
+                    return (
+                      <StyledTableCell key={index} align="center" sx={{}}>
+                        {row.sanciones.length > 0 ? (
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                            }}
+                          >
+                            {row.sanciones.map((sancion, indexs) => {
+                              return (
+                                <Fragment key={indexs}>
+                                  {sancion.Fixture.num_fecha === fecha?.fecha &&
+                                    (sancion.estadistica_id === 3 ? (
+                                      <div>
+                                        <img
+                                          width={33}
+                                          height={33}
+                                          src={TarjetaRoja}
+                                          alt="roja"
+                                        />
+                                      </div>
+                                    ) : sancion.estadistica_id === 4 ? (
+                                      <div>
+                                        <img
+                                          width={33}
+                                          height={33}
+                                          src={TarjetaAmarilla}
+                                          alt="roja"
+                                        />
+                                      </div>
+                                    ) : sancion.estadistica_id === 5 ? (
+                                      <div>
+                                        <img
+                                          width={33}
+                                          height={33}
+                                          src={LesionNaranja}
+                                          alt="roja"
+                                        />
+                                      </div>
+                                    ) : sancion.estadistica_id === 6 ? (
+                                      <div>
+                                        <img
+                                          width={33}
+                                          height={33}
+                                          src={LesionRoja}
+                                          alt="roja"
+                                        />
+                                      </div>
+                                    ) : (
+                                      sancion.estadistica_id === 8 && (
+                                        <div>
+                                          <img
+                                            width={33}
+                                            height={33}
+                                            src={Suspendido}
+                                            alt="roja"
+                                          />
+                                        </div>
+                                      )
+                                    ))}
+                                </Fragment>
+                              );
+                            })}
+                          </div>
+                        ) : (
+                          <div>-</div>
+                        )}
+                      </StyledTableCell>
+                    );
+                  })}
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </Paper>
   );
 };

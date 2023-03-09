@@ -74,7 +74,7 @@ const CarouselAsistenciasComponent = ({ torneo }) => {
          
             {asistencias.map((asistente, idx) => (
               <div key={idx}>
-              <Card  sx={{ maxWidth: 300, maxHeight: "auto" }}>
+              <Card  sx={{ maxWidth: 300, maxHeight: "auto",mx:1 }}>
                 <CardMedia
                   component="img"
                   image={require("../../../../assets/images/persons/silueta.png")}

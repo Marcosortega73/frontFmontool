@@ -11,28 +11,20 @@ import getEstadisticasServices from "../../../../services/api/estadisticas/getEs
 import { Chip, CircularProgress, Tooltip } from "@mui/material";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import IconPodio from "../../../../assets/images/iconos/podio.png";
+import CardJugador from "../../../../components/cards/CardJugador";
 
 const responsive = {
-  superLargeDesktop: {
-    // the naming can be any, depends on you.
-    breakpoint: { max: 4000, min: 3000 },
-    items: 5,
-
-  },
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
     items: 3,
-
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
     items: 2,
-
   },
   mobile: {
     breakpoint: { max: 464, min: 0 },
     items: 1,
-
   },
 };
 
@@ -42,8 +34,8 @@ const CarouselGoleadoresComponent = ({ torneo }) => {
   const getGoleadores = async () => {
     const data = {
       torneo: torneo,
-      tipo:1,
-    }
+      tipo: 1,
+    };
     const response = await getEstadisticasServices.getEstadisticasByTorneo(
       data
     );
@@ -65,15 +57,24 @@ const CarouselGoleadoresComponent = ({ torneo }) => {
         <Carousel
           responsive={responsive}
           autoPlay={true}
-          autoPlaySpeed={3000}
+          autoPlaySpeed={500}
           infinite={true}
           showDots={true}
           centerMode={true}
+          swipeable={false}
+          draggable={false}
+          keyBoardControl={true}
+          customTransition="all 1"
+          transitionDuration={1000}
+          containerClass="carousel-container"
+          removeArrowOnDeviceType={["tablet", "mobile"]}
+          dotListClass="custom-dot-list-style"
+          itemClass="carousel-item-padding-15-px"
+          partialVisible={false}
         >
-         
-            {goleadores.map((goleador, idx) => (
-              <div key={idx}>
-              <Card  sx={{ maxWidth: 300, maxHeight: "auto" }}>
+          {goleadores.map((goleador, idx) => (
+            <div key={idx}>
+              {/*     <Card sx={{ maxWidth: 300, maxHeight: "auto",mx:1 }}>
                 <CardMedia
                   component="img"
                   image={require("../../../../assets/images/persons/silueta.png")}
@@ -89,29 +90,36 @@ const CarouselGoleadoresComponent = ({ torneo }) => {
                     {goleador.equipo}
                   </Typography>
                 </CardContent>
-                <CardActions sx={{display:"flex", justifyContent:"space-between",alignItems:"center"}}>
+                <CardActions
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
                   <Tooltip title="Posición">
-                  <Button size="">
-                    <img
-                      src={IconPodio}
-                      alt="icono podio"
-                    />
-                   <Chip size="small" sx={{ml:1}} label={
-                      idx+1
-                   } />
-                  </Button>
+                    <Button size="">
+                      <img src={IconPodio} alt="icono podio" />
+                      <p></p>
+                      <Chip size="small" sx={{ ml: 1 }} label={idx + 1} />
+                    </Button>
                   </Tooltip>
 
                   <Tooltip title="Goles">
-                  <Button size="">
-                  <SportsSoccerIcon />
-                  <Chip size="small" sx={{ml:1}} label={goleador.asistencias} />
-                  </Button>
+                    <Button size="">
+                      <SportsSoccerIcon />
+                      <Chip
+                        size="small"
+                        sx={{ ml: 1 }}
+                        label={goleador.asistencias}
+                      />
+                    </Button>
                   </Tooltip>
                 </CardActions>
-              </Card>
-              </div>
-            ))}
+              </Card> */}
+              <CardJugador jugador={goleador} />
+            </div>
+          ))}
         </Carousel>
       )}
     </div>
